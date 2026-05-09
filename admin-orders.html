@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Orders - Mughal Indian Cuisine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--wolt-dark:#0f0f0f;--wolt-card:#1a1a1a;--wolt-card-hover:#252525;--wolt-orange:#ff6b00;--wolt-orange-dark:#e65100;--wolt-text:#ffffff;--wolt-text-muted:#a0a0a0;--wolt-border:#333333;--wolt-success:#00c853;--wolt-warning:#ff9100;--shadow:rgba(0,0,0,0.4)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Poppins',sans-serif;background:var(--wolt-dark);min-height:100vh;color:var(--wolt-text);padding-top:62px}
+
+    /* Admin Navbar */
+    .admin-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:#0a0a0a;border-bottom:1px solid var(--wolt-border)}
+    .admin-nav-logo{display:flex;align-items:center;gap:12px}
+    .admin-nav-logo img{height:38px;width:auto}
+    .admin-nav-logo span{color:var(--wolt-orange);font-weight:700;font-size:1rem;letter-spacing:0.5px}
+    .admin-nav-links{display:flex;gap:8px;align-items:center}
+    .admin-nav-link{padding:8px 16px;border-radius:8px;color:var(--wolt-text-muted);font-size:0.83rem;font-weight:600;text-decoration:none;transition:all 0.3s ease;border:1px solid transparent}
+    .admin-nav-link:hover,.admin-nav-link.active{background:var(--wolt-orange);color:#fff;border-color:var(--wolt-orange)}
+    @media(max-width:600px){.admin-nav{padding:10px 14px}.admin-nav-logo span{display:none}.admin-nav-links{gap:4px}.admin-nav-link{padding:7px 10px;font-size:0.75rem}}
+
+    /* Filter Bar */
+    .filter-bar{position:sticky;top:60px;z-index:100;display:flex;gap:8px;padding:12px 20px;background:rgba(15,15,15,0.98);backdrop-filter:blur(10px);border-bottom:1px solid var(--wolt-border);justify-content:center;flex-wrap:wrap}
+    .filter-tab{padding:10px 22px;background:rgba(255,255,255,0.05);border:1px solid var(--wolt-border);border-radius:30px;color:var(--wolt-text-muted);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.3s ease;display:flex;align-items:center;gap:7px}
+    .filter-tab:hover,.filter-tab.active{background:var(--wolt-orange);color:#fff;border-color:var(--wolt-orange);font-weight:700}
+    .filter-count{background:rgba(255,255,255,0.2);color:inherit;border-radius:12px;padding:1px 7px;font-size:0.72rem;font-weight:700}
+    .filter-tab.active .filter-count{background:rgba(255,255,255,0.3)}
+
+    /* Orders Grid */
+    .orders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px;padding:20px;max-width:1600px;margin:0 auto}
+    @media(max-width:768px){.orders-grid{grid-template-columns:1fr;padding:16px;gap:16px}}
+
+    /* Order Card */
+    .order-card{background:var(--wolt-card);border:1px solid var(--wolt-border);border-radius:16px;overflow:hidden;transition:all 0.3s ease;box-shadow:0 4px 20px var(--shadow);cursor:pointer;position:relative}
+    .order-card:hover{border-color:var(--wolt-orange);transform:translateY(-4px);box-shadow:0 8px 30px rgba(255,107,0,0.2)}
+    .order-card.new-order{animation:slideInLeft 0.5s ease-out;border-color:var(--wolt-orange);box-shadow:0 8px 30px rgba(255,107,0,0.3)}
+    .order-card.hiding{animation:slideOutRight 0.5s ease-in forwards}
+    
+    @keyframes slideInLeft{from{opacity:0;transform:translateX(-100px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes slideOutRight{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(100px)}}
+    
+    /* New Order Badge */
+    .new-order-badge{position:absolute;top:-8px;right:-8px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;padding:6px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;z-index:20;animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+    
+    /* Stopwatch Animation */
+    .stopwatch{position:absolute;top:15px;left:15px;width:45px;height:45px;border-radius:50%;background:rgba(255,107,0,0.15);border:2px solid var(--wolt-orange);display:flex;align-items:center;justify-content:center;animation:rotate 2s linear infinite}
+    .stopwatch i{color:var(--wolt-orange);font-size:1.2rem}
+    @keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+    .card-header{display:flex;justify-content:space-between;align-items:center;padding:20px;background:linear-gradient(135deg,rgba(0,0,0,0.3),rgba(0,0,0,0.1))}
+    .order-number{font-family:'Poppins',sans-serif;font-size:1.8rem;color:var(--wolt-orange);font-weight:800;letter-spacing:1px}
+    .order-time{color:var(--wolt-text-muted);font-size:0.85rem;font-weight:500}
+    .preorder-badge{background:linear-gradient(135deg,#9333ea,#7c3aed);color:#fff;padding:6px 14px;border-radius:20px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+    .order-came-time{color:var(--wolt-success);font-size:0.8rem;font-weight:600;margin-top:4px}
+    .estimated-time-display{color:var(--wolt-warning);font-size:0.8rem;font-weight:600}
+
+    .status-indicator{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:25px;font-weight:700;font-size:0.85rem}
+    .status-indicator.pending{background:rgba(251,191,36,0.2);color:#fbbf24;border:2px solid rgba(251,191,36,0.4)}
+    .status-indicator.accepted{background:rgba(74,222,128,0.2);color:#4ade80;border:2px solid rgba(74,222,128,0.4)}
+    .status-indicator.ready{background:rgba(59,130,246,0.2);color:#3b82f6;border:2px solid rgba(59,130,246,0.4)}
+    .status-indicator.on_way{background:rgba(168,85,247,0.2);color:#a855f7;border:2px solid rgba(168,85,247,0.4)}
+    .status-indicator.delivered{background:rgba(34,197,94,0.2);color:#22c55e;border:2px solid rgba(34,197,94,0.4)}
+    .status-indicator.rejected{background:rgba(239,68,68,0.2);color:#ef4444;border:2px solid rgba(239,68,68,0.4)}
+    
+    /* Compact Summary */
+    .order-summary{padding:20px}
+    .summary-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:0.9rem;color:var(--wolt-text-muted)}
+    .summary-row span:last-child{color:var(--wolt-text);font-weight:600}
+    .summary-row.preorder-time{color:#9333ea;font-weight:600}
+    .order-type-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:10px;font-size:0.8rem;font-weight:600}
+    .order-type-badge.delivery{background:rgba(59,130,246,0.2);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)}
+    .order-type-badge.pickup{background:rgba(251,191,36,0.2);color:#fbbf24;border:1px solid rgba(251,191,36,0.3)}
+
+    /* Print Button (always visible) */
+    .print-btn-small{position:absolute;top:15px;right:15px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid var(--wolt-border);color:var(--wolt-text);cursor:pointer;transition:all 0.3s ease;display:flex;align-items:center;justify-content:center;z-index:10}
+    .print-btn-small:hover{background:var(--wolt-orange);color:#fff;transform:scale(1.1)}
+
+    /* Expandable Details */
+    .order-details{max-height:0;overflow:hidden;transition:max-height 0.3s ease-out}
+    .order-details.expanded{max-height:2000px;transition:max-height 0.5s ease-in}
+    .details-content{padding:0 20px 20px;border-top:1px solid var(--wolt-border)}
+
+    .customer-info{margin-bottom:12px}
+    .customer-info h4{color:var(--wolt-orange);font-size:0.85rem;font-weight:700;margin-bottom:6px}
+    .customer-info p{color:var(--wolt-text);font-size:0.85rem;margin-bottom:4px}
+
+    .items-preview{margin-bottom:12px;background:rgba(0,0,0,0.2);border-radius:10px;padding:12px;border:1px solid var(--wolt-border)}
+    .items-preview h4{color:var(--wolt-orange);font-size:0.85rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+    .item-line{color:var(--wolt-text);font-size:0.85rem;margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--wolt-border);display:flex;justify-content:space-between;align-items:flex-start}
+    .item-line:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+    .item-qty{background:var(--wolt-orange);color:#fff;padding:2px 8px;border-radius:4px;font-weight:700;font-size:0.8rem;margin-right:8px;min-width:30px;text-align:center}
+    .item-name{flex:1;font-weight:600}
+    .item-price{font-weight:700;color:var(--wolt-orange)}
+    .item-note{display:block;color:#9333ea;font-size:0.75rem;font-style:italic;margin-top:4px;padding-left:38px}
+    .item-tags{display:inline-flex;gap:4px;margin-top:4px;padding-left:38px}
+    .item-tag{padding:2px 6px;border-radius:4px;font-size:0.65rem;font-weight:600}
+    .item-tag.spicy{background:rgba(239,68,68,0.2);color:#ef4444}
+    .item-tag.no-spicy{background:rgba(74,222,128,0.2);color:#4ade80}
+
+    .order-totals{padding:12px;background:rgba(0,0,0,0.2);border-radius:10px;margin-bottom:12px}
+    .total-line{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;color:var(--wolt-text-muted)}
+    .total-line span:last-child{color:var(--wolt-text)}
+    .total-line.final{font-weight:700;color:var(--wolt-orange);font-size:1rem;margin-top:8px;padding-top:8px;border-top:1px solid var(--wolt-border)}
+
+    .delivery-info{padding:10px;background:rgba(255,107,0,0.1);border-radius:10px;margin-bottom:12px;border:1px solid rgba(255,107,0,0.2)}
+    .delivery-info h5{color:var(--wolt-orange);font-size:0.8rem;font-weight:700;margin-bottom:4px}
+    .delivery-info p{color:var(--wolt-text);font-size:0.8rem}
+
+    .time-input{width:100%;padding:8px 12px;border:1px solid var(--wolt-border);border-radius:8px;background:rgba(255,255,255,0.08);color:var(--wolt-text);font-size:0.85rem;margin-top:8px;outline:none}
+    .time-input:focus{border-color:var(--wolt-orange)}
+    .comment-input{width:100%;padding:8px 12px;border:1px solid var(--wolt-border);border-radius:8px;background:rgba(255,255,255,0.08);color:var(--wolt-text);font-size:0.85rem;margin-top:8px;outline:none;resize:none;min-height:60px}
+    .comment-input:focus{border-color:var(--wolt-orange)}
+    
+    /* Time Controls */
+    .time-controls{display:flex;align-items:center;gap:8px;margin-top:12px}
+    .time-display{flex:1;padding:10px 14px;background:rgba(0,0,0,0.3);border-radius:8px;text-align:center;font-size:1.1rem;font-weight:700;color:var(--wolt-orange);font-family:'Poppins',sans-serif}
+    .time-btn{width:40px;height:40px;border-radius:8px;border:none;background:rgba(255,255,255,0.1);color:var(--wolt-text);font-size:1.2rem;cursor:pointer;transition:all 0.3s ease;display:flex;align-items:center;justify-content:center}
+    .time-btn:hover{background:var(--wolt-orange);color:#fff}
+
+    .shortcut-buttons{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+    .shortcut-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--wolt-border);background:rgba(255,255,255,0.05);color:var(--wolt-text-muted);font-size:0.75rem;font-weight:600;cursor:pointer;transition:all 0.3s ease}
+    .shortcut-btn:hover{background:rgba(255,107,0,0.15);color:var(--wolt-orange);border-color:var(--wolt-orange)}
+    
+    .actions{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .action-btn{padding:12px;border:none;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.3s ease;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-print{background:rgba(255,255,255,0.1);color:var(--wolt-text);border:1px solid var(--wolt-border)}
+    .btn-print:hover{background:rgba(255,255,255,0.15);color:#fff}
+    .btn-accept{background:linear-gradient(135deg,#4ade80,#22c55e);color:#fff}
+    .btn-accept:hover{filter:brightness(1.1)}
+    .btn-reject{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+    .btn-reject:hover{filter:brightness(1.1)}
+    .btn-ready{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
+    .btn-ready:hover{filter:brightness(1.1)}
+    .btn-on-way{background:linear-gradient(135deg,#a855f7,#9333ea);color:#fff}
+    .btn-on-way:hover{filter:brightness(1.1)}
+    .btn-delivered{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+    .btn-delivered:hover{filter:brightness(1.1)}
+    .btn-update-time{background:rgba(255,255,255,0.1);color:var(--wolt-text);border:1px solid var(--wolt-border)}
+    .btn-update-time:hover{background:rgba(255,255,255,0.15)}
+
+    /* Empty State */
+    .empty-state{text-align:center;padding:60px 20px}
+    .empty-state i{font-size:4rem;color:rgba(255,255,255,0.2);margin-bottom:20px}
+    .empty-state h3{color:var(--wolt-text);font-size:1.3rem;margin-bottom:8px}
+    .empty-state p{color:var(--wolt-text-muted);font-size:0.9rem}
+
+    /* Loading */
+    .loading{text-align:center;padding:60px 20px}
+    .loading i{font-size:3rem;color:var(--wolt-orange);animation:spin 1s linear infinite;margin-bottom:16px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Toast */
+    .toast{position:fixed;bottom:30px;right:30px;z-index:999;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--wolt-card),var(--wolt-card-hover));color:var(--wolt-text);padding:13px 20px;border-radius:14px;font-size:0.85rem;font-weight:600;box-shadow:0 12px 38px var(--shadow);opacity:0;transform:translateY(18px);transition:all 0.42s cubic-bezier(0.4,0,0.2,1);pointer-events:none;max-width:300px;border:1px solid var(--wolt-border)}
+    .toast.show{opacity:1;transform:translateY(0);pointer-events:all}
+    .toast i{color:var(--wolt-orange);font-size:1rem}
+    .toast.error{background:linear-gradient(135deg,#c0392b,#e74c3c);border-color:#c0392b}
+    .toast.error i{color:#fff}
+
+    /* Responsive */
+    @media(max-width:768px){
+      .filter-bar{flex-wrap:wrap;justify-content:center}
+      .orders-grid{grid-template-columns:1fr}
+      .order-card{flex:0 0 100%;max-width:100%}
+    }
+  </style>
+</head>
+<body>
+  <!-- Admin Navbar -->
+  <nav class="admin-nav">
+    <div class="admin-nav-logo">
+      <img src="https://davidbantu1999.github.io/mughal-restaurant/logo.png" alt="Mughal"/>
+      <span>Admin Orders</span>
+    </div>
+    <div class="admin-nav-links">
+      <a href="admin-dashboard.html" class="admin-nav-link"><i class="fas fa-chart-bar"></i> Dashboard</a>
+      <a href="admineditor.html" class="admin-nav-link"><i class="fas fa-utensils"></i> Menu</a>
+      <a href="admin-orders.html" class="admin-nav-link active"><i class="fas fa-receipt"></i> Orders</a>
+    </div>
+  </nav>
+
+  <div class="filter-bar">
+    <button class="filter-tab active" onclick="filterOrders('active')">🔥 Active <span class="filter-count" id="count-active">0</span></button>
+    <button class="filter-tab" onclick="filterOrders('ready')">✅ Ready <span class="filter-count" id="count-ready">0</span></button>
+    <button class="filter-tab" onclick="filterOrders('history')">📋 History <span class="filter-count" id="count-history">0</span></button>
+  </div>
+  
+  <div id="ordersGrid" class="orders-grid"></div>
+  
+  <div id="emptyState" class="empty-state" style="display:none">
+    <i class="fas fa-inbox"></i>
+    <h3>No Orders Found</h3>
+    <p>There are no orders matching the selected filter</p>
+  </div>
+  
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig={
+      apiKey:"AIzaSyAmimDsjW_pF2NGw-w-40QzTsgmf1tdqyI",
+      authDomain:"bdmsalonappointment.firebaseapp.com",
+      databaseURL:"https://bdmsalonappointment-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId:"bdmsalonappointment",
+      storageBucket:"bdmsalonappointment.appspot.com",
+      messagingSenderId:"123456789012",
+      appId:"1:123456789012:web:abcdef123456"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db=firebase.database();
+    
+    let allOrders=[];
+    let currentFilter='active';
+    
+    function loadOrders(){
+      const grid=document.getElementById('ordersGrid');
+      grid.innerHTML='<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading orders...</p></div>';
+      
+      db.ref('orders').on('value',(snapshot)=>{
+        const data=snapshot.val();
+        grid.innerHTML='';
+        
+        if(!data){
+          document.getElementById('emptyState').style.display='block';
+          return;
+        }
+        
+        document.getElementById('emptyState').style.display='none';
+        allOrders=Object.entries(data).sort((a,b)=>b[1].timestamp-a[1].timestamp);
+        renderOrders();
+        checkNewOrders();
+      });
+    }
+    
+    function filterOrders(status){
+      currentFilter=status;
+      document.querySelectorAll('.filter-tab').forEach(tab=>tab.classList.remove('active'));
+      const btn=event.target.closest('.filter-tab');
+      if(btn)btn.classList.add('active');
+      renderOrders();
+    }
+    
+    function getFilteredOrders(){
+      if(currentFilter==='active'){
+        return allOrders.filter(([_,order])=>order.status==='pending'||order.status==='accepted');
+      }else if(currentFilter==='ready'){
+        return allOrders.filter(([_,order])=>order.status==='ready');
+      }else if(currentFilter==='history'){
+        return allOrders.filter(([_,order])=>['delivered','rejected'].includes(order.status));
+      }
+      return allOrders;
+    }
+    
+    // Track new orders for sound notification
+    let knownOrderIds=new Set();
+    let soundInterval=null;
+    let pendingOrders=[];
+    
+    function playNotificationSound(){
+      const audioContext=new (window.AudioContext||window.webkitAudioContext)();
+      const now=audioContext.currentTime;
+      
+      // Create multiple bell-like tones
+      for(let i=0;i<3;i++){
+        const oscillator=audioContext.createOscillator();
+        const gainNode=audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value=1200+(i*200);
+        oscillator.type='sine';
+        
+        const startTime=now+(i*0.15);
+        gainNode.gain.setValueAtTime(0.4,startTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01,startTime+0.4);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime+0.4);
+      }
+    }
+    
+    function checkNewOrders(){
+      const newPendingOrders=allOrders.filter(([_,order])=>order.status==='pending'&&!knownOrderIds.has(_));
+      if(newPendingOrders.length>0){
+        newPendingOrders.forEach(([id])=>knownOrderIds.add(id));
+        playNotificationSound();
+      }
+      
+      pendingOrders=allOrders.filter(([_,order])=>order.status==='pending');
+      if(pendingOrders.length>0){
+        if(!soundInterval){
+          soundInterval=setInterval(playNotificationSound,5000);
+        }
+      }else{
+        if(soundInterval){
+          clearInterval(soundInterval);
+          soundInterval=null;
+        }
+      }
+    }
+    
+    function updateFilterCounts(){
+      const active=allOrders.filter(([_,o])=>o.status==='pending'||o.status==='accepted').length;
+      const ready=allOrders.filter(([_,o])=>o.status==='ready').length;
+      const history=allOrders.filter(([_,o])=>['delivered','rejected'].includes(o.status)).length;
+      const ca=document.getElementById('count-active');
+      const cr=document.getElementById('count-ready');
+      const ch=document.getElementById('count-history');
+      if(ca)ca.textContent=active;
+      if(cr)cr.textContent=ready;
+      if(ch)ch.textContent=history;
+    }
+
+    function renderOrders(){
+      const grid=document.getElementById('ordersGrid');
+      grid.innerHTML='';
+      updateFilterCounts();
+
+      const filtered=getFilteredOrders();
+
+      if(filtered.length===0){
+        document.getElementById('emptyState').style.display='block';
+        return;
+      }
+
+      document.getElementById('emptyState').style.display='none';
+      
+      filtered.forEach(([orderId,order],index)=>{
+        const isNew=!knownOrderIds.has(orderId) && order.status==='pending';
+        if(isNew)knownOrderIds.add(orderId);
+        const statusLabels={
+          pending:{text:'Pending',class:'pending',icon:'fa-hourglass-half'},
+          accepted:{text:'Accepted',class:'accepted',icon:'fa-check'},
+          ready:{text:'Ready',class:'ready',icon:'fa-clock'},
+          on_way:{text:'On Way',class:'on-way',icon:'fa-truck'},
+          delivered:{text:'Delivered',class:'delivered',icon:'fa-check-circle'},
+          rejected:{text:'Rejected',class:'rejected',icon:'fa-times'}
+        };
+        const status=statusLabels[order.status]||statusLabels.pending;
+        const orderCameTime=new Date(order.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+        const isPreorder=order.delivery.orderTime!=='ASAP';
+        
+        const card=document.createElement('div');
+        card.className='order-card'+(isNew?' new-order':'');
+        card.dataset.orderId=orderId;
+        card.onclick=(e)=>{if(!e.target.closest('.print-btn-small')&&!e.target.closest('.action-btn')&&!e.target.closest('.time-btn')&&!e.target.closest('.shortcut-btn')&&!e.target.closest('.comment-input'))toggleDetails(orderId)};
+        
+        if(isNew){
+          setTimeout(()=>playNotificationSound(),100);
+          checkNewOrders();
+        }
+        
+        card.innerHTML=`
+          ${order.status==='pending'?'<div class="new-order-badge">NEW</div>':''}
+          <div class="stopwatch"><i class="fas fa-stopwatch"></i></div>
+          <button class="print-btn-small" onclick="event.stopPropagation();printReceipt('${orderId}')">
+            <i class="fas fa-print"></i>
+          </button>
+          
+          <div class="card-header">
+            <div>
+              <div class="order-number">${order.orderNumber}</div>
+              <div class="order-came-time"><i class="fas fa-clock"></i> Came: ${orderCameTime}</div>
+              ${order.estimatedTime?`<div class="estimated-time-display"><i class="fas fa-hourglass-half"></i> Est: ${order.estimatedTime}</div>`:''}
+            </div>
+            <div class="status-indicator ${status.class}">
+              <i class="fas ${status.icon}"></i>
+              <span>${status.text}</span>
+            </div>
+          </div>
+          
+          <div class="order-summary">
+            <div class="summary-row">
+              <span><i class="fas fa-user"></i> Customer</span>
+              <span>${order.customer.name}</span>
+            </div>
+            <div class="summary-row">
+              <span><i class="fas fa-phone"></i> Phone</span>
+              <span>${order.customer.phone}</span>
+            </div>
+            <div class="summary-row">
+              <span><i class="fas fa-${order.delivery.type==='delivery'?'truck':'store'}"></i> Type</span>
+              <span class="order-type-badge ${order.delivery.type}">${order.delivery.type==='delivery'?'Delivery':'Pickup'}</span>
+            </div>
+            ${isPreorder?`
+              <div class="summary-row preorder-time">
+                <span><i class="fas fa-clock"></i> ⭐ Preorder: ${order.delivery.orderTime}</span>
+              </div>
+            `:''}
+            <div class="summary-row">
+              <span><i class="fas fa-receipt"></i> Total</span>
+              <span style="color:var(--gold);font-weight:700;font-size:1.1rem">€${order.pricing.total.toFixed(2)}</span>
+            </div>
+          </div>
+          
+          <div class="order-details" id="details-${orderId}">
+            <div class="details-content">
+              <div class="customer-info">
+                <h4><i class="fas fa-info-circle"></i> Full Details</h4>
+                <p><strong>Email:</strong> ${order.customer.email}</p>
+                <p><strong>Order Time:</strong> ${order.delivery.orderTime}</p>
+                ${order.delivery.type==='delivery'?`
+                  <p><strong>Address:</strong> ${order.delivery.address}, ${order.delivery.postal} ${order.delivery.city}</p>
+                `:`
+                  <p><strong>Pickup:</strong> Aallonhalkoja 3, 00540 Helsinki, Finland</p>
+                `}
+                ${order.estimatedTime?`<p><strong>Est. Time:</strong> ${order.estimatedTime}</p>`:''}
+              </div>
+              
+              <div class="items-preview">
+                <h4><i class="fas fa-utensils"></i> Kitchen Ticket</h4>
+                ${order.items.map(item=>`
+                  <div class="item-line">
+                    <div style="display:flex;align-items:flex-start;width:100%">
+                      <span class="item-qty">${item.quantity}x</span>
+                      <span class="item-name">${item.name}</span>
+                      <span class="item-price">€${(item.price*item.quantity).toFixed(2)}</span>
+                    </div>
+                    ${item.note?`<span class="item-note">📝 ${item.note}</span>`:''}
+                    ${item.tags&&item.tags.length>0?`
+                      <div class="item-tags">
+                        ${item.tags.map(tag=>`<span class="item-tag ${tag==='Spicy'?'spicy':'no-spicy'}">${tag==='Spicy'?'🌶️':'🚫'} ${tag}</span>`).join('')}
+                      </div>
+                    `:''}
+                  </div>
+                `).join('')}
+              </div>
+              
+              <div class="order-totals">
+                <div class="total-line"><span>Subtotal:</span><span>€${order.pricing.subtotal.toFixed(2)}</span></div>
+                ${order.pricing.discount>0?`<div class="total-line" style="color:#4ade80"><span>Discount:</span><span>-€${order.pricing.discount.toFixed(2)}</span></div>`:''}
+                <div class="total-line"><span>Delivery:</span><span>€${order.pricing.deliveryFee.toFixed(2)}</span></div>
+                <div class="total-line final"><span>Total:</span><span>€${order.pricing.total.toFixed(2)}</span></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="actions" style="padding:20px;border-top:1px solid rgba(255,255,255,0.1)">
+            ${order.status==='pending'?`
+              <div style="background:rgba(0,0,0,0.2);padding:16px;border-radius:12px;margin-bottom:12px">
+                <div class="time-controls">
+                  <button class="time-btn" onclick="event.stopPropagation();adjustTime('${orderId}',-10)"><i class="fas fa-minus"></i></button>
+                  <div class="time-display" id="time-display-${orderId}">30 min</div>
+                  <button class="time-btn" onclick="event.stopPropagation();adjustTime('${orderId}',10)"><i class="fas fa-plus"></i></button>
+                </div>
+                <div class="shortcut-buttons">
+                  <button class="shortcut-btn" onclick="event.stopPropagation();setTime('${orderId}',20)">20 min</button>
+                  <button class="shortcut-btn" onclick="event.stopPropagation();setTime('${orderId}',30)">30 min</button>
+                  <button class="shortcut-btn" onclick="event.stopPropagation();setTime('${orderId}',40)">40 min</button>
+                  <button class="shortcut-btn" onclick="event.stopPropagation();setTime('${orderId}',60)">60 min</button>
+                </div>
+              </div>
+              <button class="action-btn btn-accept" onclick="event.stopPropagation();acceptOrder('${orderId}')">
+                <i class="fas fa-check"></i> Accept Order
+              </button>
+              <textarea class="comment-input" id="reject-comment-${orderId}" placeholder="Reason for rejection (optional)" onclick="event.stopPropagation()"></textarea>
+              <button class="action-btn btn-reject" onclick="event.stopPropagation();rejectOrder('${orderId}')">
+                <i class="fas fa-times"></i> Reject Order
+              </button>
+            `:''}
+            ${order.status==='accepted'?`
+              <button class="action-btn btn-ready" onclick="event.stopPropagation();markReady('${orderId}')">
+                <i class="fas fa-clock"></i> Mark Ready
+              </button>
+            `:''}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+    
+    function rejectOrder(orderId){
+      const commentInput=document.getElementById(`reject-comment-${orderId}`);
+      const rejectComment=commentInput.value.trim();
+      
+      const updates={
+        status:'rejected'
+      };
+      
+      if(rejectComment){
+        updates.rejectComment=rejectComment;
+      }
+      
+      db.ref(`orders/${orderId}`).update(updates).then(()=>{
+        showToast('Order rejected');
+      }).catch((error)=>{
+        console.error('Error rejecting order:',error);
+        showToast('Error rejecting order',true);
+      });
+    }
+    
+    function updateStatus(orderId,newStatus){
+      db.ref(`orders/${orderId}/status`).set(newStatus).then(()=>{
+        showToast(`Order ${newStatus.replace('_',' ')}`);
+      }).catch((error)=>{
+        console.error('Error updating status:',error);
+        showToast('Error updating status',true);
+      });
+    }
+    
+    function markReady(orderId){
+      const card=document.querySelector(`.order-card[data-order-id="${orderId}"]`);
+      if(card){
+        card.classList.add('hiding');
+        setTimeout(()=>{
+          db.ref(`orders/${orderId}/status`).set('ready').then(()=>{
+            showToast('Order marked as ready');
+          }).catch((error)=>{
+            console.error('Error updating status:',error);
+            showToast('Error updating status',true);
+          });
+        },500);
+      }
+    }
+    
+    function showToast(msg,isError=false){
+      const toast=document.getElementById('toast');
+      document.getElementById('toastMsg').textContent=msg;
+      toast.classList.toggle('error',isError);
+      toast.querySelector('i').className=isError?'fas fa-exclamation-circle':'fas fa-check-circle';
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'),3500);
+    }
+    
+    // Store time values for each order
+    const orderTimes={};
+    
+    function toggleDetails(orderId){
+      const details=document.getElementById(`details-${orderId}`);
+      details.classList.toggle('expanded');
+    }
+    
+    function adjustTime(orderId,minutes){
+      if(!orderTimes[orderId])orderTimes[orderId]=30;
+      orderTimes[orderId]=Math.max(10,orderTimes[orderId]+minutes);
+      document.getElementById(`time-display-${orderId}`).textContent=`${orderTimes[orderId]} min`;
+    }
+    
+    function setTime(orderId,minutes){
+      orderTimes[orderId]=minutes;
+      document.getElementById(`time-display-${orderId}`).textContent=`${minutes} min`;
+    }
+    
+    function acceptOrder(orderId){
+      const estimatedTime=orderTimes[orderId]||30;
+      
+      db.ref(`orders/${orderId}`).update({
+        status:'accepted',
+        estimatedTime:`${estimatedTime} min`,
+        estimatedSetAt:Date.now()
+      }).then(()=>{
+        showToast('Order accepted');
+        delete orderTimes[orderId];
+        checkNewOrders();
+      }).catch((error)=>{
+        console.error('Error accepting order:',error);
+        showToast('Error accepting order',true);
+      });
+    }
+    
+    function printReceipt(orderId){
+      const order=allOrders.find(([id])=>id===orderId);
+      if(!order)return;
+      
+      const [,orderData]=order;
+      const isPreorder=orderData.delivery.orderTime!=='ASAP';
+      const printWindow=window.open('','_blank');
+      printWindow.document.write(`
+        <html>
+        <head>
+          <title>Kitchen Ticket - ${orderData.orderNumber}</title>
+          <style>
+            body{font-family:Arial,sans-serif;padding:15px;max-width:380px;margin:0 auto;background:#fff}
+            .logo{text-align:center;margin-bottom:15px}
+            .logo img{height:60px;width:auto}
+            .header{text-align:center;margin-bottom:15px;border-bottom:2px solid #000;padding-bottom:10px}
+            .header h1{margin:0;color:#000;font-size:1.4rem}
+            .header .order-num{font-size:1.8rem;font-weight:bold;color:#f5c842}
+            .order-info{margin-bottom:15px;font-size:0.75rem;color:#666}
+            .order-info p{margin:3px 0}
+            .items{margin-bottom:15px}
+            .item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #ccc;font-size:0.85rem}
+            .item-qty{font-weight:bold;color:#f5c842;margin-right:8px}
+            .item-name{flex:1;font-weight:600}
+            .item-price{font-weight:bold}
+            .item-note{font-size:0.7rem;color:#9333ea;font-style:italic;margin-top:2px;padding-left:30px}
+            .item-tags{font-size:0.65rem;margin-top:2px;padding-left:30px}
+            .tag{padding:2px 6px;border-radius:3px;margin-right:4px}
+            .tag.spicy{background:#fee2e2;color:#dc2626}
+            .tag.no-spicy{background:#dcfce7;color:#16a34a}
+            .preorder{background:#9333ea;color:#fff;padding:8px;text-align:center;font-weight:bold;margin-bottom:10px;border-radius:5px}
+            .total{font-weight:bold;font-size:1.3em;text-align:right;margin-top:15px;padding-top:10px;border-top:2px solid #000}
+            .details{font-size:0.7rem;color:#999;text-align:center;margin-top:15px}
+          </style>
+        </head>
+        <body>
+          <div class="logo">
+            <img src="https://davidbantu1999.github.io/mughal-restaurant/logo.png" alt="Mughal"/>
+          </div>
+          <div class="header">
+            <div class="order-num">${orderData.orderNumber}</div>
+            <div style="font-size:0.8rem">${new Date(orderData.timestamp).toLocaleTimeString()}</div>
+            <div style="font-size:0.7rem;color:#666">${orderData.delivery.type.toUpperCase()}</div>
+          </div>
+          ${isPreorder?`<div class="preorder">⭐ PREORDER: ${orderData.delivery.orderTime}</div>`:''}
+          <div class="order-info">
+            <p><strong>${orderData.customer.name}</strong></p>
+            <p>📞 ${orderData.customer.phone}</p>
+            ${orderData.delivery.type==='delivery'?`<p>📍 ${orderData.delivery.address}</p>`:`<p>🏪 Pickup</p>`}
+            ${orderData.estimatedTime?`<p>⏱️ Est: ${orderData.estimatedTime}</p>`:''}
+          </div>
+          <div class="items">
+            ${orderData.items.map(item=>`
+              <div class="item">
+                <span class="item-qty">${item.quantity}x</span>
+                <span class="item-name">${item.name}</span>
+                <span class="item-price">€${(item.price*item.quantity).toFixed(2)}</span>
+              </div>
+              ${item.note?`<div class="item-note">📝 ${item.note}</div>`:''}
+              ${item.tags&&item.tags.length>0?`
+                <div class="item-tags">
+                  ${item.tags.map(tag=>`<span class="tag ${tag==='Spicy'?'spicy':'no-spicy'}">${tag==='Spicy'?'🌶️':'🚫'} ${tag}</span>`).join('')}
+                </div>
+              `:''}
+            `).join('')}
+          </div>
+          <div class="total">TOTAL: €${orderData.pricing.total.toFixed(2)}</div>
+          <div class="details">
+            <p>Subtotal: €${orderData.pricing.subtotal.toFixed(2)}</p>
+            ${orderData.pricing.discount>0?`<p>Discount: -€${orderData.pricing.discount.toFixed(2)}</p>`:''}
+            <p>Delivery: €${orderData.pricing.deliveryFee.toFixed(2)}</p>
+          </div>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.print();
+    }
+    
+    loadOrders();
+  </script>
+</body>
+</html>

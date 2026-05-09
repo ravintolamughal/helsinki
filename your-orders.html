@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Orders - Mughal Indian Cuisine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--purple:#1a0b2e;--purple-deep:#120621;--purple-mid:#2d1b4e;--gold:#f5c842;--gold-dark:#d4a828;--shadow:rgba(0,0,0,0.4)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,var(--purple),var(--purple-mid));min-height:100vh;color:#fff;padding-top:80px}
+    @media(max-width:768px){body{padding-top:60px}}
+    /* Navbar */
+    #navbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:rgba(18,6,33,0.97);backdrop-filter:blur(12px);position:fixed;top:0;left:0;right:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08)}
+    .nav-logo img{height:46px;width:auto}
+    .nav-back{color:rgba(255,255,255,0.85);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;gap:8px;text-decoration:none;transition:all 0.3s ease;font-weight:500}
+    .nav-back:hover{color:var(--gold)}
+    .nav-logout{padding:8px 18px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.3s ease;display:flex;align-items:center;gap:6px}
+    .nav-logout:hover{background:var(--gold);color:var(--purple);border-color:var(--gold)}
+    
+    /* Container */
+    .container{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+
+    /* Header */
+    .page-header{text-align:center;margin-bottom:32px;padding:0 12px}
+    .page-header h1{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--gold);margin-bottom:6px}
+    .page-header p{color:rgba(255,255,255,0.65);font-size:0.92rem}
+    
+    /* Orders List */
+    .orders-list{display:grid;gap:16px}
+    .order-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px 22px;transition:all 0.3s ease}
+    .order-card:hover{border-color:rgba(245,200,66,0.3);background:rgba(255,255,255,0.07);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+
+    .order-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.08)}
+    .order-number{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold);font-weight:700}
+    .order-date{color:rgba(255,255,255,0.55);font-size:0.8rem;margin-top:3px}
+    
+    .status-indicator{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:20px;font-weight:600;font-size:0.85rem}
+    .status-indicator.pending{background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3)}
+    .status-indicator.accepted{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3)}
+    .status-indicator.ready{background:rgba(59,130,246,0.15);color:#3b82f6;border:1px solid rgba(59,130,246,0.3)}
+    .status-indicator.on-way{background:rgba(168,85,247,0.15);color:#a855f7;border:1px solid rgba(168,85,247,0.3)}
+    .status-indicator.delivered{background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3)}
+    .status-indicator.rejected{background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.3)}
+    
+    .order-details{display:grid;gap:8px;margin-bottom:14px;background:rgba(0,0,0,0.15);border-radius:10px;padding:12px 14px}
+    .detail-row{display:flex;justify-content:space-between;align-items:center;font-size:0.86rem}
+    .detail-row span:first-child{color:rgba(255,255,255,0.6)}
+    .detail-row span:last-child{color:#fff;font-weight:500}
+    
+    .items-section-title{color:var(--gold);font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+    
+    .order-totals{padding:12px 14px;background:rgba(0,0,0,0.15);border-radius:10px;margin-top:12px}
+    .total-row{display:flex;justify-content:space-between;padding:4px 0;font-size:0.86rem;color:rgba(255,255,255,0.75)}
+    .total-row span:last-child{color:#fff}
+    .total-row.final{font-weight:700;color:var(--gold);font-size:1rem;padding-top:8px;margin-top:4px;border-top:1px solid rgba(255,255,255,0.1)}
+    
+    .delivery-time-box{background:rgba(245,200,66,0.1);border-radius:10px;padding:12px;margin-top:12px;border:1px solid rgba(245,200,66,0.2)}
+    .delivery-time-box h5{color:var(--gold);font-size:0.85rem;font-weight:700;margin-bottom:6px}
+    .delivery-time-box p{color:#fff;font-size:0.85rem}
+    .reject-comment-box{background:rgba(239,68,68,0.1);border-radius:10px;padding:12px;margin-top:12px;border:1px solid rgba(239,68,68,0.3)}
+    .reject-comment-box h5{color:#ef4444;font-size:0.85rem;font-weight:700;margin-bottom:6px}
+    .reject-comment-box p{color:#fff;font-size:0.85rem}
+    
+    /* Empty State */
+    .empty-state{text-align:center;padding:60px 20px}
+    .empty-state i{font-size:4rem;color:rgba(255,255,255,0.2);margin-bottom:20px}
+    .empty-state h3{color:#fff;font-size:1.3rem;margin-bottom:8px}
+    .empty-state p{color:rgba(255,255,255,0.6);font-size:0.9rem}
+    .empty-state a{display:inline-block;margin-top:20px;padding:12px 24px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;transition:var(--t)}
+    .empty-state a:hover{filter:brightness(1.1);transform:translateY(-2px)}
+    
+    /* Loading */
+    .loading{text-align:center;padding:60px 20px}
+    .loading i{font-size:3rem;color:var(--gold);animation:spin 1s linear infinite;margin-bottom:16px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    
+    /* Stopwatch Animation */
+    .order-stopwatch{width:36px;height:36px;border-radius:50%;background:rgba(245,200,66,0.15);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .order-stopwatch i{color:var(--gold);font-size:1rem;animation:rotate 2s linear infinite}
+    @keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+    /* Countdown Timer */
+    .order-countdown-box{display:flex;align-items:center;gap:12px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:12px 14px;margin-top:12px}
+    .countdown-digits{font-size:1.8rem;font-weight:700;color:#a855f7;font-family:'Poppins',sans-serif;letter-spacing:3px;min-width:68px}
+    .countdown-info{display:flex;flex-direction:column;gap:2px}
+    .countdown-info span:first-child{font-size:0.72rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.8px;font-weight:600}
+    .countdown-info span:last-child{font-size:0.82rem;color:rgba(255,255,255,0.85);font-weight:500}
+    .countdown-done{color:#22c55e;font-weight:700;font-size:0.9rem}
+
+    /* Live Status Dot */
+    .live-status-dot{width:9px;height:9px;border-radius:50%;background:#f59e0b;flex-shrink:0}
+    .live-status-dot.pulse{animation:dotPop 1.3s ease-in-out infinite}
+    .live-status-dot.green{background:#22c55e}
+    .live-status-dot.blue{background:#3b82f6}
+    .live-status-dot.red{background:#ef4444}
+    @keyframes dotPop{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.6)}}
+
+    /* Status Notification Banner */
+    .status-notification{position:fixed;top:74px;left:50%;transform:translateX(-50%) translateY(-20px);z-index:9999;background:linear-gradient(135deg,var(--purple),var(--purple-mid));border:1px solid var(--gold);border-radius:14px;padding:12px 22px;display:flex;align-items:center;gap:12px;box-shadow:0 12px 40px rgba(0,0,0,0.5);opacity:0;transition:all 0.45s cubic-bezier(0.4,0,0.2,1);pointer-events:none;min-width:260px;max-width:90vw}
+    .status-notification.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
+    .status-notification .notif-icon{font-size:1.4rem}
+    .status-notification .notif-text{flex:1;font-size:0.82rem;font-weight:600;color:#fff}
+    .status-notification .notif-close{color:rgba(255,255,255,0.5);cursor:pointer;font-size:0.8rem;transition:color 0.2s}
+    .status-notification .notif-close:hover{color:#fff}
+    
+    /* Improved Items Display */
+    .order-items{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+    .order-item{background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1)}
+    .item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .item-qty-badge{background:var(--gold);color:var(--purple-deep);padding:4px 10px;border-radius:6px;font-weight:700;font-size:0.85rem}
+    .item-name{font-weight:600;color:#fff;font-size:0.95rem;flex:1}
+    .item-price{font-weight:700;color:var(--gold);font-size:0.95rem}
+    .item-note{color:#a855f7;font-size:0.8rem;font-style:italic;margin-top:4px}
+    .item-tags{display:flex;gap:6px;margin-top:6px}
+    .item-tag{padding:3px 8px;border-radius:5px;font-size:0.7rem;font-weight:600}
+    .item-tag.spicy{background:rgba(239,68,68,0.2);color:#ef4444}
+    .item-tag.no-spicy{background:rgba(74,222,128,0.2);color:#4ade80}
+    
+    /* Toast */
+    .toast{position:fixed;top:80px;right:20px;z-index:9999;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--purple),var(--purple-mid));color:#fff;padding:13px 20px;border-radius:14px;font-size:0.85rem;font-weight:600;box-shadow:0 12px 38px var(--shadow);opacity:0;transform:translateX(20px);transition:all 0.42s cubic-bezier(0.4,0,0.2,1);pointer-events:none;max-width:300px}
+    .toast.show{opacity:1;transform:translateX(0);pointer-events:all}
+    .toast i{color:var(--gold);font-size:1rem}
+
+    /* Guest Email Check */
+    .guest-check-box{background:rgba(255,255,255,0.04);border:1px solid rgba(245,200,66,0.25);border-radius:18px;padding:22px 20px;margin-bottom:28px}
+    .guest-check-box h3{color:#fff;font-size:1rem;font-weight:700;margin-bottom:4px;font-family:'Playfair Display',serif}
+    .guest-check-box p{color:rgba(255,255,255,0.55);font-size:0.78rem;margin-bottom:14px}
+    .guest-input-row{display:flex;gap:10px;align-items:center}
+    .guest-input-row input{flex:1;padding:10px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;font-size:0.82rem;font-family:'Poppins',sans-serif;outline:none;transition:border-color 0.25s}
+    .guest-input-row input:focus{border-color:var(--gold)}
+    .guest-input-row input::placeholder{color:rgba(255,255,255,0.35)}
+    .guest-check-btn{padding:10px 18px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border:none;border-radius:10px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;white-space:nowrap;transition:filter 0.2s}
+    .guest-check-btn:hover{filter:brightness(1.1)}
+    .guest-result{margin-top:14px;font-size:0.8rem;color:rgba(255,255,255,0.7);min-height:16px}
+    @media(max-width:600px){.guest-input-row{flex-direction:column;align-items:stretch}.guest-check-btn{width:100%}}
+    /* Responsive */
+    @media(max-width:768px){
+      #navbar{padding:11px 16px}
+      .nav-logo img{height:40px}
+      .container{padding:24px 14px 80px}
+      .page-header{margin-bottom:24px}
+      .page-header h1{font-size:1.7rem}
+      .page-header p{font-size:0.85rem}
+      .order-card{padding:16px}
+      .order-header{flex-direction:column;gap:10px}
+      .status-indicator{font-size:0.8rem;padding:6px 12px}
+      .order-number{font-size:1.1rem}
+      .item-qty-badge{font-size:0.78rem;padding:3px 8px}
+      .item-name{font-size:0.88rem}
+      .item-price{font-size:0.88rem}
+    }
+    @media(max-width:480px){
+      .container{padding:20px 12px 80px}
+      .order-card{padding:14px}
+      .order-header{gap:8px}
+      .page-header h1{font-size:1.4rem}
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav id="navbar">
+    <a href="food-ordering.html" class="nav-back">
+      <i class="fas fa-arrow-left"></i> Back to Order
+    </a>
+    <div class="nav-logo">
+      <img src="https://davidbantu1999.github.io/mughal-restaurant/logo.png" alt="Mughal"/>
+    </div>
+    <button class="nav-logout" onclick="logoutUser()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </nav>
+  
+  <div class="container">
+    <div class="page-header">
+      <h1>My Orders</h1>
+      <p id="userDisplay">View your order history and status</p>
+    </div>
+
+    <!-- Guest / quick email lookup -->
+    <div class="guest-check-box" id="guestCheckBox">
+      <h3>📧 Check Order Status by Email</h3>
+      <p>No login needed &mdash; enter the email you used when ordering to see live status</p>
+      <div class="guest-input-row">
+        <input type="email" id="guestEmailInput" placeholder="your@email.com" onkeydown="if(event.key==='Enter')checkGuestOrders()"/>
+        <button class="guest-check-btn" onclick="checkGuestOrders()"><i class="fas fa-search"></i> Check</button>
+      </div>
+      <div class="guest-result" id="guestResult"></div>
+    </div>
+
+    <div id="ordersList" class="orders-list"></div>
+    
+    <div id="emptyState" class="empty-state" style="display:none">
+      <i class="fas fa-receipt"></i>
+      <h3>No Orders Found</h3>
+      <p>You haven't placed any orders yet</p>
+      <a href="food-ordering.html">Start Ordering</a>
+    </div>
+    
+    <div id="loginRequired" class="empty-state" style="display:none">
+      <i class="fas fa-lock"></i>
+      <h3>Login Required</h3>
+      <p>Please login to view your orders</p>
+      <a href="index.html">Go to Login</a>
+    </div>
+  </div>
+  
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <div id="statusNotification" class="status-notification">
+    <span class="notif-icon" id="notifIcon">🔔</span>
+    <span class="notif-text" id="notifText">Order status updated</span>
+    <span class="notif-close" onclick="document.getElementById('statusNotification').classList.remove('show')"><i class="fas fa-times"></i></span>
+  </div>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig={
+      apiKey:"AIzaSyAmimDsjW_pF2NGw-w-40QzTsgmf1tdqyI",
+      authDomain:"bdmsalonappointment.firebaseapp.com",
+      databaseURL:"https://bdmsalonappointment-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId:"bdmsalonappointment",
+      storageBucket:"bdmsalonappointment.appspot.com",
+      messagingSenderId:"123456789012",
+      appId:"1:123456789012:web:abcdef123456"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db=firebase.database();
+    const auth=firebase.auth();
+    
+    // Check authentication and load orders
+    // Pre-fill guest box from localStorage if email was saved
+    const savedEmail=localStorage.getItem('userEmail');
+    if(savedEmail)document.getElementById('guestEmailInput').value=savedEmail;
+
+    let guestListener=null;
+    function checkGuestOrders(){
+      const email=document.getElementById('guestEmailInput').value.trim().toLowerCase();
+      const resultEl=document.getElementById('guestResult');
+      if(!email||!email.includes('@')){
+        resultEl.textContent='Please enter a valid email address.';
+        return;
+      }
+      resultEl.innerHTML='<i class="fas fa-spinner fa-spin"></i> Looking up orders...';
+      // Detach previous listener
+      if(guestListener){guestListener.ref.off('value',guestListener.fn);guestListener=null;}
+      document.getElementById('emptyState').style.display='none';
+      document.getElementById('ordersList').innerHTML='';
+      const ref=db.ref('orders').orderByChild('customer/email').equalTo(email);
+      const fn=ref.on.bind(ref,'value',snapshot=>{
+        const data=snapshot.val();
+        resultEl.innerHTML='';
+        if(!data){
+          resultEl.textContent='No orders found for this email.';
+          document.getElementById('emptyState').style.display='block';
+          return;
+        }
+        document.getElementById('emptyState').style.display='none';
+        document.getElementById('userDisplay').textContent='Orders for '+email;
+        localStorage.setItem('userEmail',email);
+        renderOrdersList(data);
+      });
+      guestListener={ref,fn};
+    }
+
+    auth.onAuthStateChanged(user=>{
+      if(user){
+        const userData=JSON.parse(localStorage.getItem('mughalUser'));
+        if(userData){
+          document.getElementById('userDisplay').textContent=`Orders for ${userData.displayName||userData.email}`;
+          document.getElementById('guestCheckBox').style.display='none';
+          loadOrders(userData.email);
+        }
+      }else{
+        // Not logged in — keep guest box visible, hide login required
+        // Auto-check if we have a saved email
+        if(savedEmail)checkGuestOrders();
+      }
+    });
+    
+    const prevStatuses={};
+    const countdownTimers={};
+    const STATUS_NOTIF={
+      accepted:{icon:'✅',msg:'Your order has been accepted!',dotClass:'green pulse'},
+      ready:{icon:'🍽️',msg:'Your order is ready!',dotClass:'blue'},
+      on_way:{icon:'🚗',msg:'Your order is on the way!',dotClass:'blue pulse'},
+      delivered:{icon:'🎉',msg:'Your order has been delivered!',dotClass:'green'},
+      rejected:{icon:'❌',msg:'Your order was rejected by the restaurant',dotClass:'red'}
+    };
+
+    function showStatusNotification(icon,msg){
+      const el=document.getElementById('statusNotification');
+      document.getElementById('notifIcon').textContent=icon;
+      document.getElementById('notifText').textContent=msg;
+      el.classList.add('show');
+      setTimeout(()=>el.classList.remove('show'),6000);
+    }
+
+    function startCardCountdown(orderId,estimatedTimeStr,setAt){
+      if(countdownTimers[orderId])clearInterval(countdownTimers[orderId]);
+      const mins=parseInt(estimatedTimeStr);
+      if(isNaN(mins))return;
+      const endTime=setAt+(mins*60*1000);
+      function tick(){
+        const el=document.getElementById('cd-'+orderId);
+        if(!el){clearInterval(countdownTimers[orderId]);return;}
+        const remaining=Math.max(0,endTime-Date.now());
+        const m=Math.floor(remaining/60000);
+        const s=Math.floor((remaining%60000)/1000);
+        if(remaining===0){
+          el.innerHTML='<span class="countdown-done">✅ Ready now!</span>';
+          clearInterval(countdownTimers[orderId]);
+        }else{
+          el.textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+        }
+      }
+      tick();
+      countdownTimers[orderId]=setInterval(tick,1000);
+    }
+
+    function renderOrdersList(data){
+      const ordersList=document.getElementById('ordersList');
+      ordersList.innerHTML='';
+      const orders=Object.entries(data).sort((a,b)=>b[1].timestamp-a[1].timestamp);
+      // Detect status changes and notify
+      orders.forEach(([orderId,order])=>{
+        if(prevStatuses[orderId]&&prevStatuses[orderId]!==order.status){
+          const n=STATUS_NOTIF[order.status];
+          if(n)showStatusNotification(n.icon,n.msg);
+        }
+        prevStatuses[orderId]=order.status;
+      });
+      orders.forEach(([orderId,order])=>{
+        const statusLabels={
+          pending:{text:'Pending',class:'pending',icon:'fa-hourglass-half',dot:'pulse'},
+          accepted:{text:'Accepted',class:'accepted',icon:'fa-check',dot:'green pulse'},
+          ready:{text:'Ready',class:'ready',icon:'fa-clock',dot:'blue'},
+          on_way:{text:'On the Way',class:'on-way',icon:'fa-truck',dot:'blue pulse'},
+          delivered:{text:'Delivered',class:'delivered',icon:'fa-check-circle',dot:'green'},
+          rejected:{text:'Rejected',class:'rejected',icon:'fa-times',dot:'red'}
+        };
+        const status=statusLabels[order.status]||statusLabels.pending;
+        const date=new Date(order.timestamp).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+        const isActive=['pending','accepted'].includes(order.status);
+        const hasCountdown=order.estimatedTime&&order.estimatedSetAt&&isActive;
+        const card=document.createElement('div');
+        card.className='order-card';
+        card.innerHTML=`
+          <div class="order-header">
+            <div style="display:flex;align-items:center;gap:12px">
+              ${isActive?'<div class="order-stopwatch"><i class="fas fa-stopwatch"></i></div>':''}
+              <div>
+                <div class="order-number">${order.orderNumber}</div>
+                <div class="order-date">${date}</div>
+              </div>
+            </div>
+            <div class="status-indicator ${status.class}" style="display:flex;align-items:center;gap:7px">
+              <div class="live-status-dot ${status.dot}"></div>
+              <i class="fas ${status.icon}"></i>
+              <span>${status.text}</span>
+            </div>
+          </div>
+          ${hasCountdown?`
+            <div class="order-countdown-box">
+              <div class="countdown-digits" id="cd-${orderId}">--:--</div>
+              <div class="countdown-info">
+                <span>⏱️ Estimated time</span>
+                <span>${order.estimatedTime} from acceptance</span>
+              </div>
+            </div>
+          `:''}
+          <div class="order-details">
+            <div class="detail-row"><span>Delivery</span><span>${order.delivery.type.charAt(0).toUpperCase()+order.delivery.type.slice(1)}</span></div>
+            <div class="detail-row"><span>Time</span><span>${order.delivery.orderTime}</span></div>
+            ${order.cutlery!==undefined?`<div class="detail-row"><span>🥄 Cutlery</span><span>${order.cutlery?'Yes':'No'}</span></div>`:''}
+          </div>
+          <p class="items-section-title">📋 Order Items</p>
+          <div class="order-items">
+            ${order.items.map(item=>`
+              <div class="order-item">
+                <div class="item-header">
+                  <span class="item-qty-badge">${item.quantity}x</span>
+                  <span class="item-name">${item.name}</span>
+                  <span class="item-price">€${(item.price*item.quantity).toFixed(2)}</span>
+                </div>
+                ${item.note?`<div class="item-note">📝 ${item.note}</div>`:''}
+                ${item.tags&&item.tags.length>0?`<div class="item-tags">${item.tags.map(tag=>`<span class="item-tag ${tag==='Spicy'?'spicy':'no-spicy'}">${tag==='Spicy'?'🌶️':'🚫'} ${tag}</span>`).join('')}</div>`:''}
+              </div>
+            `).join('')}
+          </div>
+          <div class="order-totals">
+            <div class="total-row"><span>Subtotal</span><span>€${order.pricing.subtotal.toFixed(2)}</span></div>
+            ${order.pricing.discount>0?`<div class="total-row"><span style="color:#4ade80">Discount</span><span style="color:#4ade80">-€${order.pricing.discount.toFixed(2)}</span></div>`:''}
+            <div class="total-row"><span>Delivery Fee</span><span>€${order.pricing.deliveryFee.toFixed(2)}</span></div>
+            <div class="total-row final"><span>Total</span><span>€${order.pricing.total.toFixed(2)}</span></div>
+          </div>
+          ${order.rejectComment?`
+            <div class="reject-comment-box">
+              <h5><i class="fas fa-exclamation-circle"></i> Rejection Reason</h5>
+              <p>${order.rejectComment}</p>
+            </div>
+          `:''}
+        `;
+        ordersList.appendChild(card);
+        if(hasCountdown)startCardCountdown(orderId,order.estimatedTime,order.estimatedSetAt);
+      });
+    }
+
+    function loadOrders(email){
+      if(!email){showToast('Please login to view orders',true);return;}
+      const ordersList=document.getElementById('ordersList');
+      ordersList.innerHTML='<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading orders...</p></div>';
+      db.ref('orders').orderByChild('customer/email').equalTo(email).on('value',(snapshot)=>{
+        const data=snapshot.val();
+        if(!data){document.getElementById('emptyState').style.display='block';ordersList.innerHTML='';return;}
+        document.getElementById('emptyState').style.display='none';
+        renderOrdersList(data);
+      });
+    }
+    
+    function showToast(msg,isError=false){
+      const toast=document.getElementById('toast');
+      document.getElementById('toastMsg').textContent=msg;
+      toast.classList.toggle('error',isError);
+      toast.querySelector('i').className=isError?'fas fa-exclamation-circle':'fas fa-check-circle';
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'),3500);
+    }
+    
+    function logoutUser(){
+      localStorage.removeItem('mughalUser');
+      auth.signOut().then(()=>{
+        window.location.href='index.html';
+      });
+    }
+  </script>
+</body>
+</html>
