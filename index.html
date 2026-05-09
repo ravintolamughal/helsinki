@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RAVINTOLA MUGHAL - Coming Soon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --fg: #ffffff;
+            --card-bg: #141414;
+            --accent: #1a73e8;
+            --accent-light: #4285f4;
+            --accent-dark: #0d47a1;
+            --border: #2a2a2a;
+            --muted: #a0a0a0;
+            --input-bg: #1e1e1e;
+            --gold: #d4af37;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0a1628 0%, #1a237e 50%, #0d47a1 100%);
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 24px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(26, 115, 232, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(66, 133, 244, 0.2) 0%, transparent 50%);
+            animation: pulse-glow 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to top, var(--bg), transparent);
+        }
+        
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            max-width: 800px;
+        }
+        
+        .hero-logo {
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 0 8px rgba(26, 115, 232, 0.1);
+            animation: float 4s ease-in-out infinite;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
+        }
+        
+        .hero-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 30px 100px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.15),
+                0 0 0 12px rgba(26, 115, 232, 0.15);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .hero-logo img {
+            width: 75%;
+            height: 75%;
+            object-fit: contain;
+        }
+        
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 4px;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        
+        .hero-tagline {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero-badge i {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 24px;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 700px;
+            width: 100%;
+        }
+        
+        .contact-section {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 56px;
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent-dark));
+        }
+        
+        .contact-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        
+        .contact-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        
+        .contact-subtitle {
+            font-family: 'Inter', sans-serif;
+            color: var(--muted);
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+        
+        .contact-info {
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.08), rgba(13, 71, 161, 0.05));
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(26, 115, 232, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .contact-icon i {
+            color: #fff;
+            font-size: 1.3rem;
+        }
+        
+        .contact-details {
+            flex: 1;
+        }
+        
+        .contact-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        
+        .contact-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #fff;
+        }
+        
+        .form-group {
+            margin-bottom: 28px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #fff;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--input-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+            background: #252525;
+        }
+        
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--muted);
+        }
+        
+        .form-textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 8px 25px rgba(26, 115, 232, 0.3);
+            letter-spacing: 0.5px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(26, 115, 232, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: #fff;
+            padding: 18px 24px;
+            border-radius: 12px;
+            margin-top: 24px;
+            display: none;
+            font-weight: 500;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.3);
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            font-weight: 400;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer a {
+            color: var(--accent-light);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer a:hover {
+            color: var(--accent);
+        }
+        
+        /* Tablet View */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .hero {
+                min-height: 60vh;
+                padding: 60px 24px 50px;
+            }
+            
+            .hero-logo {
+                width: 170px;
+                height: 170px;
+            }
+            
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .container {
+                max-width: 550px;
+            }
+            
+            .contact-section {
+                padding: 45px;
+            }
+        }
+        
+        /* Mobile View */
+        @media (max-width: 480px) {
+            .hero {
+                min-height: 55vh;
+                padding: 50px 20px 40px;
+            }
+            
+            .hero-content {
+                gap: 30px;
+            }
+            
+            .hero-logo {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+            
+            .hero-tagline {
+                font-size: 0.9rem;
+                letter-spacing: 2px;
+            }
+            
+            .hero-badge {
+                font-size: 0.8rem;
+                padding: 12px 24px;
+                gap: 10px;
+            }
+            
+            .main-content {
+                padding: 50px 16px;
+            }
+            
+            .contact-section {
+                padding: 32px 24px;
+                border-radius: 20px;
+            }
+            
+            .contact-title {
+                font-size: 1.8rem;
+            }
+            
+            .contact-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .contact-info {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+                gap: 16px;
+            }
+            
+            .form-input, .form-textarea {
+                padding: 14px 16px;
+                font-size: 0.95rem;
+            }
+            
+            .submit-btn {
+                padding: 16px;
+                font-size: 0.95rem;
+            }
+        }
+        
+        /* Desktop Large View */
+        @media (min-width: 1200px) {
+            .hero {
+                min-height: 75vh;
+                padding: 100px 24px 80px;
+            }
+            
+            .hero-logo {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .hero-tagline {
+                font-size: 1.2rem;
+            }
+            
+            .container {
+                max-width: 800px;
+            }
+            
+            .contact-section {
+                padding: 64px;
+            }
+            
+            .contact-title {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img src="https://ravintolamughal.fi/logo.png" alt="RAVINTOLA MUGHAL Logo">
+            </div>
+            <h1 class="hero-title">RAVINTOLA MUGHAL</h1>
+            <p class="hero-tagline">Exquisite Dining Experience</p>
+            <span class="hero-badge"><i class="fas fa-star"></i> Coming Soon</span>
+        </div>
+    </section>
+    
+    <main class="main-content">
+        <div class="container">
+            <div class="contact-section">
+                <div class="contact-header">
+                    <h2 class="contact-title">Get in Touch</h2>
+                    <p class="contact-subtitle">Be the first to know when we open. Leave us a message and we'll keep you updated.</p>
+                </div>
+                
+                <div class="contact-info">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-label">Email Us</div>
+                        <div class="contact-value">ravintolamughal@gmail.com</div>
+                    </div>
+                </div>
+                
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label class="form-label">Your Name</label>
+                        <input type="text" class="form-input" id="sender-name" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="sender-phone" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-textarea" id="sender-message" placeholder="Write your message here..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+                
+                <div class="success-message" id="success-message">
+                    <i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <p>&copy; 2024 RAVINTOLA MUGHAL. All rights reserved. <a href="mailto:ravintolamughal@gmail.com">Contact Us</a></p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyAS1EqTC1E5IkxHyavOsdYEyhvSVBaa7YY",
+          authDomain: "restaurant-30ee9.firebaseapp.com",
+          databaseURL: "https://restaurant-30ee9-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "restaurant-30ee9",
+          storageBucket: "restaurant-30ee9.firebasestorage.app",
+          messagingSenderId: "774659563524",
+          appId: "1:774659563524:web:f9fb1f7cf830ab22879551",
+          measurementId: "G-81147GM14S"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const successMessage = document.getElementById('success-message');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('sender-name').value.trim();
+            const phone = document.getElementById('sender-phone').value.trim();
+            const message = document.getElementById('sender-message').value.trim();
+            
+            if (!name || !phone || !message) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending...';
+            
+            const messageData = {
+                name: name,
+                phone: phone,
+                message: message,
+                timestamp: Date.now(),
+                date: new Date().toISOString()
+            };
+            
+            db.ref('contact-messages').push(messageData, function(error) {
+                if (error) {
+                    alert('Failed to send message. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa fa-paper-plane"></i> Send Message';
+                } else {
+                    successMessage.classList.add('show');
+                    contactForm.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa fa-paper-plane"></i> Send Message';
+                    
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
