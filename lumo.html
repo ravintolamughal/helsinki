@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMO LOISTE - Premium Car Detailing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #07090D;
+            --bg-secondary: #0B0F14;
+            --bg-tertiary: #10151C;
+            --accent-primary: #27D7FF;
+            --accent-secondary: #18BFE6;
+            --text-primary: #FFFFFF;
+            --text-secondary: #C7D0D9;
+            --text-tertiary: #7B8794;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Exo 2', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+        .font-heading { font-family: 'Orbitron', sans-serif; }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+        }
+        .glow-effect { box-shadow: 0 0 20px rgba(39,215,255,0.3); transition: box-shadow 0.3s ease; }
+        .glow-effect:hover { box-shadow: 0 0 40px rgba(39,215,255,0.5); }
+
+        .btn-primary {
+            background: var(--accent-primary); color: var(--bg-primary); font-weight: 600;
+            padding: 12px 24px; border-radius: 12px; box-shadow: 0 0 20px rgba(39,215,255,0.3);
+            transition: all 0.3s ease; border: none; cursor: pointer;
+        }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(39,215,255,0.5); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1); color: var(--text-primary); font-weight: 600;
+            padding: 12px 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+
+        .input-field {
+            width: 100%; background: var(--bg-secondary); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 12px 16px; color: var(--text-primary); transition: all 0.3s ease;
+        }
+        .input-field:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 0 1px var(--accent-primary); }
+
+        .badge { padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
+        .badge-yellow { background: rgba(250,204,21,0.2); color: #FACC15; border: 1px solid rgba(250,204,21,0.3); }
+        .badge-green { background: rgba(34,197,94,0.2); color: #22C55E; border: 1px solid rgba(34,197,94,0.3); }
+        .badge-red { background: rgba(239,68,68,0.2); color: #EF4444; border: 1px solid rgba(239,68,68,0.3); }
+
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+        .floating-btn {
+            position: fixed; bottom: 96px; right: 16px; width: 56px; height: 56px;
+            background: var(--accent-primary); border-radius: 50%; box-shadow: 0 0 40px rgba(39,215,255,0.5);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: all 0.3s ease; z-index: 100;
+        }
+        .floating-btn:hover { transform: scale(1.1); }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 200; display: none; }
+        .modal-overlay.active { display: flex; align-items: center; justify-content: center; }
+        .modal { background: var(--bg-secondary); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
+
+        .mobile-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(11,15,20,0.95); backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-around; padding: 12px; z-index: 50;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 16px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; }
+        .nav-item.active { color: var(--accent-primary); }
+        .nav-item:not(.active) { color: var(--text-tertiary); }
+
+        .stat-card { padding: 16px; border-radius: 16px; transition: all 0.3s ease; }
+        .stat-card:hover { transform: scale(1.02); }
+
+        .reservation-card { padding: 0; border-radius: 16px; margin-bottom: 12px; transition: all 0.2s ease; overflow: hidden; }
+        .reservation-card:hover { border-color: rgba(39,215,255,0.25); }
+        .reservation-card.marked { border: 2px solid var(--accent-primary); box-shadow: 0 0 20px rgba(39,215,255,0.35); }
+
+        .service-checkbox { padding: 16px; border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(255,255,255,0.05); cursor: pointer; transition: all 0.3s ease; }
+        .service-checkbox.selected { border-color: var(--accent-primary); background: rgba(39,215,255,0.1); }
+
+        .filter-btn { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; transition: all 0.3s ease; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: var(--text-secondary); }
+        .filter-btn:hover, .filter-btn.active { background: var(--accent-primary); color: var(--bg-primary); border-color: var(--accent-primary); }
+
+        .gradient-header { background: linear-gradient(135deg,rgba(39,215,255,0.2) 0%,rgba(24,191,230,0.1) 100%); border-bottom: 1px solid rgba(39,215,255,0.3); padding: 12px 16px; border-radius: 16px 16px 0 0; }
+
+        .logo-upload { width: 120px; height: 120px; border: 2px dashed rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; background: rgba(255,255,255,0.05); }
+        .logo-upload:hover { border-color: var(--accent-primary); background: rgba(39,215,255,0.1); }
+
+        @media (min-width: 1024px) {
+            .mobile-nav { display: none; }
+            .floating-btn { bottom: 32px; right: 32px; }
+            .admin-footer { display: none !important; }
+        }
+        @media (max-width: 767px) {
+            .landing-section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 20px 16px; }
+            .landing-info { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+            .landing-info .glass-card { padding: 12px !important; }
+            .landing-info p { font-size: 11px !important; }
+        }
+
+        /* Police Flash Lights */
+        .police-light { width: 22px; height: 22px; border-radius: 50%; background: white; flex-shrink: 0; }
+        .pl-left { animation: flash-left 0.7s ease-in-out infinite; }
+        .pl-right { animation: flash-right 0.7s ease-in-out infinite; }
+        @keyframes flash-left {
+            0%,48%,100% { opacity:1; box-shadow:0 0 8px 4px white,0 0 24px 8px rgba(255,255,255,0.6); }
+            50%,98% { opacity:0.08; box-shadow:none; }
+        }
+        @keyframes flash-right {
+            0%,48%,100% { opacity:0.08; box-shadow:none; }
+            50%,98% { opacity:1; box-shadow:0 0 8px 4px white,0 0 24px 8px rgba(255,255,255,0.6); }
+        }
+        .lights-off .police-light { animation:none !important; opacity:0 !important; box-shadow:none !important; }
+
+        /* Toggle Switch */
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+        .toggle-switch input { display: none; }
+        .toggle-slider { position: absolute; inset: 0; background: rgba(255,255,255,0.15); border-radius: 24px; cursor: pointer; transition: 0.3s; }
+        .toggle-slider::before { content:''; position:absolute; width:18px; height:18px; left:3px; top:3px; background:white; border-radius:50%; transition:0.3s; }
+        .toggle-switch input:checked + .toggle-slider { background: var(--accent-primary); }
+        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+        /* Arrow Animation */
+        .arrow-animation { display: inline-flex; align-items: center; gap: 8px; animation: slideRight 1.5s ease-in-out infinite; }
+        @keyframes slideRight { 0%,100%{transform:translateX(0)} 50%{transform:translateX(10px)} }
+
+        /* Time Badge */
+        .time-badge { background:rgba(39,215,255,0.18); color:var(--accent-primary); border:1px solid rgba(39,215,255,0.35); padding:2px 8px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.5px; white-space:nowrap; display:inline-block; }
+
+        /* Payment Button */
+        .payment-btn { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; cursor:pointer; border:1px solid transparent; transition:all 0.2s ease; white-space:nowrap; }
+        .payment-btn.paid { background:rgba(34,197,94,0.15); color:#22C55E; border-color:rgba(34,197,94,0.3); }
+        .payment-btn.unpaid { background:rgba(239,68,68,0.15); color:#EF4444; border-color:rgba(239,68,68,0.3); }
+        .payment-btn.pending-pay { background:rgba(250,204,21,0.15); color:#FACC15; border-color:rgba(250,204,21,0.3); }
+        .payment-btn:hover { filter:brightness(1.2); }
+
+        /* Service Tag */
+        .service-tag { white-space:nowrap; flex-shrink:0; background:rgba(255,255,255,0.07); color:#9CA3AF; padding:2px 7px; border-radius:5px; font-size:10px; font-weight:500; }
+        .no-scrollbar::-webkit-scrollbar { display:none; }
+        .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+
+        /* Status Dropdown */
+        .status-dropdown { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:3px 6px; color:white; font-size:11px; cursor:pointer; transition:all 0.3s ease; }
+        .status-dropdown:focus { outline:none; border-color:var(--accent-primary); }
+
+        /* Notification Bell */
+        .notification-bell { cursor:pointer; }
+        @keyframes shake { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-15deg)} 75%{transform:rotate(15deg)} }
+
+        /* Admin Footer */
+        .admin-footer { position:fixed; bottom:0; left:0; right:0; background:rgba(7,9,13,0.95); backdrop-filter:blur(20px); border-top:1px solid rgba(255,255,255,0.1); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; z-index:50; }
+        .admin-logo { display:flex; align-items:center; gap:8px; }
+        .admin-logo img { width:40px; height:40px; object-fit:contain; border-radius:8px; }
+        .admin-logo-text { font-family:'Orbitron',sans-serif; font-weight:bold; font-size:14px; color:white; letter-spacing:1px; }
+
+        /* Copy & Refresh Buttons */
+        .copy-btn { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:4px 8px; color:var(--text-secondary); font-size:11px; cursor:pointer; transition:all 0.3s ease; display:flex; align-items:center; gap:3px; }
+        .copy-btn:hover { background:rgba(39,215,255,0.2); border-color:var(--accent-primary); color:var(--accent-primary); }
+        .refresh-btn { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:8px 16px; color:var(--text-secondary); font-size:14px; cursor:pointer; transition:all 0.3s ease; display:flex; align-items:center; gap:6px; }
+        .refresh-btn:hover { background:rgba(39,215,255,0.2); border-color:var(--accent-primary); color:var(--accent-primary); }
+        .refresh-btn:hover svg { transform:rotate(180deg); }
+        .refresh-btn svg { transition:transform 0.5s ease; }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landing-page" class="min-h-screen relative">
+        <section class="landing-section relative overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-400/10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay:1s"></div>
+            <div class="relative z-10 max-w-6xl mx-auto text-center">
+                <div class="landing-hero mb-6">
+                    <div id="landing-logo-container" class="inline-flex items-center justify-center gap-3 mb-3">
+                        <svg class="w-12 h-12 md:w-16 md:h-16 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                        </svg>
+                    </div>
+                    <h1 id="landing-business-name" class="text-4xl md:text-6xl lg:text-8xl font-heading font-bold text-white tracking-wider mb-2">LUMO LOISTE</h1>
+                    <p class="text-lg md:text-xl lg:text-2xl text-gray-300 font-light tracking-wide">Premium Luxury Car Detailing</p>
+                </div>
+                <div id="police-lights-wrapper" class="flex items-center justify-center gap-5 mb-6">
+                    <div class="police-light pl-left"></div>
+                    <button onclick="showDashboard()" class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 md:py-4 rounded-2xl arrow-animation">
+                        <span>Open Dashboard</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </button>
+                    <div class="police-light pl-right"></div>
+                </div>
+                <div class="landing-info max-w-4xl mx-auto">
+                    <div class="glass-card p-4 md:p-6 text-center">
+                        <p class="text-gray-400 text-xs md:text-sm mb-1">Phone</p>
+                        <p id="landing-phone" class="text-white font-semibold text-sm md:text-base">046 554 4417</p>
+                    </div>
+                    <div class="glass-card p-4 md:p-6 text-center">
+                        <p class="text-gray-400 text-xs md:text-sm mb-1">Email</p>
+                        <p id="landing-email" class="text-white font-semibold text-sm md:text-base">lumoloiste@gmail.com</p>
+                    </div>
+                    <div class="glass-card p-4 md:p-6 text-center">
+                        <p class="text-gray-400 text-xs md:text-sm mb-1">Hours</p>
+                        <p id="landing-hours" class="text-white font-semibold text-sm md:text-base">Sat-Sun 11:00-19:00</p>
+                    </div>
+                    <div class="glass-card p-4 md:p-6 text-center">
+                        <p class="text-gray-400 text-xs md:text-sm mb-1">Location</p>
+                        <p id="landing-location" class="text-white font-semibold text-sm md:text-base">Vantaa</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="min-h-screen pb-20 lg:pb-0 hidden">
+        <header class="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-xl border-b border-white/10 px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 lg:hidden cursor-pointer" onclick="showLandingPage()">
+                    <img id="header-logo" src="" alt="" class="w-8 h-8 object-contain rounded-lg hidden">
+                    <svg id="header-logo-fallback" class="w-6 h-6 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                    </svg>
+                    <span id="header-business-name" class="text-lg font-heading font-bold text-white tracking-wider">LUMO LOISTE</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="refresh-btn" onclick="refreshData()">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        <span class="hidden sm:inline">Refresh</span>
+                    </button>
+                    <div class="relative notification-bell" onclick="clearNotifications()">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        <span id="notification-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-xs font-bold text-white hidden">0</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="px-4 md:px-8 py-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="glass-card stat-card">
+                    <div class="p-2 rounded-xl bg-yellow-500/20 w-fit mb-3">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <p class="text-2xl md:text-3xl font-bold text-white" id="pending-count">0</p>
+                    <p class="text-xs text-gray-500 font-medium">Pending</p>
+                </div>
+                <div class="glass-card stat-card">
+                    <div class="p-2 rounded-xl bg-green-500/20 w-fit mb-3">
+                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <p class="text-2xl md:text-3xl font-bold text-white" id="completed-count">0</p>
+                    <p class="text-xs text-gray-500 font-medium">Completed</p>
+                </div>
+                <div class="glass-card stat-card">
+                    <div class="p-2 rounded-xl bg-red-500/20 w-fit mb-3">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </div>
+                    <p class="text-2xl md:text-3xl font-bold text-white" id="cancelled-count">0</p>
+                    <p class="text-xs text-gray-500 font-medium">Cancelled</p>
+                </div>
+                <div class="glass-card stat-card">
+                    <div class="p-2 rounded-xl bg-cyan-400/20 w-fit mb-3">
+                        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <p class="text-2xl md:text-3xl font-bold text-white" id="revenue-count">0€</p>
+                    <p class="text-xs text-gray-500 font-medium">Revenue</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button class="filter-btn active" onclick="filterReservations('all',this)">All</button>
+                <button class="filter-btn" onclick="filterReservations('today',this)">Today</button>
+                <button class="filter-btn" onclick="filterReservations('tomorrow',this)">Tomorrow</button>
+                <button class="filter-btn" onclick="filterReservations('thisWeek',this)">This Week</button>
+                <button class="filter-btn" onclick="filterReservations('nextWeek',this)">Next Week</button>
+                <button class="filter-btn" onclick="filterReservations('thisMonth',this)">This Month</button>
+            </div>
+
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl md:text-2xl font-heading font-bold text-white">Reservations</h2>
+                <div class="text-sm text-gray-500" id="total-count">0 total</div>
+            </div>
+
+            <div id="reservations-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav lg:hidden">
+        <div class="nav-item active" onclick="showDashboard()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span class="text-xs font-medium">Home</span>
+        </div>
+        <div class="nav-item" onclick="showSettings()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span class="text-xs font-medium">Settings</span>
+        </div>
+    </nav>
+
+    <!-- Admin Footer -->
+    <footer class="admin-footer lg:hidden">
+        <div class="admin-logo">
+            <img id="footer-logo" src="" alt="Logo" class="hidden">
+            <svg id="footer-logo-fallback" class="w-9 h-9 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+            </svg>
+            <span id="footer-business-name" class="admin-logo-text">LUMO LOISTE</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="relative notification-bell" onclick="clearNotifications()">
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                </svg>
+                <span id="footer-notification-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center text-[10px] font-bold text-white hidden">0</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Add Button -->
+    <button class="floating-btn" onclick="openModal()">
+        <svg class="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+    </button>
+
+    <!-- Add Reservation Modal -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between p-6 border-b border-white/10">
+                <h2 class="text-xl font-heading font-bold text-white">New Reservation</h2>
+                <button onclick="closeModal()" class="p-2 rounded-xl hover:bg-white/10 transition-colors">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-300">Customer Name</label>
+                    <input type="text" id="customer-name" class="input-field" placeholder="Enter customer name">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-300">Phone Number</label>
+                    <input type="tel" id="phone-number" class="input-field" placeholder="046 554 4417">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-300">Vehicle Type</label>
+                    <input type="text" id="vehicle-type" class="input-field" placeholder="Tesla Model 3">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-300">Date</label>
+                        <input type="date" id="reservation-date" class="input-field">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-300">Time</label>
+                        <input type="time" id="reservation-time" class="input-field">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-300">Select Services</label>
+                    <div id="services-list" class="grid grid-cols-1 gap-2"></div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-300">Payment Status</label>
+                    <select id="payment-status" class="input-field">
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="unpaid">Unpaid</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-300">Notes (Optional)</label>
+                    <textarea id="notes" class="input-field resize-none" rows="2" placeholder="Additional notes..."></textarea>
+                </div>
+                <div id="total-display" class="glass-card p-4 flex justify-between items-center hidden">
+                    <span class="text-gray-300 font-medium">Total</span>
+                    <span class="text-2xl font-bold text-cyan-400" id="total-price">0€</span>
+                </div>
+            </div>
+            <div class="p-6 border-t border-white/10 space-y-3">
+                <button onclick="createReservation()" class="w-full btn-primary">Create Reservation</button>
+                <button onclick="closeModal()" class="w-full btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal-overlay" onclick="closeConfirmation(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="p-6 border-b border-white/10">
+                <h2 class="text-xl font-heading font-bold text-white">Reservation Confirmed!</h2>
+            </div>
+            <div id="confirmation-content" class="p-6"></div>
+            <div class="p-6 border-t border-white/10">
+                <button onclick="closeConfirmation()" class="w-full btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay" onclick="closeSettings(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between p-6 border-b border-white/10">
+                <h2 class="text-xl font-heading font-bold text-white">Settings</h2>
+                <button onclick="closeSettings()" class="p-2 rounded-xl hover:bg-white/10 transition-colors">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="p-6 space-y-5">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium text-gray-300">Business Logo</label>
+                    <div class="flex items-center gap-4">
+                        <div class="logo-upload" onclick="document.getElementById('logo-input').click()">
+                            <div id="logo-preview" class="text-center">
+                                <svg class="w-8 h-8 text-gray-400 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <p class="text-xs text-gray-400">Upload Logo</p>
+                            </div>
+                        </div>
+                        <input type="file" id="logo-input" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
+                        <div class="flex-1">
+                            <p class="text-xs text-gray-400 mb-1">JPG, PNG supported</p>
+                            <p class="text-xs text-gray-500">Square image recommended</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between py-3 border-b border-white/10">
+                    <div>
+                        <p class="text-sm font-medium text-white">Flash Lights</p>
+                        <p class="text-xs text-gray-500">Police-style lights on landing page</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="lights-toggle" checked onchange="toggleLights()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-base font-semibold text-white">Business Information</h3>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-300">Business Name</label>
+                        <input type="text" id="business-name" class="input-field" value="LUMO LOISTE">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-300">Phone Number</label>
+                        <input type="tel" id="business-phone" class="input-field" value="046 554 4417">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-300">Email</label>
+                        <input type="email" id="business-email" class="input-field" value="lumoloiste@gmail.com">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-300">Location</label>
+                        <input type="text" id="business-location" class="input-field" value="Vantaa">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-300">Business Hours</label>
+                        <input type="text" id="business-hours" class="input-field" value="Sat-Sun 11:00-19:00">
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-white/10 space-y-3">
+                <button onclick="saveSettings()" class="w-full btn-primary">Save Changes</button>
+                <button onclick="closeSettings()" class="w-full btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const services = [
+            { id:'1', nameFi:'Perus Ulkopesu', price:30, description:'Hand wash and drying' },
+            { id:'2', nameFi:'Perus Sis\u00e4puhdistus', price:30, description:'Vacuum and surface cleaning' },
+            { id:'3', nameFi:'Loiste', price:60, description:'Exterior wash + interior cleaning' },
+            { id:'4', nameFi:'Lumo', price:70, description:'Enhanced wash + interior + wax' },
+            { id:'5', nameFi:'T\u00e4ysi Lumo', price:80, description:'Full interior and exterior detailing' },
+            { id:'6', nameFi:'T\u00e4ysi Lumo+', price:130, description:'Full detailing + wax protection 8\u201312 months' }
+        ];
+
+        let reservations = [
+            { id:'1', orderNumber:'LUMO-001', customerName:'Mikael Virtanen', phoneNumber:'046 554 4417', vehicleType:'Tesla Model 3', services:[services[5]], date:'2026-05-13', time:'14:00', notes:'Please focus on interior', paymentStatus:'paid', status:'pending', marked:false },
+            { id:'2', orderNumber:'LUMO-002', customerName:'Sofia Korhonen', phoneNumber:'040 123 4567', vehicleType:'BMW X5', services:[services[4]], date:'2026-05-13', time:'16:00', notes:'', paymentStatus:'pending', status:'pending', marked:false }
+        ];
+
+        let selectedServices = [];
+        let lightsEnabled = localStorage.getItem('lumoloiste-lights') !== 'false';
+        let currentFilter = 'all';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderServices();
+            updateStats();
+            renderReservations();
+            loadSettings();
+            loadLogo();
+            updateNotifications();
+            applyLights();
+            const toggle = document.getElementById('lights-toggle');
+            if (toggle) toggle.checked = lightsEnabled;
+        });
+
+        function toggleLights() {
+            lightsEnabled = !lightsEnabled;
+            localStorage.setItem('lumoloiste-lights', lightsEnabled.toString());
+            applyLights();
+        }
+
+        function applyLights() {
+            const w = document.getElementById('police-lights-wrapper');
+            if (!w) return;
+            if (lightsEnabled) w.classList.remove('lights-off');
+            else w.classList.add('lights-off');
+        }
+
+        function showDashboard() {
+            document.getElementById('landing-page').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            updateNavActive('home');
+        }
+
+        function showLandingPage() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('landing-page').classList.remove('hidden');
+        }
+
+        function showSettings() {
+            document.getElementById('settings-modal').classList.add('active');
+            updateNavActive('settings');
+        }
+
+        function closeSettings(event) {
+            if (!event || event.target === document.getElementById('settings-modal'))
+                document.getElementById('settings-modal').classList.remove('active');
+        }
+
+        function updateNavActive(active) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            const items = document.querySelectorAll('.nav-item');
+            if (active === 'home' && items[0]) items[0].classList.add('active');
+            if (active === 'settings' && items[1]) items[1].classList.add('active');
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const logoData = { type: file.type, data: e.target.result };
+                localStorage.setItem('lumoloiste-logo', JSON.stringify(logoData));
+                const preview = document.getElementById('logo-preview');
+                preview.innerHTML = '<img src="' + e.target.result + '" class="w-full h-full object-cover rounded-xl">';
+                loadLogo();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadLogo() {
+            const savedLogo = localStorage.getItem('lumoloiste-logo');
+            if (!savedLogo) return;
+            const logoData = JSON.parse(savedLogo);
+            if (logoData.type && logoData.type !== 'application/pdf') {
+                const fl = document.getElementById('footer-logo');
+                if (fl) { fl.src = logoData.data; fl.classList.remove('hidden'); }
+                const fb = document.getElementById('footer-logo-fallback');
+                if (fb) fb.style.display = 'none';
+                const hl = document.getElementById('header-logo');
+                if (hl) { hl.src = logoData.data; hl.classList.remove('hidden'); }
+                const hf = document.getElementById('header-logo-fallback');
+                if (hf) hf.style.display = 'none';
+                const lc = document.getElementById('landing-logo-container');
+                if (lc) lc.innerHTML = '<img src="' + logoData.data + '" class="w-16 h-16 md:w-20 md:h-20 object-contain rounded-2xl shadow-lg" style="box-shadow:0 0 30px rgba(39,215,255,0.3)">';
+                const lp = document.getElementById('logo-preview');
+                if (lp) lp.innerHTML = '<img src="' + logoData.data + '" class="w-full h-full object-cover rounded-xl">';
+            }
+        }
+
+        function saveSettings() {
+            const settings = {
+                businessName: document.getElementById('business-name').value,
+                businessPhone: document.getElementById('business-phone').value,
+                businessEmail: document.getElementById('business-email').value,
+                businessLocation: document.getElementById('business-location').value,
+                businessHours: document.getElementById('business-hours').value
+            };
+            localStorage.setItem('lumoloiste-settings', JSON.stringify(settings));
+            applySettingsToUI(settings);
+            alert('Settings saved!');
+            closeSettings();
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('lumoloiste-settings');
+            if (!saved) return;
+            const s = JSON.parse(saved);
+            document.getElementById('business-name').value = s.businessName || 'LUMO LOISTE';
+            document.getElementById('business-phone').value = s.businessPhone || '046 554 4417';
+            document.getElementById('business-email').value = s.businessEmail || 'lumoloiste@gmail.com';
+            document.getElementById('business-location').value = s.businessLocation || 'Vantaa';
+            document.getElementById('business-hours').value = s.businessHours || 'Sat-Sun 11:00-19:00';
+            applySettingsToUI(s);
+        }
+
+        function applySettingsToUI(s) {
+            const name = s.businessName || 'LUMO LOISTE';
+            const el = document.getElementById('landing-business-name'); if (el) el.textContent = name;
+            const fb = document.getElementById('footer-business-name'); if (fb) fb.textContent = name;
+            const hb = document.getElementById('header-business-name'); if (hb) hb.textContent = name;
+            const lp = document.getElementById('landing-phone'); if (lp) lp.textContent = s.businessPhone || '046 554 4417';
+            const le = document.getElementById('landing-email'); if (le) le.textContent = s.businessEmail || 'lumoloiste@gmail.com';
+            const lh = document.getElementById('landing-hours'); if (lh) lh.textContent = s.businessHours || 'Sat-Sun 11:00-19:00';
+            const ll = document.getElementById('landing-location'); if (ll) ll.textContent = s.businessLocation || 'Vantaa';
+        }
+
+        function filterReservations(filter, button) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            button.classList.add('active');
+            renderReservations();
+        }
+
+        function getFilteredReservations() {
+            const today = new Date(); today.setHours(0,0,0,0);
+            const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+            const eow = new Date(today); eow.setDate(eow.getDate() + (7 - eow.getDay()));
+            const snw = new Date(eow); snw.setDate(snw.getDate() + 1);
+            const enw = new Date(snw); enw.setDate(enw.getDate() + 6);
+            const eom = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            return reservations.filter(r => {
+                const rd = new Date(r.date); rd.setHours(0,0,0,0);
+                switch(currentFilter) {
+                    case 'today': return rd.getTime() === today.getTime();
+                    case 'tomorrow': return rd.getTime() === tomorrow.getTime();
+                    case 'thisWeek': return rd >= today && rd <= eow;
+                    case 'nextWeek': return rd >= snw && rd <= enw;
+                    case 'thisMonth': return rd >= today && rd <= eom;
+                    default: return true;
+                }
+            });
+        }
+
+        function sortReservations(list) {
+            return list.sort((a, b) => {
+                const ap = a.status === 'pending', bp = b.status === 'pending';
+                if (ap && !bp) return -1;
+                if (!ap && bp) return 1;
+                if (ap) return a.time.localeCompare(b.time);
+                return new Date(b.date + 'T' + b.time) - new Date(a.date + 'T' + a.time);
+            });
+        }
+
+        function renderReservations() {
+            const container = document.getElementById('reservations-list');
+            const list = sortReservations(getFilteredReservations());
+            document.getElementById('total-count').textContent = list.length + ' total';
+            if (list.length === 0) {
+                container.innerHTML = '<div class="glass-card p-10 text-center col-span-full"><p class="text-gray-500">No reservations found</p></div>';
+                return;
+            }
+            container.innerHTML = list.map(r => {
+                const total = r.services.reduce((s, sv) => s + sv.price, 0);
+                const isMarked = r.marked || false;
+                const dateStr = new Date(r.date).toLocaleDateString('fi-FI');
+                const payClass = r.paymentStatus === 'paid' ? 'paid' : r.paymentStatus === 'unpaid' ? 'unpaid' : 'pending-pay';
+                const payLabel = r.paymentStatus === 'paid' ? 'Paid' : r.paymentStatus === 'unpaid' ? 'Unpaid' : 'Pending';
+                return '<div class="glass-card reservation-card relative ' + (isMarked ? 'marked' : '') + '" id="card-' + r.id + '">'
+                    + '<div class="flex items-center justify-between px-3 pt-3 pb-2 border-b border-white/5">'
+                    +   '<span class="text-xs font-mono font-bold text-cyan-400 whitespace-nowrap">' + r.orderNumber + '</span>'
+                    +   '<div class="flex items-center gap-1">'
+                    +     '<select class="status-dropdown" onchange="updateStatus(\'' + r.id + '\',this.value)">'
+                    +       '<option value="pending"' + (r.status==='pending'?' selected':'') + '>Pending</option>'
+                    +       '<option value="completed"' + (r.status==='completed'?' selected':'') + '>Done</option>'
+                    +       '<option value="cancelled"' + (r.status==='cancelled'?' selected':'') + '>Cancel</option>'
+                    +     '</select>'
+                    +     '<button onclick="toggleMark(\'' + r.id + '\')" class="p-1 rounded hover:bg-white/10" title="Mark">'
+                    +       '<svg class="w-4 h-4 ' + (isMarked?'text-cyan-400':'text-gray-600') + '" fill="' + (isMarked?'currentColor':'none') + '" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>'
+                    +     '</button>'
+                    +     '<button onclick="copyReservationDetails(\'' + r.id + '\')" class="copy-btn" title="Copy">'
+                    +       '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>'
+                    +       '<span>Copy</span>'
+                    +     '</button>'
+                    +   '</div>'
+                    + '</div>'
+                    + '<div class="px-3 py-2 space-y-1.5">'
+                    +   '<div class="flex items-center justify-between gap-2 min-w-0">'
+                    +     '<span class="font-bold text-white text-sm truncate">' + r.customerName + '</span>'
+                    +     '<span class="text-cyan-400 font-bold text-base whitespace-nowrap shrink-0">' + total + '€</span>'
+                    +   '</div>'
+                    +   '<div class="flex items-center justify-between gap-2 min-w-0">'
+                    +     '<span class="text-xs text-gray-400 truncate">' + r.vehicleType + '</span>'
+                    +     '<span class="text-xs text-gray-400 whitespace-nowrap shrink-0">' + r.phoneNumber + '</span>'
+                    +   '</div>'
+                    +   '<div class="flex items-center gap-2">'
+                    +     '<span class="text-xs text-gray-500 whitespace-nowrap">' + dateStr + '</span>'
+                    +     '<span class="time-badge">' + r.time + '</span>'
+                    +   '</div>'
+                    +   '<div class="flex gap-1 overflow-x-auto no-scrollbar pb-0.5">'
+                    +     r.services.map(sv => '<span class="service-tag">' + sv.nameFi + '</span>').join('')
+                    +   '</div>'
+                    +   '<div class="flex items-center pt-1.5 border-t border-white/5">'
+                    +     '<button onclick="cyclePayment(\'' + r.id + '\')" class="payment-btn ' + payClass + '">'
+                    +       '<span class="w-1.5 h-1.5 rounded-full bg-current inline-block shrink-0"></span>'
+                    +       '<span>' + payLabel + '</span>'
+                    +       '<svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>'
+                    +     '</button>'
+                    +   '</div>'
+                    + '</div>'
+                    + '</div>';
+            }).join('');
+        }
+
+        function updateStatus(id, status) {
+            const r = reservations.find(r => r.id === id);
+            if (r) { r.status = status; renderReservations(); updateStats(); }
+        }
+
+        function toggleMark(id) {
+            const r = reservations.find(r => r.id === id);
+            if (r) { r.marked = !r.marked; renderReservations(); }
+        }
+
+        function cyclePayment(id) {
+            const r = reservations.find(r => r.id === id);
+            if (!r) return;
+            const cycle = { paid:'unpaid', unpaid:'pending', pending:'paid' };
+            r.paymentStatus = cycle[r.paymentStatus] || 'pending';
+            renderReservations();
+        }
+
+        function copyReservationDetails(id) {
+            const r = reservations.find(r => r.id === id);
+            if (!r) return;
+            const total = r.services.reduce((s, sv) => s + sv.price, 0);
+            const text = r.orderNumber + '\nCustomer: ' + r.customerName + '\nPhone: ' + r.phoneNumber + '\nVehicle: ' + r.vehicleType + '\nDate: ' + r.date + ' at ' + r.time + '\nServices: ' + r.services.map(s => s.nameFi).join(', ') + '\nTotal: ' + total + '\u20ac\nStatus: ' + r.status + '\nPayment: ' + r.paymentStatus + (r.notes ? '\nNotes: ' + r.notes : '');
+            navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard!'));
+        }
+
+        function refreshData() {
+            renderReservations();
+            updateStats();
+            updateNotifications();
+        }
+
+        function updateStats() {
+            const pending = reservations.filter(r => r.status === 'pending').length;
+            const completed = reservations.filter(r => r.status === 'completed').length;
+            const cancelled = reservations.filter(r => r.status === 'cancelled').length;
+            const revenue = reservations.reduce((s, r) => s + r.services.reduce((ss, sv) => ss + sv.price, 0), 0);
+            document.getElementById('pending-count').textContent = pending;
+            document.getElementById('completed-count').textContent = completed;
+            document.getElementById('cancelled-count').textContent = cancelled;
+            document.getElementById('revenue-count').textContent = revenue + '\u20ac';
+        }
+
+        function renderServices() {
+            const container = document.getElementById('services-list');
+            container.innerHTML = services.map(s =>
+                '<div class="service-checkbox" onclick="toggleService(\'' + s.id + '\')" id="service-' + s.id + '">'
+                + '<div class="flex justify-between items-center">'
+                + '<div><p class="font-semibold text-white text-sm">' + s.nameFi + '</p><p class="text-xs text-gray-500">' + s.description + '</p></div>'
+                + '<span class="text-lg font-bold text-cyan-400">' + s.price + '\u20ac</span>'
+                + '</div></div>'
+            ).join('');
+        }
+
+        function toggleService(id) {
+            const idx = selectedServices.indexOf(id);
+            if (idx > -1) selectedServices.splice(idx, 1); else selectedServices.push(id);
+            document.getElementById('service-' + id).classList.toggle('selected');
+            updateTotal();
+        }
+
+        function updateTotal() {
+            const total = services.filter(s => selectedServices.includes(s.id)).reduce((s, sv) => s + sv.price, 0);
+            const display = document.getElementById('total-display');
+            if (total > 0) { display.classList.remove('hidden'); document.getElementById('total-price').textContent = total + '\u20ac'; }
+            else display.classList.add('hidden');
+        }
+
+        function openModal() { document.getElementById('modal-overlay').classList.add('active'); }
+
+        function closeModal(event) {
+            if (!event || event.target === document.getElementById('modal-overlay')) {
+                document.getElementById('modal-overlay').classList.remove('active');
+                clearForm();
+            }
+        }
+
+        function clearForm() {
+            ['customer-name','phone-number','vehicle-type','reservation-date','reservation-time','notes'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.value = '';
+            });
+            document.getElementById('payment-status').value = 'pending';
+            selectedServices = [];
+            document.querySelectorAll('.service-checkbox').forEach(el => el.classList.remove('selected'));
+            document.getElementById('total-display').classList.add('hidden');
+        }
+
+        function createReservation() {
+            const customerName = document.getElementById('customer-name').value.trim();
+            const phoneNumber = document.getElementById('phone-number').value.trim();
+            const vehicleType = document.getElementById('vehicle-type').value.trim();
+            const date = document.getElementById('reservation-date').value;
+            const time = document.getElementById('reservation-time').value;
+            const notes = document.getElementById('notes').value;
+            const paymentStatus = document.getElementById('payment-status').value;
+            if (!customerName || !phoneNumber || !vehicleType || !date || !time || selectedServices.length === 0) {
+                alert('Please fill in all required fields'); return;
+            }
+            const selectedServiceObjects = services.filter(s => selectedServices.includes(s.id));
+            const newReservation = {
+                id: Date.now().toString(),
+                orderNumber: 'LUMO-' + String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0'),
+                customerName, phoneNumber, vehicleType,
+                services: selectedServiceObjects, date, time, notes, paymentStatus, status: 'pending', marked: false
+            };
+            reservations.unshift(newReservation);
+            addNotification();
+            closeModal();
+            renderReservations();
+            updateStats();
+            showConfirmation(newReservation);
+        }
+
+        function showConfirmation(r) {
+            const total = r.services.reduce((s, sv) => s + sv.price, 0);
+            document.getElementById('confirmation-content').innerHTML =
+                '<div class="text-center mb-4">'
+                + '<div class="w-16 h-16 mx-auto mb-3 bg-cyan-400/20 rounded-2xl flex items-center justify-center">'
+                + '<svg class="w-8 h-8 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
+                + '</div>'
+                + '<p class="text-gray-500 text-xs mb-1">Order Number</p>'
+                + '<p class="text-xl font-bold text-cyan-400">' + r.orderNumber + '</p>'
+                + '</div>'
+                + '<div class="glass-card p-4 space-y-2 text-sm">'
+                + '<div class="flex justify-between"><span class="text-gray-400">Customer</span><span class="text-white font-medium">' + r.customerName + '</span></div>'
+                + '<div class="flex justify-between"><span class="text-gray-400">Phone</span><span class="text-white">' + r.phoneNumber + '</span></div>'
+                + '<div class="flex justify-between"><span class="text-gray-400">Vehicle</span><span class="text-white">' + r.vehicleType + '</span></div>'
+                + '<div class="flex justify-between items-center"><span class="text-gray-400">Time</span><span class="time-badge">' + r.time + '</span></div>'
+                + '<div class="flex justify-between"><span class="text-gray-400">Date</span><span class="text-white">' + new Date(r.date).toLocaleDateString('fi-FI') + '</span></div>'
+                + '<div class="flex justify-between"><span class="text-gray-400">Services</span><span class="text-white text-right">' + r.services.map(s => s.nameFi).join(', ') + '</span></div>'
+                + '<div class="flex justify-between pt-2 border-t border-white/10"><span class="text-gray-400">Total</span><span class="text-cyan-400 font-bold text-lg">' + total + '\u20ac</span></div>'
+                + '</div>';
+            document.getElementById('confirmation-modal').classList.add('active');
+        }
+
+        function closeConfirmation(event) {
+            if (!event || event.target === document.getElementById('confirmation-modal'))
+                document.getElementById('confirmation-modal').classList.remove('active');
+        }
+
+        function updateNotifications() {
+            const count = parseInt(localStorage.getItem('lumoloiste-unread-notifications') || '0');
+            const badge = document.getElementById('notification-badge');
+            const fbadge = document.getElementById('footer-notification-badge');
+            if (count > 0) {
+                if (badge) { badge.textContent = count; badge.classList.remove('hidden'); }
+                if (fbadge) { fbadge.textContent = count; fbadge.classList.remove('hidden'); }
+            } else {
+                if (badge) badge.classList.add('hidden');
+                if (fbadge) fbadge.classList.add('hidden');
+            }
+        }
+
+        function clearNotifications() {
+            localStorage.setItem('lumoloiste-unread-notifications', '0');
+            updateNotifications();
+        }
+
+        function addNotification() {
+            const count = parseInt(localStorage.getItem('lumoloiste-unread-notifications') || '0');
+            localStorage.setItem('lumoloiste-unread-notifications', (count + 1).toString());
+            updateNotifications();
+        }
+    </script>
+</body>
+</html>
