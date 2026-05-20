@@ -391,7 +391,14 @@ firebase.initializeApp({
   appId:"1:123933913893:web:c1f57caf4dc2a5440ba0cc"
 });
 const db=firebase.database();
-const stor=firebase.storage();
+let stor;
+try{
+  stor=firebase.storage();
+  console.log('Firebase Storage initialized');
+}catch(e){
+  console.error('Firebase Storage init error:',e);
+  showToast('⚠️ Storage not available',true);
+}
 
 /* ── STATE ── */
 let editMode=false;
@@ -517,38 +524,51 @@ function clickToUpload(id){
 /* ── UPLOAD TO FIREBASE STORAGE ── */
 function doUpload(id,inp){
   const file=inp.files[0]; if(!file)return;
+  if(!stor){showToast('❌ Storage not initialized — refresh page',true);inp.value='';return;}
   if(!file.type.startsWith('image/')){showToast('❌ Select an image file',true);inp.value='';return;}
   if(file.size>10*1024*1024){showToast('❌ File too large (max 10MB)',true);inp.value='';return;}
   const stEl=document.getElementById(id+'St');
   const pgEl=document.getElementById(id+'Prog');
-  stEl.className='img-status uploading'; stEl.textContent='⏳ Uploading...';
+  stEl.className='img-status uploading'; stEl.textContent='⏳ Starting...';
   pgEl.style.width='5%';
   const path='site-images/'+Date.now()+'_'+file.name.replace(/[^\w.\-]/g,'_');
-  const task=stor.ref(path).put(file);
-  task.on('state_changed',
-    snap=>{
-      const p=Math.round(snap.bytesTransferred/snap.totalBytes*100);
-      stEl.textContent='⏳ '+p+'%'; pgEl.style.width=p+'%';
-    },
-    err=>{
-      stEl.className='img-status error'; stEl.textContent='❌ Failed — try again';
-      pgEl.style.width='0'; showToast('❌ '+err.message,true); inp.value='';
-    },
-    ()=>{
-      task.snapshot.ref.getDownloadURL().then(url=>{
-        const imgEl=document.getElementById(id+'Img');
-        imgEl.src=url; imgEl.dataset.url=url;
-        stEl.className='img-status ok'; stEl.textContent='✅ Uploaded — click Save to apply';
-        pgEl.style.width='100%';
-        setTimeout(()=>pgEl.style.width='0',1500);
-        showToast('✅ Photo uploaded! Click Save to publish');
-      }).catch(e=>{
-        stEl.className='img-status error'; stEl.textContent='❌ URL error';
-        showToast('❌ '+e.message,true);
-      });
-      inp.value='';
-    }
-  );
+  console.log('Uploading to:',path,'size:',file.size);
+  try{
+    const task=stor.ref(path).put(file);
+    task.on('state_changed',
+      snap=>{
+        const p=Math.round(snap.bytesTransferred/snap.totalBytes*100);
+        console.log('Upload progress:',p+'%');
+        stEl.textContent='⏳ '+p+'%'; pgEl.style.width=p+'%';
+      },
+      err=>{
+        console.error('Upload error:',err);
+        stEl.className='img-status error'; stEl.textContent='❌ Failed';
+        pgEl.style.width='0'; showToast('❌ '+err.code+': '+err.message,true); inp.value='';
+      },
+      ()=>{
+        console.log('Upload complete, getting URL');
+        task.snapshot.ref.getDownloadURL().then(url=>{
+          console.log('Got download URL:',url);
+          const imgEl=document.getElementById(id+'Img');
+          imgEl.src=url; imgEl.dataset.url=url;
+          stEl.className='img-status ok'; stEl.textContent='✅ Done — click Save';
+          pgEl.style.width='100%';
+          setTimeout(()=>pgEl.style.width='0',1500);
+          showToast('✅ Uploaded! Click Save to apply');
+        }).catch(e=>{
+          console.error('Get URL error:',e);
+          stEl.className='img-status error'; stEl.textContent='❌ URL error';
+          showToast('❌ '+e.message,true);
+        });
+        inp.value='';
+      }
+    );
+  }catch(e){
+    console.error('Upload exception:',e);
+    stEl.className='img-status error'; stEl.textContent='❌ Error';
+    showToast('❌ '+e.message,true); inp.value='';
+  }
 }
 
 /* helper: get current URL from card */
