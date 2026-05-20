@@ -324,6 +324,27 @@ img{display:block;width:100%;object-fit:cover}
 
 <div class="mini-footer">© 2026 RAVINTOLA MUGHAL &nbsp;|&nbsp; <a href="index.html">Back to Home</a></div>
 
+<!-- IMPORT CONFIRMATION MODAL -->
+<div class="modal-bg" id="importConfirmModal" style="display:none">
+  <div class="modal-box" style="max-width:500px">
+    <div class="modal-head">
+      <h3>📦 Import Preview</h3>
+      <button class="modal-close-btn" onclick="closeImportModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:16px;color:var(--text-light)">Review the imported data before saving to Firebase:</p>
+      <div id="importPreview" style="background:var(--cream);padding:14px;border-radius:10px;margin-bottom:16px;font-size:.85rem">
+        <!-- Preview content will be inserted here -->
+      </div>
+      <p style="color:var(--text-light);font-size:.8rem"><i class="fas fa-exclamation-triangle" style="color:var(--gold)"></i> This will overwrite existing menu data in Firebase. Are you sure?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-gold" onclick="confirmImport()"><i class="fas fa-check"></i> Yes, Save to Firebase</button>
+      <button type="button" class="btn btn-outline" onclick="closeImportModal()"><i class="fas fa-times"></i> No, Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -645,6 +666,8 @@ function exportJSON(){
   a.download='mughal-menu.json';a.click();
 }
 
+let pendingImportData=null;
+
 function importJSON(e){
   const file=e.target.files[0];if(!file)return;
   const reader=new FileReader();
@@ -652,15 +675,15 @@ function importJSON(e){
     try{
       const data=JSON.parse(ev.target.result);
       console.log('Imported data:',data);
-      
+
       const categories=data.categories||data.category||[];
       const items=data.items||data.item||data.menu||[];
-      
+
       if(!categories.length&&!items.length){
         showToast('❌ No categories or items found',true);
         return;
       }
-      
+
       const itemsObj={};
       items.forEach((item,idx)=>{
         const id=item.id||Date.now().toString()+idx;
@@ -669,7 +692,7 @@ function importJSON(e){
         let price=item.price||item.Price||item.cost||item.Cost||'0';
         if(typeof price==='string')price=price.replace(/[€$£¥]/g,'').trim();
         if(price===''||isNaN(price))price='0';
-        
+
         itemsObj[id]={
           category:item.category||item.Category||categories[0]||'',
           name:name,
@@ -682,10 +705,22 @@ function importJSON(e){
           image:item.image||item.Image||DEFAULT_IMG
         };
       });
-      
-      db.ref('menu').set({categories,items:itemsObj})
-        .then(()=>showToast('✅ '+items.length+' items imported!'))
-        .catch(er=>showToast('❌ '+er.message,true));
+
+      // Store pending data and show confirmation modal
+      pendingImportData={categories,items:itemsObj};
+
+      // Build preview HTML
+      const previewHTML=`
+        <div style="margin-bottom:8px"><strong>Categories:</strong> ${categories.length}</div>
+        <div style="margin-bottom:8px"><strong>Items:</strong> ${items.length}</div>
+        <div style="margin-bottom:8px"><strong>Categories:</strong></div>
+        <ul style="margin-left:20px;margin-bottom:8px">${categories.map(c=>'<li>'+c+'</li>').join('')}</ul>
+        <div style="margin-bottom:8px"><strong>Sample Items:</strong></div>
+        <ul style="margin-left:20px">${items.slice(0,5).map(i=>'<li>'+i.name+' - €'+(i.price||0)+'</li>').join('')}${items.length>5?'<li style="color:var(--text-light)">... and '+(items.length-5)+' more</li>':''}</ul>
+      `;
+      document.getElementById('importPreview').innerHTML=previewHTML;
+      document.getElementById('importConfirmModal').style.display='flex';
+
     }catch(err){
       console.error('Import error:',err);
       showToast('❌ Error reading file',true);
@@ -693,6 +728,29 @@ function importJSON(e){
   };
   reader.readAsText(file);
   e.target.value='';
+}
+
+function confirmImport(){
+  if(!pendingImportData){
+    showToast('❌ No data to import',true);
+    closeImportModal();
+    return;
+  }
+  const {categories,items}=pendingImportData;
+  db.ref('menu').set({categories,items})
+    .then(()=>{
+      showToast('✅ '+Object.keys(items).length+' items imported to Firebase!');
+      closeImportModal();
+    })
+    .catch(er=>{
+      showToast('❌ '+er.message,true);
+      closeImportModal();
+    });
+}
+
+function closeImportModal(){
+  document.getElementById('importConfirmModal').style.display='none';
+  pendingImportData=null;
 }
 
 /* ── NAVBAR SCROLL ── */
