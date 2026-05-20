@@ -553,26 +553,43 @@ function importJSON(e){
   reader.onload=ev=>{
     try{
       const data=JSON.parse(ev.target.result);
-      if(!data.categories){showToast('❌ Invalid file format',true);return;}
-      const categories=data.categories||[];
-      const items=data.items||[];
+      console.log('Imported data:',data);
+      
+      const categories=data.categories||data.category||[];
+      const items=data.items||data.item||data.menu||[];
+      
+      if(!categories.length&&!items.length){
+        showToast('❌ No categories or items found',true);
+        return;
+      }
+      
       const itemsObj={};
-      items.forEach(item=>{
-        const id=item.id||Date.now().toString();
+      items.forEach((item,idx)=>{
+        const id=item.id||Date.now().toString()+idx;
+        const name=item.name||item.title||item.item_name||item.itemName||item.Name||'';
+        const desc=item.description||item.desc||item.Description||item.text||item.Text||'';
+        let price=item.price||item.Price||item.cost||item.Cost||'0';
+        if(typeof price==='string')price=price.replace(/[€$£¥]/g,'').trim();
+        if(price===''||isNaN(price))price='0';
+        
         itemsObj[id]={
-          category:item.category||'',
-          name:item.name||'',
-          description:item.description||'',
-          price:item.price||'0',
-          type:item.type||'',
-          spice:item.spice||'',
-          image:item.image||DEFAULT_IMG
+          category:item.category||item.Category||categories[0]||'',
+          name:name,
+          description:desc,
+          price:price,
+          type:item.type||item.Type||'',
+          spice:item.spice||item.Spice||'',
+          image:item.image||item.Image||DEFAULT_IMG
         };
       });
+      
       db.ref('menu').set({categories,items:itemsObj})
-        .then(()=>showToast('✅ Menu imported!'))
+        .then(()=>showToast('✅ '+items.length+' items imported!'))
         .catch(er=>showToast('❌ '+er.message,true));
-    }catch(err){showToast('❌ Error reading file',true);}
+    }catch(err){
+      console.error('Import error:',err);
+      showToast('❌ Error reading file',true);
+    }
   };
   reader.readAsText(file);
   e.target.value='';
