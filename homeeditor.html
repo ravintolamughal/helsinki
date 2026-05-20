@@ -106,6 +106,7 @@ body.edit-mode .img-cam-badge{display:flex}
 /* hidden file input */
 .hfi{display:none;position:absolute}
 body:not(.edit-mode) .img-url-row{display:none}
+body.edit-mode .img-url-row{display:flex;gap:6px}
 body:not(.edit-mode) .img-upload-row{display:none}
 
 /* ── FORM FIELDS ── */
@@ -500,20 +501,31 @@ function toggleEditMode(){
   }
 }
 
-/* ── BUILD IMAGE CARD (click-to-upload) ── */
+/* ── BUILD IMAGE CARD (click-to-upload + URL fallback) ── */
 function imgCard(id,url,label,height){
   const h=height||'95px';
   return `<div class="img-item">
     <div class="img-preview" style="height:${h}" onclick="clickToUpload('${id}')">
       <img src="${url}" id="${id}Img" data-url="${url}" onerror="this.src='https://davidbantu1999.github.io/mughal-restaurant/logo.png'" loading="lazy"/>
-      <div class="img-cam-overlay"><i class="fas fa-camera"></i><span>Tap to Change</span></div>
+      <div class="img-cam-overlay"><i class="fas fa-camera"></i><span>Tap to Upload</span></div>
       <div class="img-cam-badge"><i class="fas fa-camera"></i></div>
       <div class="img-prog" id="${id}Prog"></div>
     </div>
     <div class="img-label">${label}</div>
-    <div class="img-status" id="${id}St"></div>
+    <div class="img-status" id="${id}St">—</div>
+    <div class="img-url-row">
+      <input type="url" id="${id}Url" value="${url}" placeholder="Or paste image URL here..." oninput="updateUrl('${id}',this.value)"/>
+      <button class="preview-btn" onclick="document.getElementById('${id}Fi').click()" title="Upload File"><i class="fas fa-cloud-upload-alt"></i></button>
+    </div>
     <input type="file" class="hfi" id="${id}Fi" accept="image/*" onchange="doUpload('${id}',this)"/>
   </div>`;
+}
+
+function updateUrl(id,url){
+  const el=document.getElementById(id+'Img');
+  el.src=url; el.dataset.url=url;
+  document.getElementById(id+'St').textContent='✅ URL set';
+  document.getElementById(id+'St').className='img-status ok';
 }
 
 function clickToUpload(id){
@@ -543,23 +555,31 @@ function doUpload(id,inp){
       },
       err=>{
         console.error('Upload error:',err);
-        stEl.className='img-status error'; stEl.textContent='❌ Failed';
-        pgEl.style.width='0'; showToast('❌ '+err.code+': '+err.message,true); inp.value='';
+        stEl.className='img-status error'; stEl.textContent='❌ Upload failed';
+        pgEl.style.width='0'; 
+        if(err.code==='storage/unauthorized'){
+          showToast('❌ Storage permission denied — paste URL below instead',true);
+        }else{
+          showToast('❌ '+err.code+' — paste URL below instead',true);
+        }
+        inp.value='';
       },
       ()=>{
         console.log('Upload complete, getting URL');
         task.snapshot.ref.getDownloadURL().then(url=>{
           console.log('Got download URL:',url);
           const imgEl=document.getElementById(id+'Img');
+          const urlInput=document.getElementById(id+'Url');
           imgEl.src=url; imgEl.dataset.url=url;
-          stEl.className='img-status ok'; stEl.textContent='✅ Done — click Save';
+          if(urlInput) urlInput.value=url;
+          stEl.className='img-status ok'; stEl.textContent='✅ Uploaded — click Save';
           pgEl.style.width='100%';
           setTimeout(()=>pgEl.style.width='0',1500);
-          showToast('✅ Uploaded! Click Save to apply');
+          showToast('✅ Uploaded! Click Save button below to apply to index.html');
         }).catch(e=>{
           console.error('Get URL error:',e);
           stEl.className='img-status error'; stEl.textContent='❌ URL error';
-          showToast('❌ '+e.message,true);
+          showToast('❌ '+e.message+' — try pasting URL instead',true);
         });
         inp.value='';
       }
@@ -571,8 +591,13 @@ function doUpload(id,inp){
   }
 }
 
-/* helper: get current URL from card */
-function getUrl(id){const el=document.getElementById(id+'Img');return el?el.dataset.url||el.src:'';}
+/* helper: get current URL from card (reads from input or img dataset) */
+function getUrl(id){
+  const urlInput=document.getElementById(id+'Url');
+  if(urlInput&&urlInput.value.trim()) return urlInput.value.trim();
+  const el=document.getElementById(id+'Img');
+  return el?el.dataset.url||el.src:'';
+}
 
 /* ── BUILD HERO GRID ── */
 function buildHeroGrid(images){
