@@ -100,11 +100,8 @@ img{display:block;width:100%;object-fit:cover}
 .hero{position:relative;height:100vh;min-height:600px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-top:-80px;padding-top:80px}
 .hero-slides{position:absolute;inset:0;z-index:0}
 .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease-in-out;background-size:cover;background-position:center;background-repeat:no-repeat;transform:scale(1);z-index:1}
-.hero-slide.active{opacity:1;z-index:2}
-.hero-slide.zoomIn{animation:slideZoomIn 5s ease-in-out}
-.hero-slide.zoomOut{animation:slideZoomOut 4s ease-in-out}
+.hero-slide.active{opacity:1;z-index:2;animation:slideZoomIn 10s ease-in-out forwards}
 @keyframes slideZoomIn{0%{transform:scale(1)}100%{transform:scale(1.12)}}
-@keyframes slideZoomOut{0%{transform:scale(1.12)}100%{transform:scale(1)}}
 .hero-slide:nth-child(1){background-image:url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1800&q=85')}
 .hero-slide:nth-child(2){background-image:url('https://images.unsplash.com/photo-1567337710282-00832b415979?w=1800&q=85')}
 .hero-slide:nth-child(3){background-image:url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1800&q=85')}
@@ -1328,42 +1325,32 @@ let currentSlide=0;
 const slides=document.querySelectorAll('.hero-slide');
 const dots=document.querySelectorAll('.hero-dot');
 let sliderTimer;
-let zoomOutTimer;
-let transitionTimer;
 function startSlideCycle(){
-  // Show current slide with zoom in
-  slides[currentSlide].classList.add('active','zoomIn');
+  // Show current slide (10s zoom in animation)
+  slides[currentSlide].classList.add('active');
   dots[currentSlide].classList.add('active');
   
-  // After 5s, switch to zoom out
-  zoomOutTimer=setTimeout(()=>{
-    slides[currentSlide].classList.remove('zoomIn');
-    slides[currentSlide].classList.add('zoomOut');
-  },5000);
-  
-  // After 9s, start transition to next slide (1s overlap)
-  transitionTimer=setTimeout(()=>{
+  // After 10s, transition to next slide
+  sliderTimer=setTimeout(()=>{
     const nextSlide=(currentSlide+1)%slides.length;
-    slides[nextSlide].classList.add('active','zoomIn');
+    slides[nextSlide].classList.add('active');
     dots[nextSlide].classList.add('active');
     dots[currentSlide].classList.remove('active');
     
-    // After 10s total, complete transition
-    sliderTimer=setTimeout(()=>{
-      slides[currentSlide].classList.remove('active','zoomOut');
+    // After 1s overlap, remove old slide
+    setTimeout(()=>{
+      slides[currentSlide].classList.remove('active');
       currentSlide=nextSlide;
       startSlideCycle();
     },1000);
-  },9000);
+  },10000);
 }
 function goToSlide(n){
   clearTimeout(sliderTimer);
-  clearTimeout(zoomOutTimer);
-  clearTimeout(transitionTimer);
-  slides.forEach(s=>{s.classList.remove('active','zoomIn','zoomOut');});
+  slides.forEach(s=>s.classList.remove('active'));
   dots.forEach(d=>d.classList.remove('active'));
   currentSlide=(n+slides.length)%slides.length;
-  slides[currentSlide].classList.add('active','zoomIn');
+  slides[currentSlide].classList.add('active');
   dots[currentSlide].classList.add('active');
 }
 function changeSlide(dir){
