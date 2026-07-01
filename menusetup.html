@@ -184,16 +184,7 @@ img{display:block;width:100%;object-fit:cover}
 <!-- Navbar -->
 <nav id="navbar">
   <div class="nav-logo">
-    <img src="https://davidbantu1999.github.io/mughal-restaurant/logo.png" alt="Mughal Restaurant"/>
-  </div>
-  <div class="nav-links">
-    <a href="food-ordering.html"><i class="fas fa-home"></i> Order Page</a>
-    <a href="menu.html"><i class="fas fa-book-open"></i> Menu</a>
-    <a href="menu-editor.html"><i class="fas fa-edit"></i> Menu Editor</a>
-    <a href="menusetup.html"><i class="fas fa-cog"></i> Menu Setup</a>
-  </div>
-  <div class="nav-right">
-    <a href="food-ordering.html" class="nav-btn"><i class="fas fa-eye"></i> View Order Page</a>
+    <span style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--text);font-weight:700">Menu Setup</span>
   </div>
 </nav>
 
@@ -703,6 +694,39 @@ function confirmJsonImport(){
       allergies:item.allergies||[],
       available:item.available!==false
     }));
+  }else if(importedJsonData.items){
+    menuItems=Object.entries(importedJsonData.items).map(([id,item],index)=>({
+      id:parseInt(id)||index+1,
+      name:item.name||'',
+      description:item.description||'',
+      price:item.price||0,
+      category:item.category||'starters',
+      image:item.image||'',
+      spice:item.spice||'Mild',
+      type:item.type||'veg',
+      popular:item.popular||false,
+      rating:item.rating||0,
+      allergies:item.allergies||[],
+      available:item.available!==false
+    }));
+  }else if(importedJsonData.menu){
+    menuItems=importedJsonData.menu.map((item,index)=>({
+      id:item.id||index+1,
+      name:item.name||'',
+      description:item.description||'',
+      price:item.price||0,
+      category:item.category||'starters',
+      image:item.image||'',
+      spice:item.spice||'Mild',
+      type:item.type||'veg',
+      popular:item.popular||false,
+      rating:item.rating||0,
+      allergies:item.allergies||[],
+      available:item.available!==false
+    }));
+  }else{
+    showToast('Invalid JSON format. Expected array or object with items/menu property',true);
+    return;
   }
   
   nextId=Math.max(...menuItems.map(i=>parseInt(i.id)||0))+1;
