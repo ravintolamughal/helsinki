@@ -56,17 +56,20 @@ img{display:block;width:100%;object-fit:cover}
 .category-items{display:flex;flex-direction:column;gap:12px}
 
 /* Menu Item Card */
-.menu-item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:var(--t)}
-.menu-item-card:hover{border-color:var(--border);background:var(--bg-hover)}
-.item-header{display:flex;gap:16px;margin-bottom:16px}
-.item-image{width:80px;height:80px;border-radius:8px;object-fit:cover;background:var(--bg-hover);flex-shrink:0}
-.item-form{flex:1;display:flex;flex-direction:column;gap:12px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-group{display:flex;flex-direction:column;gap:6px}
-.form-label{font-size:.75rem;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px}
-.form-input,.form-select,.form-textarea{padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;font-family:'Poppins',sans-serif;transition:var(--t)}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);outline:none}
-.form-textarea{resize:vertical;min-height:60px}
+.menu-item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:12px;transition:var(--t);margin-bottom:8px}
+.menu-item-card:hover{border-color:var(--accent)}
+.menu-item-card.dragging{opacity:0.5;border-color:var(--accent)}
+.item-simple-view{display:flex;align-items:center;gap:12px}
+.drag-handle{color:var(--text-muted);cursor:grab;font-size:1rem;padding:4px}
+.drag-handle:active{cursor:grabbing}
+.item-thumb{width:60px;height:60px;border-radius:8px;object-fit:cover;background:var(--bg-hover);flex-shrink:0}
+.item-info{flex:1;min-width:0}
+.item-name{font-size:.95rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-price{font-size:.85rem;color:var(--accent);font-weight:600}
+.item-actions-simple{display:flex;gap:8px;flex-shrink:0}
+.action-btn.small{padding:6px 12px;font-size:.75rem}
+.action-btn.danger{background:rgba(239,68,68,.15);color:var(--danger)}
+.action-btn.danger:hover{background:rgba(239,68,68,.25)}
 
 /* Tags Section */
 .tags-section{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
@@ -115,6 +118,23 @@ img{display:block;width:100%;object-fit:cover}
 .empty-state i{font-size:3rem;margin-bottom:16px;opacity:0.5}
 .empty-state p{font-size:1rem}
 
+/* Modal */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-content{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);max-width:550px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:24px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--bg-card),var(--bg-hover))}
+.modal-header h2{color:var(--text);font-size:1.4rem;font-weight:700}
+.close-btn{background:none;border:none;color:var(--text-muted);font-size:1.8rem;cursor:pointer;line-height:1;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--t)}
+.close-btn:hover{color:var(--text);background:var(--border)}
+.modal-body{padding:24px}
+.modal-footer{display:flex;gap:12px;justify-content:flex-end;padding:20px 24px;border-top:1px solid var(--border)}
+.edit-preview{width:120px;height:120px;border-radius:12px;object-fit:cover;margin-top:12px;background:var(--bg-hover);display:none;border:2px solid var(--border)}
+.modal-body .form-group{margin-bottom:20px}
+.modal-body .form-label{display:block;font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
+.modal-body .form-input,.modal-body .form-select,.modal-body .form-textarea{width:100%;padding:14px 16px;background:var(--bg);border:2px solid var(--border);border-radius:10px;color:var(--text);font-size:.95rem;font-family:'Poppins',sans-serif;transition:var(--t)}
+.modal-body .form-input:focus,.modal-body .form-select:focus,.modal-body .form-textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(245,200,66,.1)}
+.modal-body .form-textarea{resize:vertical;min-height:80px;line-height:1.5}
+.modal-body .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+
 /* Image Preview */
 .img-preview{width:50px;height:50px;border-radius:8px;object-fit:cover;background:rgba(0,0,0,.2)}
 
@@ -125,6 +145,24 @@ img{display:block;width:100%;object-fit:cover}
 /* Toast */
 .toast{position:fixed;top:30px;right:30px;z-index:9999;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:13px 20px;border-radius:14px;font-size:.85rem;font-weight:600;box-shadow:0 12px 38px rgba(34,197,94,.4);opacity:0;transform:translateX(18px);transition:all .42s cubic-bezier(.4,0,.2,1);pointer-events:none;max-width:300px}
 .toast.show{opacity:1;transform:translateX(0);pointer-events:all}
+
+/* Mobile Responsive */
+@media(max-width:768px){
+  .container{padding:0 16px}
+  .setup-header h1{font-size:1.5rem}
+  .action-bar{flex-direction:column;align-items:stretch}
+  .action-left{flex-direction:column;align-items:stretch}
+  .category-header{padding:12px 16px}
+  .category-title{font-size:1rem}
+  .item-simple-view{gap:8px}
+  .item-thumb{width:50px;height:50px}
+  .item-name{font-size:.85rem}
+  .item-price{font-size:.75rem}
+  .action-btn.small{padding:4px 8px;font-size:.7rem}
+  .modal-content{max-width:100%;margin:0}
+  .modal-header,.modal-body,.modal-footer{padding:16px}
+  .form-row{grid-template-columns:1fr}
+}
 .toast.error{background:linear-gradient(135deg,#c0392b,#e74c3c);box-shadow:0 12px 38px rgba(239,68,68,.4)}
 
 /* Loading */
@@ -159,12 +197,6 @@ img{display:block;width:100%;object-fit:cover}
   </div>
 </nav>
 
-<!-- Header -->
-<div class="setup-header">
-  <h1>Menu Setup</h1>
-  <p>Manage menu items with JSON import and tag visibility controls</p>
-</div>
-
 <div class="container">
   <div class="setup-container">
     
@@ -184,9 +216,14 @@ img{display:block;width:100%;object-fit:cover}
           <input type="file" id="jsonFileInput" accept=".json" onchange="importJSON(event)"/>
         </div>
       </div>
-      <button class="action-btn" onclick="saveToFirebase()">
-        <i class="fas fa-save"></i> Confirm & Save to Firebase
-      </button>
+      <div style="display:flex;gap:10px">
+        <a href="food-ordering.html" class="action-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">
+          <i class="fas fa-eye"></i> View Menu
+        </a>
+        <button class="action-btn" onclick="saveToFirebase()">
+          <i class="fas fa-save"></i> Save to Firebase
+        </button>
+      </div>
     </div>
     
     <!-- Category Manager Panel -->
@@ -219,6 +256,79 @@ img{display:block;width:100%;object-fit:cover}
       <div class="loading">
         <i class="fas fa-spinner"></i>
         <p>Loading menu...</p>
+      </div>
+    </div>
+    
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal" style="display:none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Edit Item</h2>
+          <button class="close-btn" onclick="closeEditModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" id="editName" class="form-input"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Price (€)</label>
+            <input type="number" step="0.01" id="editPrice" class="form-input"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea id="editDescription" class="form-textarea"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Image</label>
+            <input type="file" id="editImage" accept="image/*" class="form-input"/>
+            <img id="editImagePreview" class="edit-preview"/>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Spice Level</label>
+              <select id="editSpice" class="form-select">
+                <option value="none">None</option>
+                <option value="Mild">Mild</option>
+                <option value="Medium">Medium</option>
+                <option value="Hot">Hot</option>
+                <option value="Extra Hot">Extra Hot</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Type</label>
+              <select id="editType" class="form-select">
+                <option value="none">None</option>
+                <option value="veg">Vegetarian</option>
+                <option value="nonveg">Non-Veg</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="editCategory" class="form-select"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tags</label>
+            <select id="editPopular" class="form-select">
+              <option value="">None</option>
+              <option value="popular">⭐ Popular</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="available-row">
+              <label class="available-switch">
+                <input type="checkbox" id="editAvailable"/>
+                <span class="available-slider"></span>
+              </label>
+              <span class="available-label">Available</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="action-btn secondary" onclick="closeEditModal()">Cancel</button>
+          <button class="action-btn" onclick="saveEdit()">Save</button>
+        </div>
       </div>
     </div>
     
@@ -320,78 +430,27 @@ function renderTable(){
     html+='<div class="category-section">';
     html+='<div class="category-header">';
     html+='<span class="category-title">'+category.charAt(0).toUpperCase()+category.slice(1)+'</span>';
+    html+='<div style="display:flex;align-items:center;gap:12px">';
     html+='<span class="category-count">'+categoryItems.length+' items</span>';
+    html+='<button class="action-btn small" onclick="addItemToCategory(\''+category+'\')"><i class="fas fa-plus"></i> Add Item</button>';
+    html+='</div>';
     html+='</div>';
     html+='<div class="category-items">';
     
     categoryItems.forEach((item,itemIndex)=>{
       const index=menuItems.indexOf(item);
-      html+='<div class="menu-item-card">';
-      html+='<div class="item-header">';
-      html+='<img src="'+item.image+'" class="item-image" onerror="this.src=\'https://via.placeholder.com/80\'"/>';
-      html+='<div class="item-form">';
-      html+='<div class="form-row">';
-      html+='<div class="form-group">';
-      html+='<label class="form-label">Name</label>';
-      html+='<input type="text" class="form-input" value="'+item.name+'" onchange="updateItem('+index+',\'name\',this.value)"/>';
+      html+='<div class="menu-item-card" draggable="true" data-index="'+index+'" ondragstart="handleDragStart(event)" ondragover="handleDragOver(event)" ondrop="handleDrop(event)" ondragend="handleDragEnd(event)">';
+      html+='<div class="item-simple-view">';
+      html+='<i class="fas fa-grip-vertical drag-handle"></i>';
+      html+='<img src="'+item.image+'" class="item-thumb" onerror="this.src=\'https://via.placeholder.com/60\'"/>';
+      html+='<div class="item-info">';
+      html+='<div class="item-name">'+item.name+'</div>';
+      html+='<div class="item-price">€'+(item.price||0).toFixed(2)+'</div>';
       html+='</div>';
-      html+='<div class="form-group">';
-      html+='<label class="form-label">Price (€)</label>';
-      html+='<input type="number" step="0.01" class="form-input" value="'+item.price+'" onchange="updateItem('+index+',\'price\',this.value)"/>';
+      html+='<div class="item-actions-simple">';
+      html+='<button class="action-btn small" onclick="openEditModal('+index+')"><i class="fas fa-edit"></i> Edit</button>';
+      html+='<button class="action-btn small danger" onclick="deleteItem('+index+')"><i class="fas fa-trash"></i></button>';
       html+='</div>';
-      html+='</div>';
-      html+='<div class="form-group">';
-      html+='<label class="form-label">Description</label>';
-      html+='<textarea class="form-textarea" onchange="updateItem('+index+',\'description\',this.value)">'+item.description+'</textarea>';
-      html+='</div>';
-      html+='<div class="form-group">';
-      html+='<label class="form-label">Image URL</label>';
-      html+='<input type="text" class="form-input" value="'+item.image+'" onchange="updateItem('+index+',\'image\',this.value)"/>';
-      html+='</div>';
-      html+='</div>';
-      html+='</div>';
-      html+='<div class="form-row">';
-      html+='<div class="form-group">';
-      html+='<label class="form-label">Spice Level</label>';
-      html+='<select class="form-select" onchange="updateItem('+index+',\'spice\',this.value)">';
-      html+='<option value="none" '+('none'===item.spice?'selected':'')+'>None</option>';
-      html+='<option value="Mild" '+('Mild'===item.spice?'selected':'')+'>Mild</option>';
-      html+='<option value="Medium" '+('Medium'===item.spice?'selected':'')+'>Medium</option>';
-      html+='<option value="Hot" '+('Hot'===item.spice?'selected':'')+'>Hot</option>';
-      html+='<option value="Extra Hot" '+('Extra Hot'===item.spice?'selected':'')+'>Extra Hot</option>';
-      html+='</select>';
-      html+='</div>';
-      html+='<div class="form-group">';
-      html+='<label class="form-label">Type</label>';
-      html+='<select class="form-select" onchange="updateItem('+index+',\'type\',this.value)">';
-      html+='<option value="none" '+('none'===item.type?'selected':'')+'>None</option>';
-      html+='<option value="veg" '+('veg'===item.type?'selected':'')+'>Vegetarian</option>';
-      html+='<option value="nonveg" '+('nonveg'===item.type?'selected':'')+'>Non-Veg</option>';
-      html+='</select>';
-      html+='</div>';
-      html+='</div>';
-      html+='<div class="form-row">';
-      html+='<div class="form-group">';
-      html+='<label class="form-label">Tags</label>';
-      html+='<div class="tags-section">';
-      html+='<select class="tag-select" onchange="updateItem('+index+',\'popular\',this.value===\'popular\')">';
-      html+='<option value="">None</option>';
-      html+='<option value="popular" '+(item.popular?'selected':'')+'>⭐ Popular</option>';
-      html+='</select>';
-      html+='</div>';
-      html+='</div>';
-      html+='<div class="form-group">';
-      html+='<div class="available-row">';
-      html+='<label class="available-switch">';
-      html+='<input type="checkbox" '+(item.available!==false?'checked':'')+' onchange="updateItem('+index+',\'available\',this.checked)"/>';
-      html+='<span class="available-slider"></span>';
-      html+='</label>';
-      html+='<span class="available-label">Available</span>';
-      html+='</div>';
-      html+='</div>';
-      html+='</div>';
-      html+='<div class="item-actions">';
-      html+='<button class="action-icon delete" onclick="deleteItem('+index+')"><i class="fas fa-trash"></i> Delete</button>';
       html+='</div>';
       html+='</div>';
     });
@@ -400,6 +459,38 @@ function renderTable(){
   });
   
   container.innerHTML=html||'<div class="empty-state"><i class="fas fa-utensils"></i><p>No items yet. Add your first item!</p></div>';
+}
+
+let draggedIndex=null;
+
+function handleDragStart(e){
+  draggedIndex=parseInt(e.target.dataset.index);
+  e.target.classList.add('dragging');
+}
+
+function handleDragOver(e){
+  e.preventDefault();
+}
+
+function handleDrop(e){
+  e.preventDefault();
+  const targetCard=e.target.closest('.menu-item-card');
+  if(!targetCard)return;
+  
+  const dropIndex=parseInt(targetCard.dataset.index);
+  if(draggedIndex===null||draggedIndex===dropIndex)return;
+  
+  // Swap items
+  const draggedItem=menuItems[draggedIndex];
+  menuItems.splice(draggedIndex,1);
+  menuItems.splice(dropIndex,0,draggedItem);
+  
+  renderTable();
+}
+
+function handleDragEnd(e){
+  e.target.classList.remove('dragging');
+  draggedIndex=null;
 }
 
 // Update item
@@ -412,6 +503,92 @@ function updateItem(index,field,value){
     value=value.split(',').map(s=>s.trim()).filter(s=>s);
   }
   menuItems[index][field]=value;
+}
+
+// Handle image upload
+function handleImageUpload(index,input){
+  const file=input.files[0];
+  if(file){
+    const reader=new FileReader();
+    reader.onload=function(e){
+      menuItems[index].image=e.target.result;
+      renderTable();
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+let editingIndex=null;
+
+// Open edit modal
+function openEditModal(index){
+  editingIndex=index;
+  const item=menuItems[index];
+  document.getElementById('editName').value=item.name||'';
+  document.getElementById('editPrice').value=item.price||0;
+  document.getElementById('editDescription').value=item.description||'';
+  document.getElementById('editSpice').value=item.spice||'none';
+  document.getElementById('editType').value=item.type||'none';
+  document.getElementById('editPopular').value=item.popular?'popular':'';
+  document.getElementById('editAvailable').checked=item.available!==false;
+  
+  // Populate category dropdown
+  const catSelect=document.getElementById('editCategory');
+  catSelect.innerHTML=categories.map(cat=>'<option value="'+cat+'" '+(cat===item.category?'selected':'')+'>'+cat.charAt(0).toUpperCase()+cat.slice(1)+'</option>').join('');
+  
+  // Show image preview if exists
+  const preview=document.getElementById('editImagePreview');
+  if(item.image){
+    preview.src=item.image;
+    preview.style.display='block';
+  }else{
+    preview.style.display='none';
+  }
+  
+  // Handle image upload in modal
+  document.getElementById('editImage').onchange=function(e){
+    const file=e.target.files[0];
+    if(file){
+      const reader=new FileReader();
+      reader.onload=function(ev){
+        preview.src=ev.target.result;
+        preview.style.display='block';
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
+  document.getElementById('editModal').style.display='flex';
+}
+
+// Close edit modal
+function closeEditModal(){
+  document.getElementById('editModal').style.display='none';
+  editingIndex=null;
+}
+
+// Save edit
+function saveEdit(){
+  if(editingIndex===null)return;
+  
+  const item=menuItems[editingIndex];
+  item.name=document.getElementById('editName').value;
+  item.price=parseFloat(document.getElementById('editPrice').value)||0;
+  item.description=document.getElementById('editDescription').value;
+  item.spice=document.getElementById('editSpice').value;
+  item.type=document.getElementById('editType').value;
+  item.category=document.getElementById('editCategory').value;
+  item.popular=document.getElementById('editPopular').value==='popular';
+  item.available=document.getElementById('editAvailable').checked;
+  
+  const preview=document.getElementById('editImagePreview');
+  if(preview.style.display!=='none'){
+    item.image=preview.src;
+  }
+  
+  renderTable();
+  closeEditModal();
+  showToast('Item saved');
 }
 
 // Add new item
@@ -433,6 +610,28 @@ function addNewItem(){
   menuItems.push(newItem);
   renderTable();
   showToast('New item added');
+}
+
+// Add item to specific category
+function addItemToCategory(category){
+  const newItem={
+    id:nextId++,
+    name:'',
+    description:'',
+    price:0,
+    category:category,
+    image:'',
+    spice:'Mild',
+    type:'veg',
+    popular:false,
+    rating:0,
+    allergies:[],
+    available:true
+  };
+  menuItems.push(newItem);
+  renderTable();
+  openEditModal(menuItems.length-1);
+  showToast('New item added to '+category);
 }
 
 // Delete item
