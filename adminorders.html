@@ -24,11 +24,36 @@
     .nav-links a:hover{color:var(--gold)}
     
     /* Container */
-    .container{max-width:1400px;margin:0 auto;padding:24px}
+    .container{max-width:1600px;margin:0 auto;padding:24px;display:flex;gap:24px}
     
-    /* Sections */
+    /* Sidebar */
+    .sidebar{width:250px;flex-shrink:0}
+    .sidebar-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:20px}
+    .sidebar-tabs{display:flex;flex-direction:column;gap:8px}
+    .sidebar-tab{padding:16px 20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:rgba(255,255,255,.7);font-size:.95rem;font-weight:600;cursor:pointer;transition:.3s;text-align:left;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:12px}
+    .sidebar-tab:hover{background:rgba(255,255,255,.1);color:var(--white)}
+    .sidebar-tab.active{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border-color:var(--gold)}
+    .sidebar-tab i{width:20px;text-align:center}
+    .tab-badge{margin-left:auto;background:rgba(0,0,0,.2);padding:2px 8px;border-radius:10px;font-size:.8rem}
+    
+    /* Main Content */
+    .main-content{flex:1}
     .section-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);margin-bottom:24px}
-    .orders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px;margin-bottom:40px}
+    .orders-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
+    
+    @media(max-width:1400px){
+      .orders-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:1100px){
+      .container{flex-direction:column}
+      .sidebar{width:100%;flex-direction:row;overflow-x:auto;padding-bottom:10px}
+      .sidebar-tabs{flex-direction:row;flex-wrap:nowrap}
+      .sidebar-tab{flex-shrink:0}
+      .orders-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:768px){
+      .orders-grid{grid-template-columns:1fr}
+    }
     
     /* Order Card */
     .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;transition:var(--t);min-height:280px;display:flex;flex-direction:column}
@@ -163,30 +188,51 @@
   
   <!-- Container -->
   <div class="container">
-    <!-- Pending Orders -->
-    <h2 class="section-title">Pending Orders</h2>
-    <div class="orders-grid" id="pendingOrders">
-      <div class="empty-state">
-        <i class="fas fa-inbox"></i>
-        <p>No pending orders</p>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2 class="sidebar-title">Orders</h2>
+      <div class="sidebar-tabs">
+        <div class="sidebar-tab active" onclick="switchTab('pending')" id="tab-pending">
+          <i class="fas fa-clock"></i>
+          Pending
+          <span class="tab-badge" id="pendingBadge">0</span>
+        </div>
+        <div class="sidebar-tab" onclick="switchTab('confirmed')" id="tab-confirmed">
+          <i class="fas fa-utensils"></i>
+          Confirmed
+          <span class="tab-badge" id="confirmedBadge">0</span>
+        </div>
+        <div class="sidebar-tab" onclick="switchTab('preparing')" id="tab-preparing">
+          <i class="fas fa-fire"></i>
+          Preparing
+          <span class="tab-badge" id="preparingBadge">0</span>
+        </div>
+        <div class="sidebar-tab" onclick="switchTab('ready')" id="tab-ready">
+          <i class="fas fa-check-circle"></i>
+          Ready
+          <span class="tab-badge" id="readyBadge">0</span>
+        </div>
+        <div class="sidebar-tab" onclick="switchTab('delivered')" id="tab-delivered">
+          <i class="fas fa-check-double"></i>
+          Completed
+          <span class="tab-badge" id="deliveredBadge">0</span>
+        </div>
+        <div class="sidebar-tab" onclick="switchTab('rejected')" id="tab-rejected">
+          <i class="fas fa-times-circle"></i>
+          Cancelled
+          <span class="tab-badge" id="rejectedBadge">0</span>
+        </div>
       </div>
     </div>
     
-    <!-- Active Orders -->
-    <h2 class="section-title">Active Orders</h2>
-    <div class="orders-grid" id="activeOrders">
-      <div class="empty-state">
-        <i class="fas fa-inbox"></i>
-        <p>No active orders</p>
-      </div>
-    </div>
-    
-    <!-- Completed Orders -->
-    <h2 class="section-title">Completed Orders</h2>
-    <div class="orders-grid" id="completedOrders">
-      <div class="empty-state">
-        <i class="fas fa-inbox"></i>
-        <p>No completed orders</p>
+    <!-- Main Content -->
+    <div class="main-content">
+      <h2 class="section-title" id="sectionTitle">Pending Orders</h2>
+      <div class="orders-grid" id="ordersContainer">
+        <div class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <p>No orders</p>
+        </div>
       </div>
     </div>
   </div>
@@ -266,6 +312,7 @@
     let selectedTime=15;
     let ordersRef=null;
     let processedOrders=new Set();
+    let currentTab='pending';
     
     // Listen for orders
     document.addEventListener('DOMContentLoaded',()=>{
@@ -284,6 +331,25 @@
       });
     });
     
+    // Switch tab
+    function switchTab(tab){
+      currentTab=tab;
+      document.querySelectorAll('.sidebar-tab').forEach(t=>t.classList.remove('active'));
+      document.getElementById(`tab-${tab}`).classList.add('active');
+      
+      const titles={
+        pending:'Pending Orders',
+        confirmed:'Confirmed Orders',
+        preparing:'Preparing Orders',
+        ready:'Ready Orders',
+        delivered:'Completed Orders',
+        rejected:'Cancelled Orders'
+      };
+      document.getElementById('sectionTitle').textContent=titles[tab];
+      
+      loadOrders();
+    }
+    
     // Load orders
     function loadOrders(){
       console.log('Loading orders from Firebase...');
@@ -291,41 +357,58 @@
         const data=snapshot.val();
         console.log('Orders data:', data);
         if(!data){
-          document.getElementById('pendingOrders').innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>No pending orders</p></div>';
-          document.getElementById('activeOrders').innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>No active orders</p></div>';
-          document.getElementById('completedOrders').innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>No completed orders</p></div>';
+          document.getElementById('ordersContainer').innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>No orders</p></div>';
+          updateBadges({});
           return;
         }
         
-        const pendingOrders=[];
-        const activeOrders=[];
-        const completedOrders=[];
+        const ordersByStatus={
+          pending:[],
+          confirmed:[],
+          preparing:[],
+          ready:[],
+          delivered:[],
+          rejected:[]
+        };
         
         Object.entries(data).forEach(([id,order])=>{
-          if(order.status==='pending'){
-            pendingOrders.push({id,...order});
-          }else if(order.status==='confirmed'||order.status==='preparing'){
-            activeOrders.push({id,...order});
-          }else if(order.status==='ready'||order.status==='delivered'){
-            completedOrders.push({id,...order});
+          if(ordersByStatus[order.status]){
+            ordersByStatus[order.status].push({id,...order});
           }
         });
         
-        renderOrders('pendingOrders',pendingOrders);
-        renderOrders('activeOrders',activeOrders);
-        renderOrders('completedOrders',completedOrders);
+        updateBadges(ordersByStatus);
+        renderOrders(ordersByStatus[currentTab]);
       });
     }
     
+    // Update badges
+    function updateBadges(ordersByStatus){
+      document.getElementById('pendingBadge').textContent=ordersByStatus.pending?.length||0;
+      document.getElementById('confirmedBadge').textContent=ordersByStatus.confirmed?.length||0;
+      document.getElementById('preparingBadge').textContent=ordersByStatus.preparing?.length||0;
+      document.getElementById('readyBadge').textContent=ordersByStatus.ready?.length||0;
+      document.getElementById('deliveredBadge').textContent=ordersByStatus.delivered?.length||0;
+      document.getElementById('rejectedBadge').textContent=ordersByStatus.rejected?.length||0;
+    }
+    
     // Render orders
-    function renderOrders(containerId,orders){
-      const container=document.getElementById(containerId);
-      if(orders.length===0){
+    function renderOrders(orders){
+      const container=document.getElementById('ordersContainer');
+      console.log('Rendering orders:', orders);
+      if(!orders||orders.length===0){
         container.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>No orders</p></div>';
         return;
       }
       
-      container.innerHTML=orders.map(order=>createOrderCard(order)).join('');
+      try{
+        const cardsHtml=orders.map(order=>createOrderCard(order)).join('');
+        console.log('Cards HTML generated:', cardsHtml.substring(0,200));
+        container.innerHTML=cardsHtml;
+      }catch(error){
+        console.error('Error rendering orders:', error);
+        container.innerHTML='<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Error loading orders</p></div>';
+      }
     }
     
     // Create order card
