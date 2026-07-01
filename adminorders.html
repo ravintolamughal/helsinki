@@ -56,40 +56,40 @@
     }
     
     /* Order Card */
-    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;transition:var(--t);min-height:280px;display:flex;flex-direction:column}
-    .order-card.new-order{border:2px solid var(--gold);background:rgba(245,200,66,.08)}
+    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;transition:var(--t);min-height:220px;display:flex;flex-direction:column}
+    .order-card.new-order{border:2px solid var(--gold);background:rgba(245,200,66,.08);box-shadow:0 0 20px rgba(245,200,66,.3)}
     .order-card.preorder{border:2px solid #3b82f6;background:rgba(59,130,246,.08)}
-    .order-card:hover{transform:translateY(-3px)}
+    .order-card:hover{transform:translateY(-2px)}
     .order-card.expanded{min-height:auto}
     
     /* Order Header */
-    .order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1)}
-    .order-number{font-size:1.1rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif}
-    .order-time{font-size:.8rem;color:rgba(255,255,255,.6)}
-    .order-status{padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600}
+    .order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.1)}
+    .order-number{font-size:1rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif}
+    .order-time{font-size:.7rem;color:rgba(255,255,255,.5)}
+    .order-status{padding:3px 10px;border-radius:15px;font-size:.7rem;font-weight:600}
     .order-status.pending{background:rgba(245,200,66,.2);color:var(--gold)}
     .order-status.confirmed{background:rgba(59,130,246,.2);color:#3b82f6}
     .order-status.preparing{background:rgba(245,158,11,.2);color:#f59e0b}
     .order-status.ready{background:rgba(34,197,94,.2);color:#22c55e}
     
     /* Customer Info */
-    .customer-info{margin-bottom:16px}
-    .customer-name{font-size:1rem;font-weight:600;color:var(--white);margin-bottom:4px}
-    .customer-contact{font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:2px}
-    .customer-contact i{margin-right:6px;color:var(--gold);width:14px}
+    .customer-info{margin-bottom:12px}
+    .customer-name{font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:2px}
+    .customer-contact{font-size:.75rem;color:rgba(255,255,255,.5);margin-bottom:1px}
+    .customer-contact i{margin-right:4px;color:var(--gold);width:12px}
     
     /* Preorder Badge */
-    .preorder-badge{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;padding:6px 12px;border-radius:8px;font-size:.75rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;margin-bottom:12px}
-    .preorder-badge i{font-size:.9rem}
-    .preorder-time{font-size:.9rem;color:#3b82f6;font-weight:600;margin-top:4px}
+    .preorder-badge{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;padding:4px 10px;border-radius:6px;font-size:.7rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;margin-bottom:8px}
+    .preorder-badge i{font-size:.8rem}
+    .preorder-time{font-size:.75rem;color:#3b82f6;font-weight:600;margin-top:2px}
     
     /* Order Items */
-    .order-items{flex:1;margin-bottom:16px}
-    .order-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .order-items{flex:1;margin-bottom:12px}
+    .order-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
     .order-item:last-child{border-bottom:none}
-    .item-qty{background:var(--gold);color:var(--purple-deep);width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex-shrink:0}
-    .item-name{flex:1;font-size:.85rem;color:var(--white)}
-    .item-price{font-size:.85rem;color:var(--gold);font-weight:600}
+    .item-qty{background:var(--gold);color:var(--purple-deep);width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0}
+    .item-name{flex:1;font-size:.8rem;color:var(--white)}
+    .item-price{font-size:.8rem;color:var(--gold);font-weight:600}
     
     /* View More */
     .view-more{color:var(--gold);font-size:.85rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;margin-top:8px;transition:.3s}
@@ -110,16 +110,16 @@
     .total-amount{font-size:1.1rem;color:var(--gold)}
     
     /* Order Actions */
-    .order-actions{display:flex;gap:8px;margin-top:16px}
-    .action-btn{flex:1;padding:12px;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;transition:.3s;border:none;display:flex;align-items:center;justify-content:center;gap:6px;font-family:'Poppins',sans-serif}
+    .order-actions{display:flex;gap:6px;margin-top:12px}
+    .action-btn{flex:1;padding:10px;border-radius:8px;font-size:.75rem;font-weight:600;cursor:pointer;transition:.3s;border:none;display:flex;align-items:center;justify-content:center;gap:4px;font-family:'Poppins',sans-serif}
     .btn-accept{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
-    .btn-accept:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,197,94,.3)}
+    .btn-accept:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(34,197,94,.3)}
     .btn-ready{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
-    .btn-ready:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(59,130,246,.3)}
+    .btn-ready:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(59,130,246,.3)}
     .btn-complete{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
-    .btn-complete:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(245,158,11,.3)}
+    .btn-complete:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(245,158,11,.3)}
     .btn-cancel{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
-    .btn-cancel:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(239,68,68,.3)}
+    .btn-cancel:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(239,68,68,.3)}
     .btn-view{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
     .btn-view:hover{background:rgba(255,255,255,.15);border-color:var(--gold)}
     
@@ -194,13 +194,8 @@
       <div class="sidebar-tabs">
         <div class="sidebar-tab active" onclick="switchTab('pending')" id="tab-pending">
           <i class="fas fa-clock"></i>
-          Pending
+          Pending & Confirmed
           <span class="tab-badge" id="pendingBadge">0</span>
-        </div>
-        <div class="sidebar-tab" onclick="switchTab('confirmed')" id="tab-confirmed">
-          <i class="fas fa-utensils"></i>
-          Confirmed
-          <span class="tab-badge" id="confirmedBadge">0</span>
         </div>
         <div class="sidebar-tab" onclick="switchTab('preparing')" id="tab-preparing">
           <i class="fas fa-fire"></i>
@@ -313,6 +308,7 @@
     let ordersRef=null;
     let processedOrders=new Set();
     let currentTab='pending';
+    let notificationInterval=null;
     
     // Listen for orders
     document.addEventListener('DOMContentLoaded',()=>{
@@ -324,6 +320,7 @@
             if(order.status==='pending'&&!processedOrders.has(id)){
               showNewOrderModal(id,order);
               processedOrders.add(id);
+              startNotificationSound();
             }
           });
         }
@@ -338,8 +335,7 @@
       document.getElementById(`tab-${tab}`).classList.add('active');
       
       const titles={
-        pending:'Pending Orders',
-        confirmed:'Confirmed Orders',
+        pending:'Pending & Confirmed Orders',
         preparing:'Preparing Orders',
         ready:'Ready Orders',
         delivered:'Completed Orders',
@@ -348,6 +344,23 @@
       document.getElementById('sectionTitle').textContent=titles[tab];
       
       loadOrders();
+    }
+    
+    // Start repeating notification sound
+    function startNotificationSound(){
+      stopNotificationSound();
+      notificationInterval=setInterval(()=>{
+        const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+        audio.play().catch(()=>{});
+      },3000);
+    }
+    
+    // Stop notification sound
+    function stopNotificationSound(){
+      if(notificationInterval){
+        clearInterval(notificationInterval);
+        notificationInterval=null;
+      }
     }
     
     // Load orders
@@ -377,15 +390,28 @@
           }
         });
         
+        // Sort orders by timestamp (oldest first so newest appears on right)
+        Object.keys(ordersByStatus).forEach(status=>{
+          ordersByStatus[status].sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+        });
+        
+        // Combine pending and confirmed for the pending tab
+        const combinedPending=currentTab==='pending'
+          ?[...ordersByStatus.pending,...ordersByStatus.confirmed]
+          :ordersByStatus[currentTab];
+        
+        // Sort combined orders
+        combinedPending.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+        
         updateBadges(ordersByStatus);
-        renderOrders(ordersByStatus[currentTab]);
+        renderOrders(combinedPending);
       });
     }
     
     // Update badges
     function updateBadges(ordersByStatus){
-      document.getElementById('pendingBadge').textContent=ordersByStatus.pending?.length||0;
-      document.getElementById('confirmedBadge').textContent=ordersByStatus.confirmed?.length||0;
+      const pendingCount=(ordersByStatus.pending?.length||0)+(ordersByStatus.confirmed?.length||0);
+      document.getElementById('pendingBadge').textContent=pendingCount;
       document.getElementById('preparingBadge').textContent=ordersByStatus.preparing?.length||0;
       document.getElementById('readyBadge').textContent=ordersByStatus.ready?.length||0;
       document.getElementById('deliveredBadge').textContent=ordersByStatus.delivered?.length||0;
@@ -413,6 +439,12 @@
     
     // Create order card
     function createOrderCard(order){
+      console.log('Creating card for order:', order);
+      if(!order||!order.items||!order.customer){
+        console.error('Invalid order data:', order);
+        return '';
+      }
+      
       const itemsToShow=order.items.slice(0,3);
       const hasMoreItems=order.items.length>3;
       const isPreorder=order.preorder;
@@ -486,13 +518,8 @@
               </button>
             `:''}
             ${order.status==='preparing'?`
-              <button class="action-btn btn-complete" onclick="updateOrderStatus('${order.id}','ready')">
-                <i class="fas fa-check-circle"></i> Ready
-              </button>
-            `:''}
-            ${order.status==='ready'?`
               <button class="action-btn btn-complete" onclick="updateOrderStatus('${order.id}','delivered')">
-                <i class="fas fa-check-double"></i> Completed
+                <i class="fas fa-check-double"></i> Ready
               </button>
             `:''}
           </div>
@@ -558,6 +585,7 @@
     function acceptNewOrder(){
       const modal=document.getElementById('newOrderModal');
       modal.classList.remove('show');
+      stopNotificationSound();
       
       db.ref(`orders/${currentNewOrderId}`).once('value').then((snapshot)=>{
         const order=snapshot.val();
