@@ -1211,12 +1211,14 @@ let orderStatusRef=null,countdownInterval=null;
 
 // Load menu from Firebase (same structure as menu.html)
 function loadMenuFromFirebase(){
-  db.ref('menu').on('value',(snapshot)=>{
+  db.ref('menu').once('value').then((snapshot)=>{
     const data=snapshot.val();
+    console.log('Firebase data:',data);
     if(data&&data.items&&Object.keys(data.items).length>0){
       // Extract items from the same structure as menu.html
       const itemsData=data.items;
       menuItems=Object.entries(itemsData).map(([id,item])=>({...item,id}));
+      console.log('Loaded menuItems:',menuItems);
       // Load categories from Firebase
       if(data.categories&&Array.isArray(data.categories)){
         categories=['all',...data.categories];
@@ -1224,13 +1226,12 @@ function loadMenuFromFirebase(){
       renderMenu();
       renderCategoryTabs();
     }else{
-      // Load default menu if Firebase is empty or items is empty
-      loadDefaultMenu();
+      // Show empty message if Firebase has no items
+      document.getElementById('menuGrid').innerHTML='<div class="empty-state" style="text-align:center;padding:60px 20px;color:var(--text-muted)"><i class="fas fa-utensils" style="font-size:3rem;margin-bottom:16px;opacity:0.5"></i><p>No menu items available. Please add items in Menu Setup.</p></div>';
     }
-  },(error)=>{
+  }).catch((error)=>{
     console.error('Error loading menu:',error);
-    // Load default menu on error
-    loadDefaultMenu();
+    document.getElementById('menuGrid').innerHTML='<div class="empty-state" style="text-align:center;padding:60px 20px;color:var(--text-muted)"><i class="fas fa-exclamation-triangle" style="font-size:3rem;margin-bottom:16px;opacity:0.5"></i><p>Error loading menu. Please try again.</p></div>';
   });
   
   // Load order counter
