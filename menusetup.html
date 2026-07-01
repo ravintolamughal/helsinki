@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Menu Setup | Mughal Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+:root{
+  --purple:#4c00b0;--purple-dark:#36007d;--purple-deep:#25005a;--purple-mid:#6a1ec8;
+  --purple-light:#f0e8ff;--gold:#f5c842;--gold-dark:#c9a227;--white:#ffffff;
+  --cream:#f9f5ff;--text:#2a2a2a;--text-light:#666;--border:#e2d5f5;
+  --shadow:rgba(76,0,176,0.18);--r:18px;--t:all 0.38s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Poppins',sans-serif;color:var(--text);background:linear-gradient(135deg,var(--purple-deep),var(--purple),var(--purple-mid));min-height:100vh;overflow-x:hidden;padding-top:80px}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+img{display:block;width:100%;object-fit:cover}
+.container{max-width:1600px;margin:0 auto;padding:0 24px}
+
+/* Navbar */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:12px 32px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;transition:var(--t);background:rgba(37,0,90,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-logo img{height:50px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
+.nav-links a{color:rgba(255,255,255,.85);font-size:.88rem;font-weight:500;transition:all .3s;padding:8px 12px;border-radius:8px}
+.nav-links a:hover{color:var(--gold);background:rgba(245,200,66,.1)}
+.nav-right{display:flex;gap:10px;align-items:center;justify-content:flex-end}
+.nav-btn{padding:10px 20px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border:none;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif;text-decoration:none}
+.nav-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+
+/* Header */
+.setup-header{text-align:center;padding:40px 0}
+.setup-header h1{font-family:'Playfair Display',serif;font-size:2.5rem;color:#fff;margin-bottom:12px}
+.setup-header p{color:rgba(255,255,255,.7);font-size:1.1rem}
+
+/* Layout */
+.setup-container{display:grid;grid-template-columns:1fr;gap:24px;margin-bottom:40px}
+
+/* Action Bar */
+.action-bar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:24px;padding:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;flex-wrap:wrap}
+.action-left{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.action-btn{padding:10px 20px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border:none;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px}
+.action-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.action-btn.secondary{background:rgba(255,255,255,.08);color:#fff;border:2px solid rgba(255,255,255,.15)}
+.action-btn.secondary:hover{background:rgba(255,255,255,.12)}
+.file-input-wrapper{position:relative;overflow:hidden}
+.file-input-wrapper input[type="file"]{position:absolute;left:0;top:0;opacity:0;cursor:pointer;width:100%;height:100%}
+
+/* Settings Panel */
+.settings-panel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;margin-bottom:24px}
+.settings-panel h2{color:var(--gold);font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:20px}
+.settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.setting-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px}
+.setting-label{color:rgba(255,255,255,.8);font-size:.85rem;font-weight:500}
+.toggle-switch{position:relative;width:48px;height:24px}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,.2);border-radius:24px;transition:var(--t)}
+.toggle-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:var(--t)}
+.toggle-switch input:checked+.toggle-slider{background:linear-gradient(135deg,var(--gold),var(--gold-dark))}
+.toggle-switch input:checked+.toggle-slider:before{transform:translateX(24px)}
+
+/* Table */
+.table-container{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;overflow-x:auto}
+.menu-table{width:100%;border-collapse:collapse;min-width:1200px}
+.menu-table th{background:rgba(245,200,66,.1);color:var(--gold);padding:12px 16px;text-align:left;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid rgba(245,200,66,.2)}
+.menu-table td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.8);font-size:.85rem}
+.menu-table tr:hover{background:rgba(255,255,255,.05)}
+.menu-table input,.menu-table select,.menu-table textarea{width:100%;padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:.8rem;font-family:'Poppins',sans-serif;transition:var(--t)}
+.menu-table input:focus,.menu-table select:focus,.menu-table textarea:focus{border-color:var(--gold);outline:none}
+.menu-table textarea{resize:vertical;min-height:60px}
+.table-actions{display:flex;gap:8px}
+.table-btn{padding:6px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif;border:none}
+.table-btn.edit{background:rgba(59,130,246,.15);color:#3b82f6}
+.table-btn.edit:hover{background:rgba(59,130,246,.25)}
+.table-btn.delete{background:rgba(239,68,68,.15);color:#ef4444}
+.table-btn.delete:hover{background:rgba(239,68,68,.25)}
+.table-btn.save{background:rgba(34,197,94,.15);color:#22c55e}
+.table-btn.save:hover{background:rgba(34,197,94,.25)}
+
+/* Image Preview */
+.img-preview{width:50px;height:50px;border-radius:8px;object-fit:cover;background:rgba(0,0,0,.2)}
+
+/* JSON Preview */
+.json-preview{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;margin-top:16px;max-height:400px;overflow-y:auto}
+.json-preview pre{color:#4ade80;font-family:'Monaco','Consolas',monospace;font-size:.75rem;white-space:pre-wrap;word-wrap:break-word}
+
+/* Toast */
+.toast{position:fixed;top:30px;right:30px;z-index:9999;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:13px 20px;border-radius:14px;font-size:.85rem;font-weight:600;box-shadow:0 12px 38px rgba(34,197,94,.4);opacity:0;transform:translateX(18px);transition:all .42s cubic-bezier(.4,0,.2,1);pointer-events:none;max-width:300px}
+.toast.show{opacity:1;transform:translateX(0);pointer-events:all}
+.toast.error{background:linear-gradient(135deg,#c0392b,#e74c3c);box-shadow:0 12px 38px rgba(239,68,68,.4)}
+
+/* Loading */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;color:rgba(255,255,255,.7)}
+.loading i{font-size:3rem;color:var(--gold);margin-bottom:16px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Empty State */
+.empty-state{text-align:center;padding:40px 20px;color:rgba(255,255,255,.5)}
+.empty-state i{font-size:3rem;color:var(--gold);margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="https://davidbantu1999.github.io/mughal-restaurant/logo.png" alt="Mughal Restaurant"/>
+  </div>
+  <div class="nav-links">
+    <a href="food-ordering.html"><i class="fas fa-home"></i> Order Page</a>
+    <a href="menu.html"><i class="fas fa-book-open"></i> Menu</a>
+    <a href="menu-editor.html"><i class="fas fa-edit"></i> Menu Editor</a>
+    <a href="menusetup.html"><i class="fas fa-cog"></i> Menu Setup</a>
+  </div>
+  <div class="nav-right">
+    <a href="food-ordering.html" class="nav-btn"><i class="fas fa-eye"></i> View Order Page</a>
+  </div>
+</nav>
+
+<!-- Header -->
+<div class="setup-header">
+  <h1>Menu Setup</h1>
+  <p>Manage menu items with JSON import and tag visibility controls</p>
+</div>
+
+<div class="container">
+  <div class="setup-container">
+    
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <div class="action-left">
+        <button class="action-btn" onclick="addNewItem()">
+          <i class="fas fa-plus"></i> Add New Item
+        </button>
+        <div class="file-input-wrapper">
+          <button class="action-btn secondary">
+            <i class="fas fa-upload"></i> Import JSON
+          </button>
+          <input type="file" id="jsonFileInput" accept=".json" onchange="importJSON(event)"/>
+        </div>
+      </div>
+      <button class="action-btn" onclick="saveToFirebase()">
+        <i class="fas fa-save"></i> Confirm & Save to Firebase
+      </button>
+    </div>
+    
+    <!-- Settings Panel -->
+    <div class="settings-panel">
+      <h2><i class="fas fa-sliders-h"></i> Tag Visibility Settings</h2>
+      <div class="settings-grid">
+        <div class="setting-item">
+          <span class="setting-label">Show Veg/Non-Veg Badge</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="showVegNonVeg" checked onchange="updateTable()"/>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span class="setting-label">Show Spice Level</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="showSpice" checked onchange="updateTable()"/>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span class="setting-label">Show Popular Badge</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="showPopular" checked onchange="updateTable()"/>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span class="setting-label">Show Rating</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="showRating" checked onchange="updateTable()"/>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span class="setting-label">Show Allergy Tags</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="showAllergies" checked onchange="updateTable()"/>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <!-- JSON Preview -->
+    <div id="jsonPreviewContainer" style="display:none">
+      <div class="settings-panel">
+        <h2><i class="fas fa-file-code"></i> JSON Preview</h2>
+        <div class="json-preview">
+          <pre id="jsonPreviewContent"></pre>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:12px">
+          <button class="action-btn secondary" onclick="closeJsonPreview()">Cancel</button>
+          <button class="action-btn" onclick="confirmJsonImport()">Import to Table</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Menu Table -->
+    <div class="table-container">
+      <div id="tableContent">
+        <div class="loading">
+          <i class="fas fa-spinner"></i>
+          <p>Loading menu...</p>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Success!</span></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+// Firebase Configuration
+firebase.initializeApp({
+  apiKey:"AIzaSyAmimDsjW_pF2NGw-w-40QzTsgmf1tdqyI",
+  authDomain:"bdmsalonappointment.firebaseapp.com",
+  databaseURL:"https://bdmsalonappointment-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:"bdmsalonappointment",
+  storageBucket:"bdmsalonappointment.firebasestorage.app",
+  messagingSenderId:"123933913893",
+  appId:"1:123933913893:web:c1f57caf4dc2a5440ba0cc"
+});
+const db=firebase.database();
+
+let menuItems=[];
+let importedJsonData=null;
+let nextId=1;
+
+// Default 12 items
+const defaultItems=[
+  {id:1,name:'Samosa',description:'Crispy pastry filled with spiced potatoes and peas',price:4.50,category:'starters',image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',rating:4.8,popular:true,spice:'Mild',type:'veg',allergies:[]},
+  {id:2,name:'Chicken Tikka',description:'Tender chicken marinated in yogurt and spices',price:8.50,category:'starters',image:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80',rating:4.7,popular:true,spice:'Medium',type:'nonveg',allergies:[]},
+  {id:3,name:'Butter Chicken',description:'Creamy tomato-based curry with tender chicken',price:14.50,category:'mains',image:'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80',rating:4.9,popular:true,spice:'Mild',type:'nonveg',allergies:[]},
+  {id:4,name:'Lamb Rogan Josh',description:'Aromatic lamb curry with Kashmiri spices',price:16.00,category:'mains',image:'https://images.unsplash.com/photo-1545247181-516773cae754?w=500&q=80',rating:4.6,popular:false,spice:'Hot',type:'nonveg',allergies:[]},
+  {id:5,name:'Palak Paneer',description:'Cottage cheese in creamy spinach gravy',price:12.00,category:'mains',image:'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80',rating:4.5,popular:false,spice:'Mild',type:'veg',allergies:[]},
+  {id:6,name:'Chicken Biryani',description:'Fragrant basmati rice with spiced chicken',price:13.50,category:'biryani',image:'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80',rating:4.8,popular:true,spice:'Medium',type:'nonveg',allergies:[]},
+  {id:7,name:'Mutton Biryani',description:'Aromatic rice with tender mutton pieces',price:15.00,category:'biryani',image:'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&q=80',rating:4.7,popular:true,spice:'Hot',type:'nonveg',allergies:[]},
+  {id:8,name:'Vegetable Biryani',description:'Mixed vegetables in fragrant spiced rice',price:11.00,category:'biryani',image:'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=500&q=80',rating:4.4,popular:false,spice:'Mild',type:'veg',allergies:[]},
+  {id:9,name:'Garlic Naan',description:'Fresh baked bread with garlic butter',price:3.00,category:'breads',image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',rating:4.6,popular:false,spice:'Mild',type:'veg',allergies:[]},
+  {id:10,name:'Butter Naan',description:'Soft bread brushed with butter',price:2.50,category:'breads',image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',rating:4.5,popular:false,spice:'Mild',type:'veg',allergies:[]},
+  {id:11,name:'Mango Lassi',description:'Refreshing yogurt drink with mango',price:4.50,category:'drinks',image:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80',rating:4.8,popular:true,spice:'None',type:'veg',allergies:[]},
+  {id:12,name:'Gulab Jamun',description:'Sweet milk dumplings in syrup',price:5.00,category:'desserts',image:'https://images.unsplash.com/photo-1666190098808-9b0269b8d0a9?w=500&q=80',rating:4.7,popular:true,spice:'None',type:'veg',allergies:[]}
+];
+
+// Load menu from Firebase
+function loadMenuFromFirebase(){
+  db.ref('menu').once('value').then((snapshot)=>{
+    const data=snapshot.val();
+    if(data&&data.items){
+      const itemsData=data.items;
+      menuItems=Object.entries(itemsData).map(([id,item])=>({...item,id}));
+      nextId=Math.max(...menuItems.map(i=>parseInt(i.id)||0))+1;
+    }else{
+      menuItems=[...defaultItems];
+      nextId=13;
+    }
+    renderTable();
+  }).catch((error)=>{
+    console.error('Error loading menu:',error);
+    menuItems=[...defaultItems];
+    nextId=13;
+    renderTable();
+  });
+}
+
+// Render table
+function renderTable(){
+  const container=document.getElementById('tableContent');
+  const showVegNonVeg=document.getElementById('showVegNonVeg').checked;
+  const showSpice=document.getElementById('showSpice').checked;
+  const showPopular=document.getElementById('showPopular').checked;
+  const showRating=document.getElementById('showRating').checked;
+  const showAllergies=document.getElementById('showAllergies').checked;
+  
+  let html='<table class="menu-table"><thead><tr>';
+  html+='<th>ID</th>';
+  html+='<th>Image</th>';
+  html+='<th>Name</th>';
+  html+='<th>Description</th>';
+  html+='<th>Price (€)</th>';
+  html+='<th>Category</th>';
+  if(showSpice)html+='<th>Spice</th>';
+  if(showVegNonVeg)html+='<th>Type</th>';
+  if(showPopular)html+='<th>Popular</th>';
+  if(showRating)html+='<th>Rating</th>';
+  if(showAllergies)html+='<th>Allergies</th>';
+  html+='<th>Actions</th>';
+  html+='</tr></thead><tbody>';
+  
+  menuItems.forEach((item,index)=>{
+    html+='<tr>';
+    html+='<td><input type="number" value="'+item.id+'" onchange="updateItem('+index+',\'id\',this.value)" style="width:60px"/></td>';
+    html+='<td><img src="'+item.image+'" class="img-preview" onerror="this.src=\'https://via.placeholder.com/50\'"/><input type="text" value="'+item.image+'" onchange="updateItem('+index+',\'image\',this.value)" style="margin-top:4px;font-size:.7rem"/></td>';
+    html+='<td><input type="text" value="'+item.name+'" onchange="updateItem('+index+',\'name\',this.value)"/></td>';
+    html+='<td><textarea onchange="updateItem('+index+',\'description\',this.value)">'+item.description+'</textarea></td>';
+    html+='<td><input type="number" step="0.01" value="'+item.price+'" onchange="updateItem('+index+',\'price\',this.value)"/></td>';
+    html+='<td><select onchange="updateItem('+index+',\'category\',this.value)">';
+    html+='<option value="starters" '+('starters'===item.category?'selected':'')+'>Starters</option>';
+    html+='<option value="mains" '+('mains'===item.category?'selected':'')+'>Mains</option>';
+    html+='<option value="biryani" '+('biryani'===item.category?'selected':'')+'>Biryani</option>';
+    html+='<option value="breads" '+('breads'===item.category?'selected':'')+'>Breads</option>';
+    html+='<option value="drinks" '+('drinks'===item.category?'selected':'')+'>Drinks</option>';
+    html+='<option value="desserts" '+('desserts'===item.category?'selected':'')+'>Desserts</option>';
+    html+='</select></td>';
+    if(showSpice){
+      html+='<td><select onchange="updateItem('+index+',\'spice\',this.value)">';
+      html+='<option value="None" '+('None'===item.spice?'selected':'')+'>None</option>';
+      html+='<option value="Mild" '+('Mild'===item.spice?'selected':'')+'>Mild</option>';
+      html+='<option value="Medium" '+('Medium'===item.spice?'selected':'')+'>Medium</option>';
+      html+='<option value="Hot" '+('Hot'===item.spice?'selected':'')+'>Hot</option>';
+      html+='<option value="Extra Hot" '+('Extra Hot'===item.spice?'selected':'')+'>Extra Hot</option>';
+      html+='</select></td>';
+    }
+    if(showVegNonVeg){
+      html+='<td><select onchange="updateItem('+index+',\'type\',this.value)">';
+      html+='<option value="veg" '+('veg'===item.type?'selected':'')+'>Vegetarian</option>';
+      html+='<option value="nonveg" '+('nonveg'===item.type?'selected':'')+'>Non-Vegetarian</option>';
+      html+='</select></td>';
+    }
+    if(showPopular)html+='<td><input type="checkbox" '+(item.popular?'checked':'')+' onchange="updateItem('+index+',\'popular\',this.checked)"/></td>';
+    if(showRating)html+='<td><input type="number" step="0.1" min="0" max="5" value="'+item.rating+'" onchange="updateItem('+index+',\'rating\',this.value)" style="width:70px"/></td>';
+    if(showAllergies)html+='<td><input type="text" value="'+(item.allergies||[]).join(', ')+'" onchange="updateItem('+index+',\'allergies\',this.value)" placeholder="L, G, etc."/></td>';
+    html+='<td><div class="table-actions">';
+    html+='<button class="table-btn delete" onclick="deleteItem('+index+')"><i class="fas fa-trash"></i></button>';
+    html+='</div></td>';
+    html+='</tr>';
+  });
+  
+  html+='</tbody></table>';
+  container.innerHTML=html;
+}
+
+// Update item
+function updateItem(index,field,value){
+  if(field==='id')value=parseInt(value)||index+1;
+  if(field==='price')value=parseFloat(value)||0;
+  if(field==='rating')value=parseFloat(value)||0;
+  if(field==='popular')value=Boolean(value);
+  if(field==='allergies'){
+    value=value.split(',').map(s=>s.trim()).filter(s=>s);
+  }
+  menuItems[index][field]=value;
+}
+
+// Add new item
+function addNewItem(){
+  const newItem={
+    id:nextId++,
+    name:'',
+    description:'',
+    price:0,
+    category:'starters',
+    image:'',
+    spice:'Mild',
+    type:'veg',
+    popular:false,
+    rating:0,
+    allergies:[]
+  };
+  menuItems.push(newItem);
+  renderTable();
+  showToast('New item added');
+}
+
+// Delete item
+function deleteItem(index){
+  if(confirm('Are you sure you want to delete this item?')){
+    menuItems.splice(index,1);
+    renderTable();
+    showToast('Item deleted');
+  }
+}
+
+// Update table based on settings
+function updateTable(){
+  renderTable();
+}
+
+// Import JSON
+function importJSON(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const json=JSON.parse(e.target.result);
+      importedJsonData=json;
+      document.getElementById('jsonPreviewContent').textContent=JSON.stringify(json,null,2);
+      document.getElementById('jsonPreviewContainer').style.display='block';
+      showToast('JSON loaded successfully');
+    }catch(error){
+      showToast('Invalid JSON file',true);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value='';
+}
+
+// Confirm JSON import
+function confirmJsonImport(){
+  if(!importedJsonData)return;
+  
+  if(Array.isArray(importedJsonData)){
+    menuItems=importedJsonData.map((item,index)=>({
+      id:item.id||index+1,
+      name:item.name||'',
+      description:item.description||'',
+      price:item.price||0,
+      category:item.category||'starters',
+      image:item.image||'',
+      spice:item.spice||'Mild',
+      type:item.type||'veg',
+      popular:item.popular||false,
+      rating:item.rating||0,
+      allergies:item.allergies||[]
+    }));
+  }else if(importedJsonData.items){
+    menuItems=Object.entries(importedJsonData.items).map(([id,item],index)=>({
+      id:parseInt(id)||index+1,
+      name:item.name||'',
+      description:item.description||'',
+      price:item.price||0,
+      category:item.category||'starters',
+      image:item.image||'',
+      spice:item.spice||'Mild',
+      type:item.type||'veg',
+      popular:item.popular||false,
+      rating:item.rating||0,
+      allergies:item.allergies||[]
+    }));
+  }
+  
+  nextId=Math.max(...menuItems.map(i=>parseInt(i.id)||0))+1;
+  closeJsonPreview();
+  renderTable();
+  showToast('JSON imported successfully');
+}
+
+// Close JSON preview
+function closeJsonPreview(){
+  document.getElementById('jsonPreviewContainer').style.display='none';
+  importedJsonData=null;
+}
+
+// Save to Firebase
+function saveToFirebase(){
+  const items={};
+  const categories=['starters','mains','biryani','breads','drinks','desserts'];
+  
+  menuItems.forEach(item=>{
+    items[item.id]=item;
+  });
+  
+  db.ref('menu').set({
+    categories:categories,
+    items:items
+  }).then(()=>{
+    showToast('Menu saved to Firebase successfully!');
+  }).catch((error)=>{
+    showToast('Error saving to Firebase: '+error.message,true);
+  });
+}
+
+// Toast notification
+function showToast(msg,isError=false){
+  const toast=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  toast.classList.toggle('error',isError);
+  toast.querySelector('i').className=isError?'fas fa-exclamation-circle':'fas fa-check-circle';
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),3500);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded',()=>{
+  loadMenuFromFirebase();
+});
+</script>
+</body>
+</html>
