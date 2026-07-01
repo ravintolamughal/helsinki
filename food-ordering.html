@@ -600,11 +600,12 @@ img{display:block;width:100%;object-fit:cover}
 .track-order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .track-order-id{font-size:.85rem;color:rgba(255,255,255,.7)}
 .track-order-status{font-size:.85rem;font-weight:600;padding:4px 10px;border-radius:20px}
-.track-order-status.pending{background:rgba(245,200,66,.2);color:var(--gold)}
-.track-order-status.confirmed{background:rgba(59,130,246,.2);color:#3b82f6}
-.track-order-status.preparing{background:rgba(245,158,11,.2);color:#f59e0b}
-.track-order-status.ready{background:rgba(34,197,94,.2);color:#22c55e}
+.track-order-status.pending{background:rgba(245,200,66,.2);color:var(--gold);border:1px solid var(--gold)}
+.track-order-status.confirmed{background:rgba(59,130,246,.2);color:#3b82f6;border:1px solid #3b82f6}
+.track-order-status.preparing{background:rgba(245,158,11,.2);color:#f59e0b;border:1px solid #f59e0b}
+.track-order-status.ready{background:rgba(34,197,94,.2);color:#22c55e;border:1px solid #22c55e;box-shadow:0 0 10px rgba(34,197,94,.3)}
 .track-order-items{font-size:.8rem;color:rgba(255,255,255,.7);margin-bottom:8px}
+.track-order-timer{background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.3);border-radius:8px;padding:8px 12px;margin-top:8px;display:flex;align-items:center;gap:8px;color:var(--gold);font-size:.85rem;font-weight:600}
 .track-order-total{font-size:1rem;font-weight:600;color:var(--gold)}
 .track-order-time{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:8px}
 .track-empty{text-align:center;padding:40px 20px;color:rgba(255,255,255,.5)}
@@ -2096,7 +2097,7 @@ function toggleTrackOrderPanel(){
 
 function loadTrackOrders(){
   const content=document.getElementById('trackPanelContent');
-  db.ref('orders').orderByChild('userId').equalTo(userId).once('value').then((snapshot)=>{
+  db.ref('orders').orderByChild('userId').equalTo(userId).on('value',(snapshot)=>{
     const orders=snapshot.val();
     if(!orders||Object.keys(orders).length===0){
       content.innerHTML='<div class="track-empty"><i class="fas fa-box-open"></i><p>No active orders</p></div>';
@@ -2108,23 +2109,50 @@ function loadTrackOrders(){
     document.getElementById('trackBadge').textContent=activeOrders.length;
     document.getElementById('trackBadge').classList.toggle('hidden',activeOrders.length===0);
     
-    content.innerHTML=activeOrders.map(([id,order])=>`
-      <div class="track-order-item ${order.status}">
+    content.innerHTML=activeOrders.map(([id,order])=>{
+      const showTimer=order.status!=='ready'&&order.status!=='delivered'&&order.estimatedTime&&order.estimatedSetAt;
+      const elapsedMs=Date.now()-order.estimatedSetAt;
+      const remainingMs=(order.estimatedTime*60*1000)-elapsedMs;
+      const remainingMinutes=Math.max(0,Math.ceil(remainingMs/60000));
+      
+      return `
+      <div class="track-order-item ${order.status}" data-order-id="${id}">
         <div class="track-order-header">
           <span class="track-order-id">#${id.replace('order_','')}</span>
           <span class="track-order-status ${order.status}">${order.status.charAt(0).toUpperCase()+order.status.slice(1)}</span>
         </div>
         <div class="track-order-items">${order.items.map(i=>i.name+' x'+i.quantity).join(', ')}</div>
-        <div class="track-order-total">Total: €${order.total.toFixed(2)}</div>
-        <div class="track-order-time">
-          ${order.preorder?'Pickup: '+order.pickupTime:'Estimated: '+(order.estimatedTime?order.estimatedTime+' mins':'ASAP')}
-        </div>
-        ${order.status==='pending'?'<p style="font-size:.8rem;color:rgba(255,255,255,.5);margin-top:8px">⏳ Please wait, your order will be confirmed soon</p>':''}
-      </div>
-    `).join('');
-  }).catch((error)=>{
-    console.error('Error loading orders:',error);
-    content.innerHTML='<div class="track-empty"><i class="fas fa-exclamation-circle"></i><p>Error loading orders</p></div>';
+        ${showTimer?`
+          <div class="track-order-timer">
+            <i class="fas fa-clock"></i>
+            <span>Est. ${remainingMinutes} min</span>
+          </div>
+        `:''}
+      </div>`;
+    }).join('');
+    
+    // Update timer every minute
+    activeOrders.forEach(([id,order])=>{
+      if(order.status!=='ready'&&order.status!=='delivered'&&order.estimatedTime&&order.estimatedSetAt){
+        updateOrderTimer(id);
+      }
+    });
+  });
+}
+
+function updateOrderTimer(orderId){
+  const timerElement=document.querySelector(`[data-order-id="${orderId}"] .track-order-timer span`);
+  if(!timerElement)return;
+  
+  db.ref(`orders/${orderId}`).once('value').then((snapshot)=>{
+    const order=snapshot.val();
+    if(!order||order.status==='ready'||order.status==='delivered')return;
+    
+    const elapsedMs=Date.now()-order.estimatedSetAt;
+    const remainingMs=(order.estimatedTime*60*1000)-elapsedMs;
+    const remainingMinutes=Math.max(0,Math.ceil(remainingMs/60000));
+    
+    timerElement.textContent=`Est. ${remainingMinutes} min`;
   });
 }
 
