@@ -1214,11 +1214,11 @@ function removeCartItem(itemId){
 }
 
 function updateQuantity(itemId,change){
-  const item=cart.find(i=>i.id===itemId);
+  const item=cart.find(i=>String(i.id)===String(itemId));
   if(item){
     item.quantity+=change;
     if(item.quantity<=0){
-      cart=cart.filter(i=>i.id!==itemId);
+      cart=cart.filter(i=>String(i.id)!==String(itemId));
       saveCart();
       updateCart();
       return;
@@ -1234,7 +1234,7 @@ function updateQuantity(itemId,change){
 }
 
 function updateItemNote(itemId,note){
-  const item=cart.find(i=>i.id===itemId);
+  const item=cart.find(i=>String(i.id)===String(itemId));
   if(item){
     item.note=note;
     saveCart();
