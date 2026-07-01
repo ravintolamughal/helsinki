@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Mughal Restaurant</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --purple:#4c00b0;--purple-dark:#36007d;--purple-deep:#25005a;--purple-mid:#6a1ec8;
+      --purple-light:#f0e8ff;--gold:#f5c842;--gold-dark:#c9a227;--white:#ffffff;
+      --cream:#f9f5ff;--text:#2a2a2a;--text-light:#666;--border:#e2d5f5;
+      --shadow:rgba(76,0,176,0.18);--r:18px;--t:all 0.38s cubic-bezier(.4,0,.2,1);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Poppins',sans-serif;color:var(--white);background:linear-gradient(135deg,var(--purple-deep),var(--purple),var(--purple-mid));min-height:100vh}
+    .container{max-width:600px;margin:0 auto;padding:20px}
+    
+    /* Navbar */
+    .navbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(37,0,90,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:24px}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white)}
+    .nav-back{color:var(--white);text-decoration:none;font-size:1rem}
+    
+    /* Form */
+    .form-section{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:20px}
+    .section-title{font-size:1.1rem;font-weight:600;margin-bottom:20px;color:var(--gold)}
+    .form-group{margin-bottom:20px}
+    .form-label{display:block;font-size:.85rem;font-weight:500;color:rgba(255,255,255,.7);margin-bottom:8px}
+    .form-input{width:100%;padding:14px 16px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.15);border-radius:10px;color:var(--white);font-size:.95rem;font-family:'Poppins',sans-serif;transition:.3s}
+    .form-input:focus{border-color:var(--gold);outline:none}
+    .form-input::placeholder{color:rgba(255,255,255,.4)}
+    
+    /* Payment Methods */
+    .payment-options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .payment-option{padding:16px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;transition:.3s;text-align:center}
+    .payment-option:hover{border-color:var(--gold)}
+    .payment-option.selected{border-color:var(--gold);background:rgba(245,200,66,.1)}
+    .payment-option i{font-size:1.5rem;color:var(--gold);margin-bottom:8px;display:block}
+    .payment-option span{font-size:.85rem;color:var(--white)}
+    
+    /* Preorder Toggle */
+    .toggle-container{display:flex;align-items:center;justify-content:space-between;padding:16px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;transition:.3s}
+    .toggle-container.selected{border-color:var(--gold);background:rgba(245,200,66,.1)}
+    .toggle-label{font-size:.95rem;font-weight:500;color:var(--white)}
+    .toggle-switch{width:50px;height:26px;background:rgba(255,255,255,.15);border-radius:13px;position:relative;transition:.3s}
+    .toggle-switch.selected{background:var(--gold)}
+    .toggle-switch::after{content:'';position:absolute;width:22px;height:22px;background:#fff;border-radius:50%;top:2px;left:2px;transition:.3s}
+    .toggle-switch.selected::after{left:26px}
+    
+    /* Time Selection */
+    .time-selection{display:none;margin-top:16px}
+    .time-selection.show{display:block}
+    .time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .time-slot{padding:10px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.15);border-radius:8px;text-align:center;cursor:pointer;transition:.3s;font-size:.85rem;color:var(--white)}
+    .time-slot:hover{border-color:var(--gold)}
+    .time-slot.selected{border-color:var(--gold);background:rgba(245,200,66,.1)}
+    
+    /* Cart Summary */
+    .cart-summary{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;margin-bottom:20px}
+    .cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+    .cart-item:last-child{border-bottom:none}
+    .cart-item img{width:60px;height:60px;border-radius:8px;object-fit:cover}
+    .cart-item-info{flex:1}
+    .cart-item-name{font-size:.9rem;font-weight:600;color:var(--white)}
+    .cart-item-qty{font-size:.85rem;color:rgba(255,255,255,.6)}
+    .cart-item-price{font-size:.95rem;color:var(--gold);font-weight:600}
+    
+    .summary-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:.9rem;color:var(--white)}
+    .summary-row.total{font-size:1.1rem;font-weight:700;color:var(--gold);border-bottom:none;padding-top:16px}
+    
+    /* Confirm Button */
+    .confirm-btn{width:100%;padding:18px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:none;border-radius:12px;color:var(--purple-deep);font-size:1.1rem;font-weight:700;cursor:pointer;transition:.3s;margin-top:20px}
+    .confirm-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(245,200,66,.3)}
+    .confirm-btn:disabled{opacity:.5;cursor:not-allowed}
+    
+    /* Toast */
+    .toast{position:fixed;top:30px;right:30px;z-index:9999;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:13px 20px;border-radius:14px;font-size:.85rem;font-weight:600;box-shadow:0 12px 38px rgba(34,197,94,.4);opacity:0;transform:translateX(18px);transition:all .42s cubic-bezier(.4,0,.2,1);pointer-events:none;max-width:300px}
+    .toast.show{opacity:1;transform:translateX(0);pointer-events:all}
+    .toast.error{background:linear-gradient(135deg,#c0392b,#e74c3c);box-shadow:0 12px 38px rgba(239,68,68,.4)}
+    
+    @media(max-width:768px){
+      .payment-options{grid-template-columns:1fr}
+      .time-grid{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="food-ordering.html" class="nav-back"><i class="fas fa-arrow-left"></i> Back</a>
+    <div class="nav-logo">Checkout</div>
+    <div></div>
+  </nav>
+  
+  <div class="container">
+    <!-- Customer Details -->
+    <div class="form-section">
+      <h2 class="section-title"><i class="fas fa-user"></i> Customer Details</h2>
+      <div class="form-group">
+        <label class="form-label">Full Name *</label>
+        <input type="text" id="customerName" class="form-input" placeholder="Enter your name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number *</label>
+        <input type="tel" id="customerPhone" class="form-input" placeholder="+358 40 123 4567"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input type="email" id="customerEmail" class="form-input" placeholder="your@email.com"/>
+      </div>
+    </div>
+    
+    <!-- Payment Method -->
+    <div class="form-section">
+      <h2 class="section-title"><i class="fas fa-credit-card"></i> Payment Method</h2>
+      <div class="payment-options">
+        <div class="payment-option selected" onclick="selectPayment('cash')" data-method="cash">
+          <i class="fas fa-money-bill"></i>
+          <span>Cash</span>
+        </div>
+        <div class="payment-option" onclick="selectPayment('card')" data-method="card">
+          <i class="fas fa-credit-card"></i>
+          <span>Card</span>
+        </div>
+        <div class="payment-option" onclick="selectPayment('epassi')" data-method="epassi">
+          <i class="fas fa-mobile-alt"></i>
+          <span>Epassi/Edenred</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Preorder Option -->
+    <div class="form-section">
+      <h2 class="section-title"><i class="fas fa-clock"></i> Pickup Time</h2>
+      <div class="toggle-container" onclick="togglePreorder()">
+        <span class="toggle-label">Preorder (Optional)</span>
+        <div class="toggle-switch" id="preorderToggle"></div>
+      </div>
+      <div class="time-selection" id="timeSelection">
+        <label class="form-label" style="margin-top:16px">Select Pickup Time (11AM - 10PM)</label>
+        <div class="time-grid" id="timeGrid"></div>
+      </div>
+    </div>
+    
+    <!-- Cart Summary -->
+    <div class="cart-summary">
+      <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Order Summary</h2>
+      <div id="cartItems"></div>
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="subtotal">€0.00</span>
+      </div>
+      <div class="summary-row">
+        <span>Discount</span>
+        <span id="discount">€0.00</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <span id="total">€0.00</span>
+      </div>
+    </div>
+    
+    <button class="confirm-btn" onclick="confirmOrder()">
+      <i class="fas fa-check-circle"></i> Confirm Order
+    </button>
+  </div>
+  
+  <!-- Toast -->
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Success!</span></div>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  
+  <script>
+    // Firebase Config
+    const firebaseConfig={
+      apiKey:"AIzaSyAmimDsjW_pF2NGw-w-40QzTsgmf1tdqyI",
+      authDomain:"bdmsalonappointment.firebaseapp.com",
+      databaseURL:"https://bdmsalonappointment-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId:"bdmsalonappointment",
+      storageBucket:"bdmsalonappointment.firebasestorage.app",
+      messagingSenderId:"123933913893",
+      appId:"1:123933913893:web:c1f57caf4dc2a5440ba0cc"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db=firebase.database();
+    
+    let cart=[],appliedCoupons=[],selectedPayment='cash',isPreorder=false,selectedTime=null;
+    const userId=localStorage.getItem('mughalUserId')||'user_'+Date.now();
+    
+    // Load cart
+    function loadCart(){
+      const savedCart=localStorage.getItem('mughalCart_'+userId);
+      const savedCoupons=localStorage.getItem('mughalAppliedCoupons_'+userId);
+      if(savedCart)cart=JSON.parse(savedCart);
+      if(savedCoupons)appliedCoupons=JSON.parse(savedCoupons);
+      renderCartSummary();
+      generateTimeSlots();
+      loadCustomerDetails();
+    }
+    
+    // Load saved customer details
+    function loadCustomerDetails(){
+      const savedDetails=localStorage.getItem('mughalCustomerDetails');
+      if(savedDetails){
+        const details=JSON.parse(savedDetails);
+        if(details.name)document.getElementById('customerName').value=details.name;
+        if(details.phone)document.getElementById('customerPhone').value=details.phone;
+        if(details.email)document.getElementById('customerEmail').value=details.email;
+      }
+    }
+    
+    // Save customer details
+    function saveCustomerDetails(name,phone,email){
+      localStorage.setItem('mughalCustomerDetails',JSON.stringify({name,phone,email}));
+    }
+    
+    // Render cart summary
+    function renderCartSummary(){
+      const cartItemsEl=document.getElementById('cartItems');
+      if(cart.length===0){
+        cartItemsEl.innerHTML='<p style="text-align:center;color:var(--text-muted);padding:20px">Your cart is empty</p>';
+        document.querySelector('.confirm-btn').disabled=true;
+        return;
+      }
+      
+      cartItemsEl.innerHTML=cart.map(item=>`
+        <div class="cart-item">
+          <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/60'"/>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-qty">x${item.quantity}</div>
+          </div>
+          <div class="cart-item-price">€${((parseFloat(item.price)||0)*item.quantity).toFixed(2)}</div>
+        </div>
+      `).join('');
+      
+      const subtotal=cart.reduce((sum,i)=>sum+((parseFloat(i.price)||0)*i.quantity),0);
+      const discount=appliedCoupons.includes('MUGHAL15')?subtotal*0.15:0;
+      const total=subtotal-discount;
+      
+      document.getElementById('subtotal').textContent='€'+subtotal.toFixed(2);
+      document.getElementById('discount').textContent='€'+discount.toFixed(2);
+      document.getElementById('total').textContent='€'+total.toFixed(2);
+    }
+    
+    // Select payment method
+    function selectPayment(method){
+      selectedPayment=method;
+      document.querySelectorAll('.payment-option').forEach(opt=>opt.classList.remove('selected'));
+      document.querySelector(`[data-method="${method}"]`).classList.add('selected');
+    }
+    
+    // Toggle preorder
+    function togglePreorder(){
+      isPreorder=!isPreorder;
+      document.getElementById('preorderToggle').classList.toggle('selected',isPreorder);
+      document.getElementById('timeSelection').classList.toggle('show',isPreorder);
+      if(!isPreorder)selectedTime=null;
+    }
+    
+    // Generate time slots (11AM to 10PM)
+    function generateTimeSlots(){
+      const timeGrid=document.getElementById('timeGrid');
+      let html='';
+      for(let hour=11;hour<=22;hour++){
+        for(let min of [0,30]){
+          if(hour===22&&min>0)break;
+          const timeStr=`${hour>12?hour-12:hour}:${min===0?'00':min} ${hour>=12?'PM':'AM'}`;
+          html+=`<div class="time-slot" onclick="selectTime('${timeStr}')">${timeStr}</div>`;
+        }
+      }
+      timeGrid.innerHTML=html;
+    }
+    
+    // Select time
+    function selectTime(time){
+      selectedTime=time;
+      document.querySelectorAll('.time-slot').forEach(slot=>slot.classList.remove('selected'));
+      event.target.classList.add('selected');
+    }
+    
+    // Confirm order
+    function confirmOrder(){
+      const name=document.getElementById('customerName').value.trim();
+      const phone=document.getElementById('customerPhone').value.trim();
+      const email=document.getElementById('customerEmail').value.trim();
+      
+      if(!name||!phone||!email){
+        showToast('Please fill in all required fields',true);
+        return;
+      }
+      
+      if(cart.length===0){
+        showToast('Your cart is empty',true);
+        return;
+      }
+      
+      if(isPreorder&&!selectedTime){
+        showToast('Please select a pickup time for preorder',true);
+        return;
+      }
+      
+      const subtotal=cart.reduce((sum,i)=>sum+((parseFloat(i.price)||0)*i.quantity),0);
+      const discount=appliedCoupons.includes('MUGHAL15')?subtotal*0.15:0;
+      const total=subtotal-discount;
+      
+      saveCustomerDetails(name,phone,email);
+      
+      const order={
+        id:'order_'+Date.now(),
+        userId:userId,
+        customer:{name,phone,email},
+        items:cart,
+        paymentMethod:selectedPayment,
+        preorder:isPreorder,
+        pickupTime:isPreorder?selectedTime:'ASAP',
+        subtotal,
+        discount,
+        total,
+        appliedCoupons,
+        status:'pending',
+        createdAt:Date.now(),
+        estimatedTime:isPreorder?null:'30',
+        estimatedSetAt:null
+      };
+      
+      // Save to Firebase
+      db.ref('orders/'+order.id).set(order).then(()=>{
+        // Clear cart
+        localStorage.removeItem('mughalCart_'+userId);
+        localStorage.removeItem('mughalAppliedCoupons_'+userId);
+        cart=[];
+        appliedCoupons=[];
+        
+        // Save order ID for tracking
+        localStorage.setItem('lastOrderId',order.id);
+        
+        showToast('Order confirmed!');
+        setTimeout(()=>{
+          window.location.href='receipt.html?orderId='+order.id;
+        },1000);
+      }).catch((error)=>{
+        showToast('Failed to confirm order',true);
+        console.error(error);
+      });
+    }
+    
+    // Toast
+    function showToast(msg,isError=false){
+      const toast=document.getElementById('toast');
+      document.getElementById('toastMsg').textContent=msg;
+      toast.classList.toggle('error',isError);
+      toast.querySelector('i').className=isError?'fas fa-exclamation-circle':'fas fa-check-circle';
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'),3500);
+    }
+    
+    loadCart();
+  </script>
+</body>
+</html>
