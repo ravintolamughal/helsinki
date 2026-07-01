@@ -153,6 +153,18 @@ img{display:block;width:100%;object-fit:cover}
 .continue-shopping-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
 .cart-type-section{margin-bottom:10px}
 .cart-type-toggle{display:flex;gap:6px}
+.pickup-only-note{display:flex;align-items:center;gap:6px;color:rgba(245,200,66,.85);font-size:.72rem;font-weight:500;margin-top:8px}
+.restaurant-info-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px;margin-bottom:12px}
+.restaurant-info-name{color:var(--gold);font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.restaurant-info-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.restaurant-info-row i{color:var(--gold);font-size:.85rem;margin-top:2px;width:16px;flex-shrink:0}
+.restaurant-info-label{display:block;color:rgba(255,255,255,.45);font-size:.62rem;font-weight:700;letter-spacing:1px;margin-bottom:2px}
+.restaurant-info-value{display:block;color:rgba(255,255,255,.85);font-size:.78rem;line-height:1.4}
+.restaurant-info-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.restaurant-action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:9px;color:#fff;font-size:.7rem;font-weight:600;cursor:pointer;transition:var(--t);text-decoration:none;white-space:nowrap}
+.restaurant-action-btn:hover{background:rgba(255,255,255,.15)}
+.restaurant-action-btn.call{background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.35);color:#4ade80}
+.restaurant-action-btn.call:hover{background:#4ade80;color:var(--purple-deep)}
 .cart-items{padding:0;display:flex;flex-direction:column;gap:8px;overflow:visible}
 .cart-type-btn{flex:1;padding:8px 12px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);border:2px solid rgba(255,255,255,.15);border-radius:10px;font-size:.75rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif}
 .cart-type-btn:hover{background:rgba(255,255,255,.1)}
@@ -173,6 +185,8 @@ img{display:block;width:100%;object-fit:cover}
 .cart-receipt-row.discount{color:#ef4444;font-weight:600}
 .cart-receipt-row.total{font-weight:700;font-size:.9rem;color:var(--purple);padding-top:8px;border-top:2px solid var(--purple)}
 .cart-item-qty{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border-radius:8px;padding:3px 6px}
+.cart-item-delete{width:30px;height:30px;border-radius:8px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:var(--t);flex-shrink:0}
+.cart-item-delete:hover{background:#ef4444;color:#fff;transform:scale(1.08)}
 .qty-btn{width:22px;height:22px;border-radius:6px;background:var(--gold);color:var(--purple-deep);border:none;font-weight:700;cursor:pointer;transition:var(--t);font-size:.85rem;display:flex;align-items:center;justify-content:center}
 .qty-btn:hover{filter:brightness(1.1);transform:scale(1.1)}
 .qty-btn.minus{background:rgba(255,255,255,.15);color:#fff}
@@ -614,12 +628,12 @@ img{display:block;width:100%;object-fit:cover}
         <div class="coupon-banner-top">
           <span style="font-size:1.8rem">🎉</span>
           <div>
-            <div style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px;white-space:nowrap">LIMITED TIME OFFER — 20% OFF</div>
-            <div style="font-size:.8rem;color:rgba(255,255,255,.75)">Use code <strong style="color:var(--gold)">MUGHAL20</strong> at checkout</div>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:4px;white-space:nowrap">LIMITED TIME OFFER — 15% OFF</div>
+            <div style="font-size:.8rem;color:rgba(255,255,255,.75)">Use code <strong style="color:var(--gold)">MUGHAL15</strong> at checkout</div>
           </div>
         </div>
         <div class="coupon-banner-bottom">
-          <button class="coupon-activate-btn hero-activate-btn" id="heroActivateBtn" onclick="activateCoupon('MUGHAL20')">
+          <button class="coupon-activate-btn hero-activate-btn" id="heroActivateBtn" onclick="activateCoupon('MUGHAL15')">
             <i class="fas fa-tag"></i> Activate Coupon
           </button>
         </div>
@@ -638,13 +652,7 @@ img{display:block;width:100%;object-fit:cover}
 
     <div class="menu-tabs-wrapper fade-in-up" style="animation-delay:.1s">
       <div class="menu-tabs" id="menuTabs">
-        <button class="tab-btn active" onclick="filterCategory('all')">All</button>
-        <button class="tab-btn" onclick="filterCategory('starters')">Starters</button>
-        <button class="tab-btn" onclick="filterCategory('mains')">Mains</button>
-        <button class="tab-btn" onclick="filterCategory('biryani')">Biryani</button>
-        <button class="tab-btn" onclick="filterCategory('breads')">Breads</button>
-        <button class="tab-btn" onclick="filterCategory('drinks')">Drinks</button>
-        <button class="tab-btn" onclick="filterCategory('desserts')">Desserts</button>
+        <!-- Categories will be loaded dynamically from Firebase -->
       </div>
     </div>
 
@@ -669,8 +677,32 @@ img{display:block;width:100%;object-fit:cover}
   <div class="cart-content-wrapper">
     <div class="cart-type-section">
       <div class="cart-type-toggle">
-        <button class="cart-type-btn active" id="deliveryBtn" onclick="setCartType('delivery')"><i class="fas fa-truck"></i> Delivery</button>
-        <button class="cart-type-btn" id="pickupBtn" onclick="setCartType('pickup')"><i class="fas fa-store"></i> Pickup</button>
+        <button class="cart-type-btn active" id="pickupBtn" onclick="setCartType('pickup')"><i class="fas fa-store"></i> Pickup</button>
+        <button class="cart-type-btn" id="deliveryBtn" onclick="setCartType('delivery')"><i class="fas fa-truck"></i> Delivery</button>
+      </div>
+      <p class="pickup-only-note"><i class="fas fa-info-circle"></i> Only pickup is available right now</p>
+    </div>
+
+    <div class="restaurant-info-box">
+      <div class="restaurant-info-name"><i class="fas fa-utensils"></i> RAVINTOLA MUGHAL</div>
+      <div class="restaurant-info-row">
+        <i class="fas fa-map-marker-alt"></i>
+        <div>
+          <span class="restaurant-info-label">ADDRESS</span>
+          <span class="restaurant-info-value">Aallonhalkoja 3, 00540<br/>Helsinki, Finland</span>
+        </div>
+      </div>
+      <div class="restaurant-info-row">
+        <i class="fas fa-phone"></i>
+        <div>
+          <span class="restaurant-info-label">PHONE</span>
+          <span class="restaurant-info-value">+358 40 123 4567</span>
+        </div>
+      </div>
+      <div class="restaurant-info-actions">
+        <a class="restaurant-action-btn" href="https://maps.google.com/?q=Aallonhalkoja+3,00540+Helsinki,Finland" target="_blank" title="Open in Google Maps"><i class="fab fa-google"></i> Google Maps</a>
+        <a class="restaurant-action-btn" href="https://maps.apple.com/?q=Aallonhalkoja+3,00540+Helsinki,Finland" target="_blank" title="Open in Apple Maps"><i class="fab fa-apple"></i> Apple Maps</a>
+        <a class="restaurant-action-btn call" href="tel:+358401234567" title="Call restaurant"><i class="fas fa-phone"></i> Call</a>
       </div>
     </div>
     
@@ -695,19 +727,9 @@ img{display:block;width:100%;object-fit:cover}
         <button class="show-coupons-btn" onclick="toggleCouponList()"><i class="fas fa-tag"></i> Available Coupons</button>
       </div>
       <div class="coupon-list" id="couponList">
-        <div class="coupon-offer" onclick="useCoupon('MUGHAL20')">
-          <span class="coupon-code-badge">MUGHAL20</span>
-          <span class="coupon-offer-text">20% off your entire order (1st order only)</span>
-          <i class="fas fa-chevron-right coupon-tick"></i>
-        </div>
-        <div class="coupon-offer" onclick="useCoupon('LASSI50')">
-          <span class="coupon-code-badge">LASSI50</span>
-          <span class="coupon-offer-text">2× Free Mango Lassi (€9.00 off) — orders €50+ (1st order only)</span>
-          <i class="fas fa-chevron-right coupon-tick"></i>
-        </div>
-        <div class="coupon-offer" onclick="useCoupon('DISC100')">
-          <span class="coupon-code-badge">DISC100</span>
-          <span class="coupon-offer-text">10% off + 2× Free Soft Drinks (€5.00 off) — orders €100+ (1st order only)</span>
+        <div class="coupon-offer" onclick="useCoupon('MUGHAL15')">
+          <span class="coupon-code-badge">MUGHAL15</span>
+          <span class="coupon-offer-text">15% off your entire order (1st order only)</span>
           <i class="fas fa-chevron-right coupon-tick"></i>
         </div>
       </div>
@@ -721,8 +743,8 @@ img{display:block;width:100%;object-fit:cover}
     <div class="cutlery-section">
       <div class="cutlery-label"><i class="fas fa-utensils"></i> Spoons / Cutlery needed?</div>
       <div class="cutlery-btns">
-        <button class="cutlery-btn active" id="cutleryYes" onclick="setCutlery(true)">Yes</button>
-        <button class="cutlery-btn" id="cutleryNo" onclick="setCutlery(false)">No</button>
+        <button class="cutlery-btn" id="cutleryYes" onclick="setCutlery(true)">Yes</button>
+        <button class="cutlery-btn active" id="cutleryNo" onclick="setCutlery(false)">No</button>
       </div>
     </div>
     <div class="order-note-section">
@@ -730,13 +752,13 @@ img{display:block;width:100%;object-fit:cover}
       <textarea id="cartOrderNote" placeholder="Any special instructions for your order?"></textarea>
     </div>
     <div class="cart-receipt">
-      <div style="text-align:center;font-size:.9rem;font-weight:700;color:var(--purple);margin-bottom:8px">🧾 ORDER RECEIPT</div>
+      <div style="text-align:center;font-size:.9rem;font-weight:700;color:var(--purple);margin-bottom:8px">🧾 ORDER SUMMARY</div>
       <div class="cart-receipt-row">
         <span>Subtotal</span>
         <span id="subtotal">€0.00</span>
       </div>
       <div class="cart-receipt-row discount" id="discountRow" style="display:none">
-        <span>🎉 Discount (MUGHAL20)</span>
+        <span>🎉 Discount (15% OFF)</span>
         <span id="discount">-€0.00</span>
       </div>
       <div class="cart-receipt-row" id="deliveryFeeRow">
@@ -784,7 +806,7 @@ img{display:block;width:100%;object-fit:cover}
         <div class="order-receipt-header">
           <img src="https://davidbantu1999.github.io/mughal-restaurant/logo.png" alt="Mughal" class="order-receipt-logo"/>
           <div class="order-receipt-title">RAVINTOLA MUGHAL</div>
-          <div class="order-receipt-subtitle">Order Receipt</div>
+          <div class="order-receipt-subtitle">Order Summary</div>
         </div>
         <div class="order-number-display">
           <span class="order-label">Order Number</span>
@@ -905,17 +927,17 @@ img{display:block;width:100%;object-fit:cover}
       <div class="checkout-step" data-step="2">
         <div class="delivery-options">
           <label class="delivery-card" onclick="setDeliveryType('delivery')" id="deliveryOption">
-            <input type="radio" name="deliveryType" value="delivery" checked/>
+            <input type="radio" name="deliveryType" value="delivery"/>
             <div class="delivery-icon">
               <i class="fas fa-truck"></i>
             </div>
             <div class="delivery-info">
               <h3>Delivery</h3>
-              <p>We deliver to your door</p>
+              <p>Coming soon</p>
             </div>
           </label>
-          <label class="delivery-card" onclick="setDeliveryType('pickup')" id="pickupOption">
-            <input type="radio" name="deliveryType" value="pickup"/>
+          <label class="delivery-card selected" onclick="setDeliveryType('pickup')" id="pickupOption">
+            <input type="radio" name="deliveryType" value="pickup" checked/>
             <div class="delivery-icon">
               <i class="fas fa-store"></i>
             </div>
@@ -1152,7 +1174,8 @@ const RESTAURANT_LOCATION = { lat: 60.1867, lng: 24.9551 };
 const MAX_DELIVERY_DISTANCE = 10; // km
 
 let menuItems=[];
-let cart=[],currentCategory='all',deliveryType='delivery',calculatedDeliveryFee=0,customerDistance=0;
+let categories=['all','starters','mains','biryani','breads','drinks','desserts'];
+let cart=[],currentCategory='all',deliveryType='pickup',calculatedDeliveryFee=0,customerDistance=0;
 let currentLat=null,currentLng=null,appliedCoupons=[];
 let currentStep=1;
 
@@ -1180,27 +1203,31 @@ function loadCart(){
   }
 }
 let orderCounter=0;
-let needCutlery=true;
+let needCutlery=false;
 const COUPONS={
-  'MUGHAL20':{discount:0.20,type:'percentage',label:'20% off your order',minOrder:0,oneTime:true},
-  'LASSI50':{discount:9.00,type:'fixed',label:'2× Free Mango Lassi',minOrder:50,oneTime:true},
-  'DISC100':{discount:0.10,type:'percentage',label:'10% off + 2× Free Soft Drinks (€5 off)',minOrder:100,oneTime:true,extraFixed:5.00}
+  'MUGHAL15':{discount:0.15,type:'percentage',label:'15% off your order',minOrder:0,oneTime:true}
 };
 let orderStatusRef=null,countdownInterval=null;
 
-// Load menu from Firebase
+// Load menu from Firebase (same structure as menu.html)
 function loadMenuFromFirebase(){
-  const menuGrid=document.getElementById('menuGrid');
-  menuGrid.innerHTML='<div class="menu-loading"><i class="fas fa-spinner"></i><p>Loading menu...</p></div>';
-  
   db.ref('menu').once('value').then((snapshot)=>{
     const data=snapshot.val();
-    if(data){
-      menuItems=Object.values(data);
+    console.log('Firebase data:',data);
+    if(data&&data.items&&Object.keys(data.items).length>0){
+      // Extract items from the same structure as menu.html
+      const itemsData=data.items;
+      menuItems=Object.entries(itemsData).map(([id,item])=>({...item,id}));
+      console.log('Loaded menuItems:',menuItems);
+      // Load categories from Firebase
+      if(data.categories&&Array.isArray(data.categories)){
+        categories=['all',...data.categories];
+      }
       renderMenu();
+      renderCategoryTabs();
     }else{
-      // Save default menu to Firebase if empty
-      saveDefaultMenuToFirebase();
+      console.log('Firebase empty or no items, loading default');
+      loadDefaultMenu();
     }
   }).catch((error)=>{
     console.error('Error loading menu:',error);
@@ -1215,17 +1242,17 @@ function loadMenuFromFirebase(){
 
 function applyCouponFromHero(){
   const btn=document.getElementById('heroCouponBtn');
-  if(appliedCoupons.includes('MUGHAL20')){
+  if(appliedCoupons.includes('MUGHAL15')){
     showToast('Coupon already applied!');
     return;
   }
-  document.getElementById('couponInput').value='MUGHAL20';
+  document.getElementById('couponInput').value='MUGHAL15';
   applyCoupon();
   btn.classList.add('active');
-  btn.innerHTML='<i class="fas fa-check-circle"></i> <span>✅ MUGHAL20 Activated — 20% OFF</span>';
+  btn.innerHTML='<i class="fas fa-check-circle"></i> <span>✅ MUGHAL15 Activated — 15% OFF</span>';
   renderMenu();
   updateCart();
-  showToast('Coupon MUGHAL20 applied!');
+  showToast('Coupon MUGHAL15 applied!');
 }
 
 function activateCoupon(code){
@@ -1233,7 +1260,7 @@ function activateCoupon(code){
   if(appliedCoupons.includes(code)){
     if(heroBtn){
       heroBtn.classList.add('active');
-      heroBtn.innerHTML='<i class="fas fa-check-circle"></i> 20% OFF ACTIVATED';
+      heroBtn.innerHTML='<i class="fas fa-check-circle"></i> 15% OFF ACTIVATED';
     }
     showToast('Coupon already activated!');
     return;
@@ -1242,7 +1269,7 @@ function activateCoupon(code){
   applyCoupon();
   if(heroBtn){
     heroBtn.classList.add('active');
-    heroBtn.innerHTML='<i class="fas fa-check-circle"></i> 20% OFF ACTIVATED';
+    heroBtn.innerHTML='<i class="fas fa-check-circle"></i> 15% OFF ACTIVATED';
   }
   renderMenu();
   updateCart();
@@ -1265,12 +1292,21 @@ function saveDefaultMenuToFirebase(){
     {id:12,name:'Gulab Jamun',description:'Sweet milk dumplings in syrup',price:5.00,category:'desserts',image:'https://images.unsplash.com/photo-1666190098808-9b0269b8d0a9?w=500&q=80',rating:4.7,popular:true,spice:'None',type:'veg'}
   ];
   
+  const categories=['starters','mains','biryani','breads','drinks','desserts'];
+  const items={};
+  
   defaultMenu.forEach(item=>{
-    db.ref('menu').push(item);
+    items[item.id]=item;
   });
   
-  menuItems=defaultMenu;
-  renderMenu();
+  // Save in the same structure as menu.html
+  db.ref('menu').set({
+    categories:categories,
+    items:items
+  }).then(()=>{
+    menuItems=Object.entries(items).map(([id,item])=>({...item,id}));
+    renderMenu();
+  });
 }
 
 function loadDefaultMenu(){
@@ -1289,14 +1325,21 @@ function loadDefaultMenu(){
     {id:12,name:'Gulab Jamun',description:'Sweet milk dumplings in syrup',price:5.00,category:'desserts',image:'https://images.unsplash.com/photo-1666190098808-9b0269b8d0a9?w=500&q=80',rating:4.7,popular:true,spice:'None',type:'veg'}
   ];
   renderMenu();
+  renderCategoryTabs();
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
   loadCart();
-  loadDefaultMenu();
   loadMenuFromFirebase();
   loadPendingCart();
 });
+
+function renderCategoryTabs(){
+  const tabsEl=document.getElementById('menuTabs');
+  tabsEl.innerHTML=categories.map(cat=>`
+    <button class="tab-btn ${cat===currentCategory?'active':''}" onclick="filterCategory('${cat}')">${cat.charAt(0).toUpperCase()+cat.slice(1)}</button>
+  `).join('');
+}
 
 function renderMenu(){
   const items=currentCategory==='all'?menuItems:menuItems.filter(i=>i.category===currentCategory);
@@ -1310,9 +1353,9 @@ function renderMenu(){
         <div class="m-head">
           <h3>${item.name}</h3>
           <div class="spice-icons">${getSpiceIcons(item.spice)}</div>
-          ${appliedCoupons.includes('MUGHAL20')?`<span class="m-price-disc">€${item.price.toFixed(2)}</span>`:''}
-          <span class="m-price">€${(appliedCoupons.includes('MUGHAL20')?item.price*0.8:item.price).toFixed(2)}</span>
-          ${appliedCoupons.includes('MUGHAL20')?'<span class="m-disc-text">20% OFF</span>':''}
+          ${appliedCoupons.includes('MUGHAL15')?`<span class="m-price-disc">€${item.price.toFixed(2)}</span>`:''}
+          <span class="m-price">€${(appliedCoupons.includes('MUGHAL15')?item.price*0.85:item.price).toFixed(2)}</span>
+          ${appliedCoupons.includes('MUGHAL15')?'<span class="m-disc-text">15% OFF</span>':''}
         </div>
         <p>${item.description}</p>
         <div class="m-tags">
@@ -1370,6 +1413,13 @@ function addToCart(itemId){
   showToast(`Added ${item.name} to cart!`);
 }
 
+function removeCartItem(itemId){
+  cart=cart.filter(i=>i.id!==itemId);
+  saveCart();
+  updateCart();
+  showToast('Item removed from cart');
+}
+
 function updateQuantity(itemId,change){
   const item=cart.find(i=>i.id===itemId);
   if(item){
@@ -1418,6 +1468,10 @@ function toggleItemTag(itemId,tag){
 }
 
 function setCartType(type){
+  if(type==='delivery'){
+    showToast('🚀 Delivery coming soon! Only pickup is available right now.');
+    return;
+  }
   deliveryType=type;
   document.getElementById('deliveryBtn').classList.toggle('active',type==='delivery');
   document.getElementById('pickupBtn').classList.toggle('active',type==='pickup');
@@ -1434,12 +1488,12 @@ function updateCart(){
   document.getElementById('navCartCount').textContent=`Cart (${totalItems})`;
   document.getElementById('mobileCartBadge').textContent=totalItems;
   const cartItemsEl=document.getElementById('cartItems'),cartEmpty=document.getElementById('cartEmpty'),cartFooter=document.getElementById('cartFooter'),mobileCartBtn=document.getElementById('mobileCartBtn');
-  const discPrice=appliedCoupons.includes('MUGHAL20')?0.8:1;
+  const discPrice=appliedCoupons.includes('MUGHAL15')?0.85:1;
   const subtotal=cart.reduce((sum,i)=>sum+(i.price*i.quantity),0);
   const finalTotal=subtotal*discPrice;
   const mobilePriceEl=document.getElementById('mobileCartPrice');
   if(mobilePriceEl){
-    if(appliedCoupons.includes('MUGHAL20')){
+    if(appliedCoupons.includes('MUGHAL15')){
       mobilePriceEl.innerHTML=`<span style="font-size:.6rem;color:rgba(255,255,255,.4);text-decoration:line-through;margin-right:2px">€${subtotal.toFixed(2)}</span>€${finalTotal.toFixed(2)}`;
     }else{
       mobilePriceEl.textContent=`€${subtotal.toFixed(2)}`;
@@ -1456,7 +1510,7 @@ function updateCart(){
           <img src="${item.image}" alt="${item.name}"/>
           <div class="cart-item-details">
             <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-price">${appliedCoupons.includes('MUGHAL20')?`<span class="cart-item-disc-price">€${item.price.toFixed(2)}</span>€${(item.price*discPrice).toFixed(2)}`:`€${item.price.toFixed(2)}`}</div>
+            <div class="cart-item-price">${appliedCoupons.includes('MUGHAL15')?`<span class="cart-item-disc-price">€${item.price.toFixed(2)}</span>€${(item.price*discPrice).toFixed(2)}`:`€${item.price.toFixed(2)}`}</div>
             ${item.tags.length?`<div class="cart-item-tags-display">${item.tags.map(t=>`<span class="cart-item-tag">${t}</span>`).join('')}</div>`:''}
             ${item.note?`<span class="cart-item-note-display">📝 ${item.note}</span>`:''}
             <div class="cart-item-note-toggle" onclick="toggleItemNote(${item.id})">
@@ -1468,6 +1522,7 @@ function updateCart(){
             <span class="qty-display">${item.quantity}</span>
             <button class="qty-btn" onclick="updateQuantity(${item.id},1)">+</button>
           </div>
+          <button class="cart-item-delete" onclick="removeCartItem(${item.id})" title="Remove item"><i class="fas fa-trash"></i></button>
         </div>
         <div class="cart-item-notes" id="itemNotes${item.id}">
           <input type="text" class="cart-item-note-input" placeholder="Add note for this item..." value="${item.note}" oninput="updateItemNote(${item.id},this.value)" onchange="markNoteAdded(${item.id})"/>
@@ -1823,6 +1878,10 @@ function updateReview(){
 }
 
 function setDeliveryType(type){
+  if(type==='delivery'){
+    showToast('🚀 Delivery coming soon! Only pickup is available right now.');
+    return;
+  }
   deliveryType=type;
   document.querySelectorAll('.delivery-card').forEach(card=>card.classList.remove('selected'));
   if(type==='delivery'){
