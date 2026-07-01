@@ -1178,15 +1178,17 @@ let categories=['all','starters','mains','biryani','breads','drinks','desserts']
 let cart=[],currentCategory='all',deliveryType='pickup',calculatedDeliveryFee=0,customerDistance=0;
 let currentLat=null,currentLng=null,appliedCoupons=[];
 let currentStep=1;
+let userId=localStorage.getItem('mughalUserId')||'user_'+Date.now()+'_'+Math.random().toString(36).substr(2,9);
+if(!localStorage.getItem('mughalUserId'))localStorage.setItem('mughalUserId',userId);
 
 function saveCart(){
-  localStorage.setItem('mughalCart',JSON.stringify(cart));
-  localStorage.setItem('mughalAppliedCoupons',JSON.stringify(appliedCoupons));
+  localStorage.setItem('mughalCart_'+userId,JSON.stringify(cart));
+  localStorage.setItem('mughalAppliedCoupons_'+userId,JSON.stringify(appliedCoupons));
 }
 
 function loadCart(){
-  const savedCart=localStorage.getItem('mughalCart');
-  const savedCoupons=localStorage.getItem('mughalAppliedCoupons');
+  const savedCart=localStorage.getItem('mughalCart_'+userId);
+  const savedCoupons=localStorage.getItem('mughalAppliedCoupons_'+userId);
   if(savedCart){
     try{
       cart=JSON.parse(savedCart);
@@ -1201,6 +1203,7 @@ function loadCart(){
       appliedCoupons=[];
     }
   }
+  updateCart();
 }
 let orderCounter=0;
 let needCutlery=false;
@@ -1398,15 +1401,23 @@ function filterCategory(category){
 }
 
 function addToCart(itemId){
+  console.log('addToCart called with itemId:',itemId);
+  console.log('menuItems:',menuItems);
   const btn=document.getElementById(`addBtn${itemId}`);
-  btn.classList.add('adding');
-  setTimeout(()=>btn.classList.remove('adding'),500);
-  const item=menuItems.find(i=>i.id===itemId);
-  const existing=cart.find(i=>i.id===itemId);
+  if(btn)btn.classList.add('adding');
+  setTimeout(()=>{if(btn)btn.classList.remove('adding')},500);
+  const item=menuItems.find(i=>String(i.id)===String(itemId));
+  console.log('Found item:',item);
+  if(!item){
+    showToast('Item not found',true);
+    return;
+  }
+  const price=parseFloat(item.price)||0;
+  const existing=cart.find(i=>String(i.id)===String(itemId));
   if(existing){
     existing.quantity++;
   }else{
-    cart.push({...item,quantity:1,note:'',tags:[]});
+    cart.push({...item,quantity:1,note:'',tags:[],price:price});
   }
   saveCart();
   updateCart();
@@ -1489,7 +1500,7 @@ function updateCart(){
   document.getElementById('mobileCartBadge').textContent=totalItems;
   const cartItemsEl=document.getElementById('cartItems'),cartEmpty=document.getElementById('cartEmpty'),cartFooter=document.getElementById('cartFooter'),mobileCartBtn=document.getElementById('mobileCartBtn');
   const discPrice=appliedCoupons.includes('MUGHAL15')?0.85:1;
-  const subtotal=cart.reduce((sum,i)=>sum+(i.price*i.quantity),0);
+  const subtotal=cart.reduce((sum,i)=>sum+((parseFloat(i.price)||0)*i.quantity),0);
   const finalTotal=subtotal*discPrice;
   const mobilePriceEl=document.getElementById('mobileCartPrice');
   if(mobilePriceEl){
@@ -1504,13 +1515,15 @@ function updateCart(){
     cartEmpty.style.display='none';
     cartFooter.style.display='block';
     mobileCartBtn.style.display='flex';
-    cartItemsEl.innerHTML=cart.map(item=>`
+    cartItemsEl.innerHTML=cart.map(item=>{
+      const itemPrice=parseFloat(item.price)||0;
+      return `
       <div class="cart-item fade-in-up" id="cartItem${item.id}">
         <div class="cart-item-main">
           <img src="${item.image}" alt="${item.name}"/>
           <div class="cart-item-details">
             <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-price">${appliedCoupons.includes('MUGHAL15')?`<span class="cart-item-disc-price">€${item.price.toFixed(2)}</span>€${(item.price*discPrice).toFixed(2)}`:`€${item.price.toFixed(2)}`}</div>
+            <div class="cart-item-price">${appliedCoupons.includes('MUGHAL15')?`<span class="cart-item-disc-price">€${itemPrice.toFixed(2)}</span>€${(itemPrice*discPrice).toFixed(2)}`:`€${itemPrice.toFixed(2)}`}</div>
             ${item.tags.length?`<div class="cart-item-tags-display">${item.tags.map(t=>`<span class="cart-item-tag">${t}</span>`).join('')}</div>`:''}
             ${item.note?`<span class="cart-item-note-display">📝 ${item.note}</span>`:''}
             <div class="cart-item-note-toggle" onclick="toggleItemNote(${item.id})">
@@ -1534,9 +1547,9 @@ function updateCart(){
           </div>
         </div>
       </div>
-    `).join('');
+    `}).join('');
     
-    const subtotal=cart.reduce((sum,i)=>sum+(i.price*i.quantity),0);
+    const subtotal=cart.reduce((sum,i)=>sum+((parseFloat(i.price)||0)*i.quantity),0);
     let discount=0;
     appliedCoupons.forEach(code=>{
       const c=COUPONS[code];
