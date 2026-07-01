@@ -22,6 +22,9 @@
     .nav-links{display:flex;gap:20px}
     .nav-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;transition:.3s}
     .nav-links a:hover{color:var(--gold)}
+.nav-refresh-btn{padding:10px 20px;background:rgba(245,200,66,.2);color:var(--gold);border:1px solid var(--gold);border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px}
+.nav-refresh-btn:hover{background:var(--gold);color:var(--purple-deep);transform:translateY(-2px)}
+.nav-refresh-btn:active{transform:scale(.95)}
     
     /* Container */
     .container{max-width:1600px;margin:0 auto;padding:24px;display:flex;gap:24px}
@@ -57,7 +60,11 @@
     
     /* Order Card */
     .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;transition:var(--t);min-height:220px;display:flex;flex-direction:column}
-    .order-card.new-order{border:2px solid var(--gold);background:rgba(245,200,66,.08);box-shadow:0 0 20px rgba(245,200,66,.3)}
+    .order-card.new-order{border:2px solid var(--gold);background:rgba(245,200,66,.08);box-shadow:0 0 20px rgba(245,200,66,.3);animation:orderPulse 1.5s ease-in-out infinite}
+    @keyframes orderPulse{
+      0%,100%{transform:scale(1);box-shadow:0 0 20px rgba(245,200,66,.3)}
+      50%{transform:scale(1.02);box-shadow:0 0 30px rgba(245,200,66,.5)}
+    }
     .order-card.preorder{border:2px solid #3b82f6;background:rgba(59,130,246,.08)}
     .order-card:hover{transform:translateY(-2px)}
     .order-card.expanded{min-height:auto}
@@ -183,6 +190,9 @@
       <a href="menusetup.html">Menu Setup</a>
       <a href="adminorders.html" style="color:var(--gold)">Orders</a>
       <a href="index.html">View Site</a>
+      <button class="nav-refresh-btn" onclick="manualRefresh()">
+        <i class="fas fa-sync-alt"></i> Refresh
+      </button>
     </div>
   </nav>
   
@@ -309,6 +319,7 @@
     let processedOrders=new Set();
     let currentTab='pending';
     let notificationInterval=null;
+    let currentDate=new Date().toDateString();
     
     // Listen for orders
     document.addEventListener('DOMContentLoaded',()=>{
@@ -323,10 +334,71 @@
               startNotificationSound();
             }
           });
+          processOrders(data);
+        }else{
+          document.getElementById('ordersContainer').innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>No orders</p></div>';
+          updateBadges({});
         }
-        loadOrders();
       });
+      
+      // Check for date change every minute
+      setInterval(checkDateChange,60000);
     });
+    
+    // Process orders from real-time data
+    function processOrders(data){
+      const today=new Date();
+      today.setHours(0,0,0,0);
+      
+      const ordersByStatus={
+        pending:[],
+        confirmed:[],
+        preparing:[],
+        ready:[],
+        delivered:[],
+        rejected:[]
+      };
+      
+      Object.entries(data).forEach(([id,order])=>{
+        const orderDate=new Date(order.timestamp||Date.now());
+        orderDate.setHours(0,0,0,0);
+        
+        if(orderDate.getTime()===today.getTime()){
+          if(ordersByStatus[order.status]){
+            ordersByStatus[order.status].push({id,...order});
+          }
+        }
+      });
+      
+      Object.keys(ordersByStatus).forEach(status=>{
+        ordersByStatus[status].sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+      });
+      
+      const combinedPending=currentTab==='pending'
+        ?[...ordersByStatus.pending,...ordersByStatus.confirmed]
+        :ordersByStatus[currentTab];
+      
+      combinedPending.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+      
+      updateBadges(ordersByStatus);
+      renderOrders(combinedPending);
+    }
+    
+    // Check if date has changed
+    function checkDateChange(){
+      const today=new Date().toDateString();
+      if(today!==currentDate){
+        currentDate=today;
+        loadOrders();
+      }
+    }
+    
+    // Manual refresh
+    function manualRefresh(){
+      currentDate=new Date().toDateString();
+      loadOrders();
+      showToast('Orders refreshed');
+    }
     
     // Switch tab
     function switchTab(tab){
@@ -375,6 +447,9 @@
           return;
         }
         
+        const today=new Date();
+        today.setHours(0,0,0,0);
+        
         const ordersByStatus={
           pending:[],
           confirmed:[],
@@ -385,8 +460,14 @@
         };
         
         Object.entries(data).forEach(([id,order])=>{
-          if(ordersByStatus[order.status]){
-            ordersByStatus[order.status].push({id,...order});
+          const orderDate=new Date(order.timestamp||Date.now());
+          orderDate.setHours(0,0,0,0);
+          
+          // Only show today's orders
+          if(orderDate.getTime()===today.getTime()){
+            if(ordersByStatus[order.status]){
+              ordersByStatus[order.status].push({id,...order});
+            }
           }
         });
         
