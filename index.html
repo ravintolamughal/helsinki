@@ -134,6 +134,33 @@ img{display:block;width:100%;object-fit:cover}
 .ticker-coupon i{color:var(--gold);flex-shrink:0}
 @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
+/* ── LUNCH BUFFET ── */
+.buffet{background:linear-gradient(135deg,#1a0040 0%,#36007d 45%,#4c00b0 100%);padding:88px 0;position:relative;overflow:hidden;}
+.buffet::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f5c842' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
+.buffet-glow{position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,.13) 0%,transparent 70%);top:-120px;right:-120px;pointer-events:none;}
+.buffet-glow2{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,.09) 0%,transparent 70%);bottom:-100px;left:-80px;pointer-events:none;}
+.buffet-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:64px;align-items:center;}
+.buffet-lbl{display:inline-flex;align-items:center;gap:8px;background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.35);border-radius:50px;padding:6px 18px;font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.buffet-h{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.4rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:16px;}
+.buffet-h em{color:var(--gold);font-style:normal;}
+.buffet-desc{font-size:.97rem;color:rgba(255,255,255,.72);line-height:1.85;max-width:530px;margin-bottom:28px;}
+.buffet-meta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;}
+.buffet-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:50px;padding:9px 20px;font-size:.84rem;font-weight:600;color:#fff;backdrop-filter:blur(6px);}
+.buffet-chip i{color:var(--gold);}
+.buffet-dishes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;}
+.buffet-dish{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:5px 14px;font-size:.8rem;color:rgba(255,255,255,.72);font-weight:500;}
+.buffet-cta{display:flex;gap:12px;flex-wrap:wrap;}
+.buffet-price-card{background:rgba(255,255,255,.06);border:2px solid rgba(245,200,66,.28);border-radius:28px;padding:48px 44px;text-align:center;backdrop-filter:blur(14px);flex-shrink:0;min-width:248px;box-shadow:0 0 60px rgba(245,200,66,.1);}
+.buffet-price-label{font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,.75);margin-bottom:12px;}
+.buffet-price-amt{font-family:'Playfair Display',serif;font-size:4.4rem;font-weight:900;color:var(--gold);line-height:1;}
+.buffet-price-amt sup{font-size:1.6rem;vertical-align:super;font-weight:700;}
+.buffet-price-amt small{font-size:2.2rem;}
+.buffet-price-sub{font-size:.8rem;color:rgba(255,255,255,.4);margin-top:8px;margin-bottom:24px;}
+.buffet-price-badge{background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);border-radius:14px;padding:14px 18px;font-size:.82rem;color:rgba(255,255,255,.72);line-height:1.7;}
+.buffet-price-badge strong{display:block;color:var(--gold);font-size:.88rem;margin-bottom:2px;}
+@media(max-width:900px){.buffet-inner{grid-template-columns:1fr;gap:44px;}.buffet-price-card{min-width:unset;width:100%;max-width:360px;margin:0 auto;padding:36px 28px;}}
+@media(max-width:600px){.buffet-h{font-size:1.85rem;}.buffet-price-amt{font-size:3.2rem;}.buffet-price-amt small{font-size:1.8rem;}.buffet{padding:64px 0;}}
+
 /* ── ABOUT ── */
 .about{background:var(--cream);padding:80px 0}
 .about-content{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:50px}
@@ -531,6 +558,13 @@ img{display:block;width:100%;object-fit:cover}
   .hero-logo-img{width:135px}
   .drawer-nav a{font-size:.86rem;padding:11px 16px}
 }
+/* ── MOBILE TIME PICKER BOTTOM-SHEET ── */
+@media(max-width:768px){
+  .time-dropdown{position:fixed;left:0;right:0;bottom:0;top:auto;border-radius:22px 22px 0 0;border:none;box-shadow:0 -12px 48px rgba(0,0,0,.22);padding:20px 16px 32px;z-index:5000;max-width:100vw;animation:slideUp .28s cubic-bezier(.4,0,.2,1)}
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .time-picker-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:4999;backdrop-filter:blur(3px)}
+  .time-picker-backdrop.open{display:block}
+}
 </style>
 </head>
 <body>
@@ -545,18 +579,18 @@ img{display:block;width:100%;object-fit:cover}
     </div>
   </div>
   <div class="opening-popup-body op-content">
-    <h3 class="op-title">🚧 Coming Soon!</h3>
-    <p class="op-text">RAVINTOLA MUGHAL is preparing to bring you authentic Indian cuisine. We're not open yet, but you can:</p>
+    <h3 class="op-title">🎉 Now Open!</h3>
+    <p class="op-text">RAVINTOLA MUGHAL is now open! Order your favorite Indian dishes for delivery or pickup.</p>
     <div class="op-features">
-      <div class="op-feature"><i class="fas fa-check-circle"></i> <span>Explore our full menu</span></div>
-      <div class="op-feature"><i class="fas fa-check-circle"></i> <span>Create your account</span></div>
-      <div class="op-feature"><i class="fas fa-check-circle"></i> <span>Contact us for inquiries</span></div>
+      <div class="op-feature"><i class="fas fa-check-circle"></i> <span>Order food online</span></div>
+      <div class="op-feature"><i class="fas fa-check-circle"></i> <span>Delivery & Pickup available</span></div>
+      <div class="op-feature"><i class="fas fa-check-circle"></i> <span>Authentic Indian cuisine</span></div>
     </div>
     <button class="op-btn" onclick="closeOpeningBanner()">Got it, thanks!</button>
   </div>
   <div class="op-minimized" onclick="restoreOpeningBanner()">
     <i class="fas fa-store"></i>
-    <span>Coming Soon</span>
+    <span>Now Open</span>
   </div>
 </div>
 
@@ -617,7 +651,7 @@ img{display:block;width:100%;object-fit:cover}
       <button class="btn btn-outline-white" style="width:100%;font-size:.82rem;padding:10px 16px" onclick="closeDrawer();logoutUser()"><i class="fas fa-sign-out-alt"></i> <span data-en="Logout" data-fi="Kirjaudu ulos">Logout</span></button>
     </div>
     <div class="drawer-cta-btns">
-      <a href="food-ordering.html" class="btn btn-gold" onclick="closeDrawer();event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-motorcycle"></i> <span data-en="Order Now" data-fi="Tilaa nyt">Order Now</span></a>
+      <a href="food-ordering.html" class="btn btn-gold" onclick="closeDrawer()"><i class="fas fa-motorcycle"></i> <span data-en="Order Now" data-fi="Tilaa nyt">Order Now</span></a>
       <a href="#reservation" class="btn btn-outline-white" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-calendar-alt"></i> <span data-en="Table Reservation" data-fi="Pöytävaraus">Table Reservation</span></a>
     </div>
   </div>
@@ -638,7 +672,7 @@ img{display:block;width:100%;object-fit:cover}
     <h1 class="hero-title"><span class="gold" data-en="RAVINTOLA MUGHAL" data-fi="RAVINTOLA MUGHAL">RAVINTOLA MUGHAL</span></h1>
     <p class="hero-sub" data-en="Experience the grandeur of Mughal-era cooking — hand-crafted with centuries-old recipes, premium spices &amp; passionate artistry in Helsinki." data-fi="Koe Mughal-aikakauden ruoanlaiton loisto — käsityönä valmistettu satoja vuosia vanhoilla resepteillä Helsingissä.">Experience the grandeur of Mughal-era cooking — hand-crafted with centuries-old recipes, premium spices &amp; passionate artistry in Helsinki.</p>
     <div class="hero-btns">
-      <a href="food-ordering.html" class="btn btn-gold" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-motorcycle"></i> <span data-en="Order Now" data-fi="Tilaa nyt">Order Now</span></a>
+      <a href="food-ordering.html" class="btn btn-gold"><i class="fas fa-motorcycle"></i> <span data-en="Order Now" data-fi="Tilaa nyt">Order Now</span></a>
       <a href="#reservation" class="btn btn-outline-white" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-calendar-alt"></i> <span data-en="Table Reservation" data-fi="Pöytävaraus">Table Reservation</span></a>
     </div>
   </div>
@@ -768,10 +802,11 @@ img{display:block;width:100%;object-fit:cover}
       <div class="m-card reveal scale" style="transition-delay:.24s"><div class="m-img"><img src="https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?w=500&q=80" alt="Nimbu Pani" loading="lazy"/><span class="m-spice">Tangy</span></div><div class="m-body"><div class="m-head"><h3>Nimbu Pani</h3><span class="m-price">€3.00</span></div><p>Classic Indian lemonade with fresh lime, rock salt, cumin &amp; mint leaves.</p><span class="m-badge veg">● Vegetarian</span></div></div>
     </div>
     <div class="menu-cta reveal">
-      <a href="fullmenu.html" class="btn btn-gold" style="font-size:1rem;padding:15px 36px"><i class="fas fa-utensils"></i> View Full Menu</a>
+      <a href="food-ordering.html" class="btn btn-gold" style="font-size:1rem;padding:15px 36px"><i class="fas fa-utensils"></i> Order Online / Full Menu</a>
     </div>
   </div>
 </section>
+
 
 <!-- ═══════════════════ GALLERY ═══════════════════ -->
 <section id="gallery" class="gallery section">
@@ -811,20 +846,20 @@ img{display:block;width:100%;object-fit:cover}
         <div class="o-icon"><i class="fas fa-motorcycle"></i></div>
         <h3>Home Delivery</h3>
         <p>Get your favourite dishes delivered hot and fresh to your door within 35–45 minutes, 7 days a week.</p>
-        <a href="food-ordering.html" class="btn btn-outline-white" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-motorcycle"></i> Order Delivery</a>
+        <a href="food-ordering.html" class="btn btn-outline-white"><i class="fas fa-motorcycle"></i> Order Delivery</a>
       </div>
       <div class="o-card popular reveal scale">
         <div class="o-pop">⭐ Most Popular</div>
         <div class="o-icon"><i class="fas fa-store"></i></div>
         <h3>Click &amp; Collect</h3>
         <p>Order online and collect your meal ready and piping hot at the restaurant — skip the queue completely.</p>
-        <a href="food-ordering.html" class="btn btn-gold" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-store"></i> Order &amp; Collect</a>
+        <a href="food-ordering.html" class="btn btn-gold"><i class="fas fa-store"></i> Order &amp; Collect</a>
       </div>
       <div class="o-card reveal right">
         <div class="o-icon"><i class="fas fa-concierge-bell"></i></div>
         <h3>Dine In Pre-Order</h3>
         <p>Reserve your table and pre-order your meal for a seamless, no-wait royal dining experience.</p>
-        <a href="food-ordering.html" class="btn btn-outline-white" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-calendar-alt"></i> Reserve &amp; Pre-Order</a>
+        <a href="#reservation" class="btn btn-outline-white" onclick="event.preventDefault();showToast('🚧 Table reservations coming soon!',true)"><i class="fas fa-calendar-alt"></i> Reserve &amp; Pre-Order</a>
       </div>
     </div>
   </div>
@@ -839,20 +874,49 @@ img{display:block;width:100%;object-fit:cover}
       <p>Join us for an unforgettable royal dining experience. Reserve your table and we'll prepare the perfect evening for you.</p>
       <div class="res-details">
         <div class="rd"><div class="rd-icon"><i class="fas fa-map-marker-alt"></i></div><div class="rd-text"><strong>Address</strong><span>Aallonhalkoja 3, 00540<br/>Helsinki, Finland</span></div></div>
-        <div class="rd"><div class="rd-icon"><i class="fas fa-clock"></i></div><div class="rd-text"><strong>Opening Hours</strong><span>Every day: 10:30 – 22:30</span></div></div>
-        <div class="rd"><div class="rd-icon"><i class="fas fa-phone"></i></div><div class="rd-text"><strong>Phone</strong><span>+358 40 123 4567</span></div></div>
-        <div class="rd"><div class="rd-icon"><i class="fas fa-envelope"></i></div><div class="rd-text"><strong>Email</strong><span>info@mughalrestaurant.fi</span></div></div>
+        <div class="rd"><div class="rd-icon"><i class="fas fa-clock"></i></div><div class="rd-text"><strong>Opening Hours</strong><span>Mon-Fri: 11:00–22:00<br/>Sat: 11:00–22:00<br/>Sun: 12:00–22:00</span></div></div>
+        <div class="rd"><div class="rd-icon"><i class="fas fa-phone"></i></div><div class="rd-text"><strong>Phone</strong><span>+358458527515</span></div></div>
+        <div class="rd"><div class="rd-icon"><i class="fas fa-envelope"></i></div><div class="rd-text"><strong>Email</strong><span>ravintolamughal@gmail.com</span></div></div>
       </div>
       <div class="map-btns">
         <a href="https://www.google.com/maps/search/?api=1&query=Aallonhalkoja+3,+00540+Helsinki,+Finland" target="_blank" class="btn btn-map-google btn-sm"><i class="fab fa-google"></i> Google Maps</a>
         <a href="https://maps.apple.com/?q=Aallonhalkoja+3,+00540+Helsinki+Finland" target="_blank" class="btn btn-map-apple btn-sm"><i class="fab fa-apple"></i> Apple Maps</a>
       </div>
     </div>
-    <div class="res-form-card reveal right" style="text-align:center;padding:50px 30px">
-      <i class="fas fa-calendar-times" style="font-size:3rem;color:var(--gold);margin-bottom:20px"></i>
-      <h3>Reservations Coming Soon</h3>
-      <p class="f-sub">Our table reservation system will be available when we open. Please contact us directly for inquiries.</p>
-      <button class="btn btn-gold" style="margin-top:20px" onclick="scrollToSection(event,'#contact')"><i class="fas fa-envelope"></i> Contact Us</button>
+    <div class="res-form-card reveal right">
+      <h3>Book a Table</h3>
+      <p class="f-sub">We'll confirm your reservation within 30 minutes.</p>
+      <form id="reservationForm" onsubmit="submitReservation(event)">
+        <div class="form-row">
+          <div class="fg"><label>Full Name *</label><input type="text" id="resName" placeholder="Matti Virtanen" required/></div>
+          <div class="fg"><label>Phone Number *</label><input type="tel" id="resPhone" placeholder="+358458527515" required/></div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Date *</label><input type="date" id="resDate" required/></div>
+          <div class="fg">
+            <label>Time *</label>
+            <div class="time-picker-wrap">
+              <div class="time-display" id="timeDisplay" tabindex="0" onclick="toggleTimePicker()">
+                <span id="timeDisplayText">Select time</span>
+                <i class="fas fa-chevron-down" id="timeArrow" style="color:var(--purple);font-size:.85rem;flex-shrink:0;transition:transform .3s"></i>
+              </div>
+              <div class="time-picker-backdrop" id="timeBackdrop" onclick="closeTimePicker()"></div>
+              <div class="time-dropdown" id="timeDropdown">
+                <div class="time-cols">
+                  <div><div class="time-col-label">Hour</div><div class="time-scroll" id="hourScroll"></div></div>
+                  <div><div class="time-col-label">Min</div><div class="time-scroll" id="minScroll"></div></div>
+                  <div><div class="time-col-label">AM/PM</div><div class="time-scroll" id="ampmScroll"></div></div>
+                </div>
+                <button type="button" class="time-confirm" onclick="confirmTime()">Confirm Time</button>
+              </div>
+            </div>
+            <input type="hidden" id="resTime"/>
+          </div>
+        </div>
+        <div class="fg"><label>Number of Guests *</label><input type="number" id="resGuests" min="1" max="50" placeholder="e.g. 4" required/></div>
+        <div class="fg"><label>Special Requests</label><textarea id="resNote" placeholder="Dietary requirements, allergies, birthday celebrations..."></textarea></div>
+        <button type="submit" class="f-submit"><i class="fas fa-calendar-check"></i> Confirm Reservation</button>
+      </form>
     </div>
   </div>
 </section>
@@ -941,9 +1005,9 @@ img{display:block;width:100%;object-fit:cover}
       <div class="reveal left">
         <div class="c-items">
           <div class="c-item"><div class="c-ico"><i class="fas fa-map-marker-alt"></i></div><div class="c-txt"><strong>Address</strong><span>Aallonhalkoja 3, 00540<br/>Helsinki, Finland</span></div></div>
-          <div class="c-item"><div class="c-ico"><i class="fas fa-phone"></i></div><div class="c-txt"><strong>Phone</strong><span>+358 40 123 4567</span></div></div>
-          <div class="c-item"><div class="c-ico"><i class="fas fa-envelope"></i></div><div class="c-txt"><strong>Email</strong><span>info@mughalrestaurant.fi</span></div></div>
-          <div class="c-item"><div class="c-ico"><i class="fas fa-clock"></i></div><div class="c-txt"><strong>Hours</strong><span>Every day: 10:30 – 22:30</span></div></div>
+          <div class="c-item"><div class="c-ico"><i class="fas fa-phone"></i></div><div class="c-txt"><strong>Phone</strong><span>+358458527515</span></div></div>
+          <div class="c-item"><div class="c-ico"><i class="fas fa-envelope"></i></div><div class="c-txt"><strong>Email</strong><span>ravintolamughal@gmail.com</span></div></div>
+          <div class="c-item"><div class="c-ico"><i class="fas fa-clock"></i></div><div class="c-txt"><strong>Hours</strong><span>Mon-Fri: 11:00-22:00<br/>Sat: 11:00-22:00<br/>Sun: 12:00-22:00</span></div></div>
         </div>
         <div class="map-btns">
           <a href="https://www.google.com/maps/search/?api=1&query=Aallonhalkoja+3,+00540+Helsinki,+Finland" target="_blank" class="btn btn-map-google btn-sm"><i class="fab fa-google"></i> Google Maps</a>
@@ -954,7 +1018,7 @@ img{display:block;width:100%;object-fit:cover}
         <h4>Send Us a Message</h4>
         <form onsubmit="submitContact(event)">
           <div class="fg"><label>Your Name *</label><input type="text" id="cName" placeholder="Matti Virtanen" required/></div>
-          <div class="fg"><label>Phone or Email *</label><input type="text" id="cContact" placeholder="+358 40 123 4567 or email@example.com" required/></div>
+          <div class="fg"><label>Phone or Email *</label><input type="text" id="cContact" placeholder="+358458527515 or email@example.com" required/></div>
           <div class="fg"><label>Message *</label>
             <textarea id="cMessage" style="height:110px;width:100%;padding:11px 15px;border:2px solid var(--border);border-radius:10px;font-family:'Poppins',sans-serif;font-size:.88rem;resize:vertical;transition:var(--t);color:var(--text)" placeholder="Write your message here..." required></textarea>
           </div>
@@ -1016,26 +1080,22 @@ img{display:block;width:100%;object-fit:cover}
     <div class="f-col">
       <h4>Opening Hours</h4>
       <ul class="f-hours">
-        <li><span class="day">Monday</span><span>10:30–22:30</span></li>
-        <li><span class="day">Tuesday</span><span>10:30–22:30</span></li>
-        <li><span class="day">Wednesday</span><span>10:30–22:30</span></li>
-        <li><span class="day">Thursday</span><span>10:30–22:30</span></li>
-        <li><span class="day">Friday</span><span>10:30–22:30</span></li>
-        <li><span class="day">Saturday</span><span>10:30–22:30</span></li>
-        <li><span class="day">Sunday</span><span>10:30–22:30</span></li>
+        <li><span class="day">Monday - Friday</span><span>11:00–22:00</span></li>
+        <li><span class="day">Saturday</span><span>11:00–22:00</span></li>
+        <li><span class="day">Sunday</span><span>12:00–22:00</span></li>
       </ul>
     </div>
     <div class="f-col">
       <h4>Contact Us</h4>
       <div class="f-contact-items">
         <p><i class="fas fa-map-marker-alt"></i>Aallonhalkoja 3, 00540 Helsinki, Finland</p>
-        <p><i class="fas fa-phone"></i>+358 40 123 4567</p>
-        <p><i class="fas fa-envelope"></i>info@mughalrestaurant.fi</p>
-        <p><i class="fas fa-clock"></i>Open daily 10:30–22:30</p>
+        <p><i class="fas fa-phone"></i>+358458527515</p>
+        <p><i class="fas fa-envelope"></i>ravintolamughal@gmail.com</p>
+        <p><i class="fas fa-clock"></i>Mon-Fri: 11:00-22:00, Sat: 11:00-22:00, Sun: 12:00-22:00</p>
       </div>
       <div class="f-ctas">
-        <a href="food-ordering.html" class="btn btn-gold btn-sm" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-motorcycle"></i> Order Now</a>
-        <a href="#reservation" class="btn btn-outline-white btn-sm" style="border-color:rgba(255,255,255,.3)" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-calendar-alt"></i> Reserve a Table</a>
+        <a href="food-ordering.html" class="btn btn-gold btn-sm"><i class="fas fa-motorcycle"></i> Order Now</a>
+        <a href="#reservation" class="btn btn-outline-white btn-sm" style="border-color:rgba(255,255,255,.3)" onclick="scrollToSection(event,'#reservation')"><i class="fas fa-calendar-alt"></i> Reserve a Table</a>
       </div>
     </div>
   </div>
@@ -1076,7 +1136,7 @@ img{display:block;width:100%;object-fit:cover}
       <form onsubmit="signupUser(event)">
         <div class="fg"><label>Full Name</label><input type="text" id="signupName" placeholder="Matti Virtanen" required/></div>
         <div class="fg"><label>Email Address</label><input type="email" id="signupEmail" placeholder="your@email.com" required/></div>
-        <div class="fg"><label>Phone</label><input type="tel" id="signupPhone" placeholder="+358 40 123 4567" required/></div>
+        <div class="fg"><label>Phone</label><input type="tel" id="signupPhone" placeholder="+358458527515" required/></div>
         <div class="fg"><label>Password</label><input type="password" id="signupPassword" placeholder="Min. 6 characters" required/></div>
         <div class="fg"><label>Confirm Password</label><input type="password" id="signupConfirm" placeholder="Repeat password" required/></div>
         <button type="submit" class="f-submit"><i class="fas fa-user-plus"></i> Create Account</button>
@@ -1103,6 +1163,8 @@ img{display:block;width:100%;object-fit:cover}
   </div>
 </div>
 
+<!-- TIME PICKER BACKDROP (desktop fallback) -->
+<div class="time-picker-backdrop" id="timeBackdropGlobal" onclick="closeTimePicker()" style="display:none"></div>
 <!-- TOAST -->
 <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Success!</span><button class="toast-close" onclick="closeToast()"><i class="fas fa-times"></i></button></div>
 <!-- BACK TO TOP -->
@@ -1395,21 +1457,22 @@ function closeLightbox(){
 }
 
 /* ── TIME PICKER ── */
-let selHour='10',selMin='00',selAmPm='PM';
+let selHour='12',selMin='00',selAmPm='PM';
 (function buildTimePicker(){
   const hs=document.getElementById('hourScroll');
   const ms=document.getElementById('minScroll');
   const as=document.getElementById('ampmScroll');
-  for(let h=1;h<=12;h++){
+  if(!hs)return;
+  [11,12,1,2,3,4,5,6,7,8,9].forEach(h=>{
     const d=document.createElement('div');
-    d.className='time-opt'+(h===10?' selected':'');
+    d.className='time-opt'+(h===12?' selected':'');
     d.textContent=String(h).padStart(2,'0');
     d.onclick=function(){
       hs.querySelectorAll('.time-opt').forEach(x=>x.classList.remove('selected'));
       this.classList.add('selected');selHour=this.textContent;
     };
     hs.appendChild(d);
-  }
+  });
   ['00','15','30','45'].forEach(m=>{
     const d=document.createElement('div');
     d.className='time-opt'+(m==='00'?' selected':'');
@@ -1435,21 +1498,37 @@ let selHour='10',selMin='00',selAmPm='PM';
 function toggleTimePicker(){
   const dd=document.getElementById('timeDropdown');
   const disp=document.getElementById('timeDisplay');
-  dd.classList.toggle('open');
-  disp.classList.toggle('open');
+  const arrow=document.getElementById('timeArrow');
+  const bd=document.getElementById('timeBackdrop');
+  const isOpen=dd.classList.contains('open');
+  if(isOpen){closeTimePicker();}
+  else{
+    dd.classList.add('open');disp.classList.add('open');
+    if(arrow)arrow.style.transform='rotate(180deg)';
+    if(bd)bd.classList.add('open');
+  }
+}
+function closeTimePicker(){
+  const dd=document.getElementById('timeDropdown');
+  const disp=document.getElementById('timeDisplay');
+  const arrow=document.getElementById('timeArrow');
+  const bd=document.getElementById('timeBackdrop');
+  if(dd)dd.classList.remove('open');
+  if(disp)disp.classList.remove('open');
+  if(arrow)arrow.style.transform='rotate(0deg)';
+  if(bd)bd.classList.remove('open');
 }
 function confirmTime(){
   const val=selHour+':'+selMin+' '+selAmPm;
   document.getElementById('timeDisplayText').textContent=val;
   document.getElementById('resTime').value=val;
-  document.getElementById('timeDropdown').classList.remove('open');
-  document.getElementById('timeDisplay').classList.remove('open');
+  closeTimePicker();
 }
 document.addEventListener('click',function(e){
   const wrap=document.querySelector('.time-picker-wrap');
-  if(wrap&&!wrap.contains(e.target)){
-    document.getElementById('timeDropdown').classList.remove('open');
-    document.getElementById('timeDisplay').classList.remove('open');
+  const dd=document.getElementById('timeDropdown');
+  if(wrap&&dd&&dd.classList.contains('open')&&!wrap.contains(e.target)){
+    closeTimePicker();
   }
 });
 
