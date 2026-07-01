@@ -8,77 +8,112 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <style>
 :root{
-  --purple:#4c00b0;--purple-dark:#36007d;--purple-deep:#25005a;--purple-mid:#6a1ec8;
-  --purple-light:#f0e8ff;--gold:#f5c842;--gold-dark:#c9a227;--white:#ffffff;
-  --cream:#f9f5ff;--text:#2a2a2a;--text-light:#666;--border:#e2d5f5;
-  --shadow:rgba(76,0,176,0.18);--r:18px;--t:all 0.38s cubic-bezier(.4,0,.2,1);
+  --bg:#0a0a0a;--bg-card:#141414;--bg-hover:#1a1a1a;--border:#2a2a2a;
+  --text:#e5e5e5;--text-muted:#888;--accent:#f5c842;--accent-hover:#d4a832;
+  --success:#22c55e;--danger:#ef4444;--r:12px;--t:0.3s ease
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;overflow-x:hidden}
-body{font-family:'Poppins',sans-serif;color:var(--text);background:linear-gradient(135deg,var(--purple-deep),var(--purple),var(--purple-mid));min-height:100vh;overflow-x:hidden;padding-top:80px}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;color:var(--text);background:var(--bg);min-height:100vh;padding:80px 0 40px}
 a{text-decoration:none;color:inherit}
 ul{list-style:none}
 img{display:block;width:100%;object-fit:cover}
-.container{max-width:1600px;margin:0 auto;padding:0 24px}
+.container{max-width:1400px;margin:0 auto;padding:0 20px}
 
 /* Navbar */
-#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:12px 32px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px;transition:var(--t);background:rgba(37,0,90,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
-.nav-logo img{height:50px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
-.nav-links{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap}
-.nav-links a{color:rgba(255,255,255,.85);font-size:.88rem;font-weight:500;transition:all .3s;padding:8px 12px;border-radius:8px}
-.nav-links a:hover{color:var(--gold);background:rgba(245,200,66,.1)}
-.nav-right{display:flex;gap:10px;align-items:center;justify-content:flex-end}
-.nav-btn{padding:10px 20px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border:none;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif;text-decoration:none}
-.nav-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--bg-card);border-bottom:1px solid var(--border);backdrop-filter:blur(10px)}
+.nav-logo img{height:40px;width:auto}
+.nav-links{display:flex;align-items:center;gap:16px}
+.nav-links a{color:var(--text-muted);font-size:.85rem;font-weight:500;transition:var(--t);padding:6px 12px;border-radius:6px}
+.nav-links a:hover{color:var(--text);background:var(--bg-hover)}
+.nav-right{display:flex;gap:10px}
+.nav-btn{padding:8px 16px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t)}
+.nav-btn:hover{background:var(--accent-hover)}
 
 /* Header */
-.setup-header{text-align:center;padding:40px 0}
-.setup-header h1{font-family:'Playfair Display',serif;font-size:2.5rem;color:#fff;margin-bottom:12px}
-.setup-header p{color:rgba(255,255,255,.7);font-size:1.1rem}
+.setup-header{text-align:center;padding:30px 0}
+.setup-header h1{font-family:'Playfair Display',serif;font-size:2rem;color:var(--text);margin-bottom:8px}
+.setup-header p{color:var(--text-muted);font-size:.95rem}
 
 /* Layout */
-.setup-container{display:grid;grid-template-columns:1fr;gap:24px;margin-bottom:40px}
+.setup-container{display:flex;flex-direction:column;gap:20px}
 
 /* Action Bar */
-.action-bar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:24px;padding:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;flex-wrap:wrap}
-.action-left{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.action-btn{padding:10px 20px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border:none;border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px}
-.action-btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
-.action-btn.secondary{background:rgba(255,255,255,.08);color:#fff;border:2px solid rgba(255,255,255,.15)}
-.action-btn.secondary:hover{background:rgba(255,255,255,.12)}
+.action-bar{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);flex-wrap:wrap}
+.action-left{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.action-btn{padding:10px 18px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t);display:flex;align-items:center;gap:6px}
+.action-btn:hover{background:var(--accent-hover)}
+.action-btn.secondary{background:var(--bg-hover);color:var(--text);border:1px solid var(--border)}
+.action-btn.secondary:hover{background:var(--border)}
 .file-input-wrapper{position:relative;overflow:hidden}
 .file-input-wrapper input[type="file"]{position:absolute;left:0;top:0;opacity:0;cursor:pointer;width:100%;height:100%}
 
-/* Settings Panel */
-.settings-panel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;margin-bottom:24px}
-.settings-panel h2{color:var(--gold);font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:20px}
-.settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
-.setting-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px}
-.setting-label{color:rgba(255,255,255,.8);font-size:.85rem;font-weight:500}
-.toggle-switch{position:relative;width:48px;height:24px}
-.toggle-switch input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,.2);border-radius:24px;transition:var(--t)}
-.toggle-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:var(--t)}
-.toggle-switch input:checked+.toggle-slider{background:linear-gradient(135deg,var(--gold),var(--gold-dark))}
-.toggle-switch input:checked+.toggle-slider:before{transform:translateX(24px)}
+/* Category Section */
+.category-section{margin-bottom:24px}
+.category-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px}
+.category-title{font-size:1.1rem;font-weight:600;color:var(--text)}
+.category-count{font-size:.85rem;color:var(--text-muted)}
+.category-items{display:flex;flex-direction:column;gap:12px}
 
-/* Table */
-.table-container{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;overflow-x:auto}
-.menu-table{width:100%;border-collapse:collapse;min-width:1200px}
-.menu-table th{background:rgba(245,200,66,.1);color:var(--gold);padding:12px 16px;text-align:left;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;border-bottom:2px solid rgba(245,200,66,.2)}
-.menu-table td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.8);font-size:.85rem}
-.menu-table tr:hover{background:rgba(255,255,255,.05)}
-.menu-table input,.menu-table select,.menu-table textarea{width:100%;padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:.8rem;font-family:'Poppins',sans-serif;transition:var(--t)}
-.menu-table input:focus,.menu-table select:focus,.menu-table textarea:focus{border-color:var(--gold);outline:none}
-.menu-table textarea{resize:vertical;min-height:60px}
-.table-actions{display:flex;gap:8px}
-.table-btn{padding:6px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif;border:none}
-.table-btn.edit{background:rgba(59,130,246,.15);color:#3b82f6}
-.table-btn.edit:hover{background:rgba(59,130,246,.25)}
-.table-btn.delete{background:rgba(239,68,68,.15);color:#ef4444}
-.table-btn.delete:hover{background:rgba(239,68,68,.25)}
-.table-btn.save{background:rgba(34,197,94,.15);color:#22c55e}
-.table-btn.save:hover{background:rgba(34,197,94,.25)}
+/* Menu Item Card */
+.menu-item-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px;transition:var(--t)}
+.menu-item-card:hover{border-color:var(--border);background:var(--bg-hover)}
+.item-header{display:flex;gap:16px;margin-bottom:16px}
+.item-image{width:80px;height:80px;border-radius:8px;object-fit:cover;background:var(--bg-hover);flex-shrink:0}
+.item-form{flex:1;display:flex;flex-direction:column;gap:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{font-size:.75rem;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px}
+.form-input,.form-select,.form-textarea{padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem;font-family:'Poppins',sans-serif;transition:var(--t)}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);outline:none}
+.form-textarea{resize:vertical;min-height:60px}
+
+/* Tags Section */
+.tags-section{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tag-dropdown{display:inline-block}
+.tag-select{padding:6px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.8rem;cursor:pointer}
+
+/* Item Actions */
+.item-actions{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.action-icon{padding:6px 12px;border-radius:6px;font-size:.8rem;font-weight:500;cursor:pointer;transition:var(--t);border:none;display:flex;align-items:center;gap:4px}
+.action-icon.edit{background:rgba(59,130,246,.15);color:#3b82f6}
+.action-icon.edit:hover{background:rgba(59,130,246,.25)}
+.action-icon.delete{background:rgba(239,68,68,.15);color:#ef4444}
+.action-icon.delete:hover{background:rgba(239,68,68,.25)}
+
+/* Available Toggle */
+.available-row{display:flex;align-items:center;gap:8px}
+.available-switch{position:relative;width:40px;height:22px}
+.available-switch input{opacity:0;width:0;height:0}
+.available-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border);border-radius:22px;transition:var(--t)}
+.available-slider:before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:3px;background:var(--text);border-radius:50%;transition:var(--t)}
+.available-switch input:checked+.available-slider{background:var(--success)}
+.available-switch input:checked+.available-slider:before{transform:translateX(18px);background:#fff}
+.available-label{font-size:.8rem;color:var(--text-muted)}
+
+/* Settings Panel */
+.settings-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:20px}
+.settings-panel h2{color:var(--text);font-size:1.1rem;margin-bottom:16px}
+.settings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.setting-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px}
+.setting-label{color:var(--text-muted);font-size:.85rem;font-weight:500}
+.toggle-switch{position:relative;width:44px;height:24px}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border);border-radius:24px;transition:var(--t)}
+.toggle-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:var(--text);border-radius:50%;transition:var(--t)}
+.toggle-switch input:checked+.toggle-slider{background:var(--accent)}
+.toggle-switch input:checked+.toggle-slider:before{transform:translateX(20px);background:#000}
+
+/* Category List */
+.category-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.category-tag{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg);border:1px solid var(--border);border-radius:20px;color:var(--text);font-size:.85rem;font-weight:600}
+.category-tag .remove-cat{cursor:pointer;color:var(--danger);font-size:.9rem}
+.category-tag .remove-cat:hover{color:var(--danger)}
+
+/* Empty State */
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-muted)}
+.empty-state i{font-size:3rem;margin-bottom:16px;opacity:0.5}
+.empty-state p{font-size:1rem}
 
 /* Image Preview */
 .img-preview{width:50px;height:50px;border-radius:8px;object-fit:cover;background:rgba(0,0,0,.2)}
@@ -100,6 +135,10 @@ img{display:block;width:100%;object-fit:cover}
 /* Empty State */
 .empty-state{text-align:center;padding:40px 20px;color:rgba(255,255,255,.5)}
 .empty-state i{font-size:3rem;color:var(--gold);margin-bottom:16px}
+.category-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.category-tag{display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;color:rgba(255,255,255,.85);font-size:.85rem;font-weight:600}
+.category-tag .remove-cat{cursor:pointer;color:#ef4444;font-size:.9rem}
+.category-tag .remove-cat:hover{color:#f87171}
 </style>
 </head>
 <body>
@@ -135,6 +174,9 @@ img{display:block;width:100%;object-fit:cover}
         <button class="action-btn" onclick="addNewItem()">
           <i class="fas fa-plus"></i> Add New Item
         </button>
+        <button class="action-btn secondary" onclick="showCategoryManager()">
+          <i class="fas fa-layer-group"></i> Manage Categories
+        </button>
         <div class="file-input-wrapper">
           <button class="action-btn secondary">
             <i class="fas fa-upload"></i> Import JSON
@@ -147,46 +189,15 @@ img{display:block;width:100%;object-fit:cover}
       </button>
     </div>
     
-    <!-- Settings Panel -->
-    <div class="settings-panel">
-      <h2><i class="fas fa-sliders-h"></i> Tag Visibility Settings</h2>
-      <div class="settings-grid">
-        <div class="setting-item">
-          <span class="setting-label">Show Veg/Non-Veg Badge</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="showVegNonVeg" checked onchange="updateTable()"/>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Show Spice Level</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="showSpice" checked onchange="updateTable()"/>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Show Popular Badge</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="showPopular" checked onchange="updateTable()"/>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Show Rating</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="showRating" checked onchange="updateTable()"/>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Show Allergy Tags</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="showAllergies" checked onchange="updateTable()"/>
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
+    <!-- Category Manager Panel -->
+    <div class="settings-panel" id="categoryManager" style="display:none">
+      <h2><i class="fas fa-layer-group"></i> Manage Categories</h2>
+      <div style="display:flex;gap:10px;margin-bottom:16px">
+        <input type="text" id="newCategoryInput" placeholder="Enter new category name" style="flex:1;padding:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#fff;font-size:.85rem"/>
+        <button class="action-btn" onclick="addCategory()">Add Category</button>
       </div>
+      <div id="categoryList" class="category-list"></div>
+      <button class="action-btn secondary" onclick="hideCategoryManager()" style="margin-top:12px">Close</button>
     </div>
     
     <!-- JSON Preview -->
@@ -203,13 +214,11 @@ img{display:block;width:100%;object-fit:cover}
       </div>
     </div>
     
-    <!-- Menu Table -->
-    <div class="table-container">
-      <div id="tableContent">
-        <div class="loading">
-          <i class="fas fa-spinner"></i>
-          <p>Loading menu...</p>
-        </div>
+    <!-- Menu Container -->
+    <div id="menuContainer">
+      <div class="loading">
+        <i class="fas fa-spinner"></i>
+        <p>Loading menu...</p>
       </div>
     </div>
     
@@ -237,23 +246,24 @@ firebase.initializeApp({
 const db=firebase.database();
 
 let menuItems=[];
+let categories=['starters','mains','biryani','breads','drinks','desserts'];
 let importedJsonData=null;
 let nextId=1;
 
 // Default 12 items
 const defaultItems=[
-  {id:1,name:'Samosa',description:'Crispy pastry filled with spiced potatoes and peas',price:4.50,category:'starters',image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',rating:4.8,popular:true,spice:'Mild',type:'veg',allergies:[]},
-  {id:2,name:'Chicken Tikka',description:'Tender chicken marinated in yogurt and spices',price:8.50,category:'starters',image:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80',rating:4.7,popular:true,spice:'Medium',type:'nonveg',allergies:[]},
-  {id:3,name:'Butter Chicken',description:'Creamy tomato-based curry with tender chicken',price:14.50,category:'mains',image:'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80',rating:4.9,popular:true,spice:'Mild',type:'nonveg',allergies:[]},
-  {id:4,name:'Lamb Rogan Josh',description:'Aromatic lamb curry with Kashmiri spices',price:16.00,category:'mains',image:'https://images.unsplash.com/photo-1545247181-516773cae754?w=500&q=80',rating:4.6,popular:false,spice:'Hot',type:'nonveg',allergies:[]},
-  {id:5,name:'Palak Paneer',description:'Cottage cheese in creamy spinach gravy',price:12.00,category:'mains',image:'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80',rating:4.5,popular:false,spice:'Mild',type:'veg',allergies:[]},
-  {id:6,name:'Chicken Biryani',description:'Fragrant basmati rice with spiced chicken',price:13.50,category:'biryani',image:'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80',rating:4.8,popular:true,spice:'Medium',type:'nonveg',allergies:[]},
-  {id:7,name:'Mutton Biryani',description:'Aromatic rice with tender mutton pieces',price:15.00,category:'biryani',image:'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&q=80',rating:4.7,popular:true,spice:'Hot',type:'nonveg',allergies:[]},
-  {id:8,name:'Vegetable Biryani',description:'Mixed vegetables in fragrant spiced rice',price:11.00,category:'biryani',image:'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=500&q=80',rating:4.4,popular:false,spice:'Mild',type:'veg',allergies:[]},
-  {id:9,name:'Garlic Naan',description:'Fresh baked bread with garlic butter',price:3.00,category:'breads',image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',rating:4.6,popular:false,spice:'Mild',type:'veg',allergies:[]},
-  {id:10,name:'Butter Naan',description:'Soft bread brushed with butter',price:2.50,category:'breads',image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',rating:4.5,popular:false,spice:'Mild',type:'veg',allergies:[]},
-  {id:11,name:'Mango Lassi',description:'Refreshing yogurt drink with mango',price:4.50,category:'drinks',image:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80',rating:4.8,popular:true,spice:'None',type:'veg',allergies:[]},
-  {id:12,name:'Gulab Jamun',description:'Sweet milk dumplings in syrup',price:5.00,category:'desserts',image:'https://images.unsplash.com/photo-1666190098808-9b0269b8d0a9?w=500&q=80',rating:4.7,popular:true,spice:'None',type:'veg',allergies:[]}
+  {id:1,name:'Samosa',description:'Crispy pastry filled with spiced potatoes and peas',price:4.50,category:'starters',image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',rating:4.8,popular:true,spice:'Mild',type:'veg',allergies:[],available:true},
+  {id:2,name:'Chicken Tikka',description:'Tender chicken marinated in yogurt and spices',price:8.50,category:'starters',image:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80',rating:4.7,popular:true,spice:'Medium',type:'nonveg',allergies:[],available:true},
+  {id:3,name:'Butter Chicken',description:'Creamy tomato-based curry with tender chicken',price:14.50,category:'mains',image:'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80',rating:4.9,popular:true,spice:'Mild',type:'nonveg',allergies:[],available:true},
+  {id:4,name:'Lamb Rogan Josh',description:'Aromatic lamb curry with Kashmiri spices',price:16.00,category:'mains',image:'https://images.unsplash.com/photo-1545247181-516773cae754?w=500&q=80',rating:4.6,popular:false,spice:'Hot',type:'nonveg',allergies:[],available:true},
+  {id:5,name:'Palak Paneer',description:'Cottage cheese in creamy spinach gravy',price:12.00,category:'mains',image:'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80',rating:4.5,popular:false,spice:'Mild',type:'veg',allergies:[],available:true},
+  {id:6,name:'Chicken Biryani',description:'Fragrant basmati rice with spiced chicken',price:13.50,category:'biryani',image:'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80',rating:4.8,popular:true,spice:'Medium',type:'nonveg',allergies:[],available:true},
+  {id:7,name:'Mutton Biryani',description:'Aromatic rice with tender mutton pieces',price:15.00,category:'biryani',image:'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&q=80',rating:4.7,popular:true,spice:'Hot',type:'nonveg',allergies:[],available:true},
+  {id:8,name:'Vegetable Biryani',description:'Mixed vegetables in fragrant spiced rice',price:11.00,category:'biryani',image:'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=500&q=80',rating:4.4,popular:false,spice:'Mild',type:'veg',allergies:[],available:true},
+  {id:9,name:'Garlic Naan',description:'Fresh baked bread with garlic butter',price:3.00,category:'breads',image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',rating:4.6,popular:false,spice:'Mild',type:'veg',allergies:[],available:true},
+  {id:10,name:'Butter Naan',description:'Soft bread brushed with butter',price:2.50,category:'breads',image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',rating:4.5,popular:false,spice:'Mild',type:'veg',allergies:[],available:true},
+  {id:11,name:'Mango Lassi',description:'Refreshing yogurt drink with mango',price:4.50,category:'drinks',image:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80',rating:4.8,popular:true,spice:'None',type:'veg',allergies:[],available:true},
+  {id:12,name:'Gulab Jamun',description:'Sweet milk dumplings in syrup',price:5.00,category:'desserts',image:'https://images.unsplash.com/photo-1666190098808-9b0269b8d0a9?w=500&q=80',rating:4.7,popular:true,spice:'None',type:'veg',allergies:[],available:true}
 ];
 
 // Load menu from Firebase
@@ -264,9 +274,15 @@ function loadMenuFromFirebase(){
       const itemsData=data.items;
       menuItems=Object.entries(itemsData).map(([id,item])=>({...item,id}));
       nextId=Math.max(...menuItems.map(i=>parseInt(i.id)||0))+1;
+      // Load categories from Firebase
+      if(data.categories&&Array.isArray(data.categories)){
+        categories=data.categories;
+      }
     }else{
       menuItems=[...defaultItems];
       nextId=13;
+      // Auto-save default menu to Firebase if empty
+      saveToFirebase();
     }
     renderTable();
   }).catch((error)=>{
@@ -279,69 +295,111 @@ function loadMenuFromFirebase(){
 
 // Render table
 function renderTable(){
-  const container=document.getElementById('tableContent');
-  const showVegNonVeg=document.getElementById('showVegNonVeg').checked;
-  const showSpice=document.getElementById('showSpice').checked;
-  const showPopular=document.getElementById('showPopular').checked;
-  const showRating=document.getElementById('showRating').checked;
-  const showAllergies=document.getElementById('showAllergies').checked;
+  const container=document.getElementById('menuContainer');
   
-  let html='<table class="menu-table"><thead><tr>';
-  html+='<th>ID</th>';
-  html+='<th>Image</th>';
-  html+='<th>Name</th>';
-  html+='<th>Description</th>';
-  html+='<th>Price (€)</th>';
-  html+='<th>Category</th>';
-  if(showSpice)html+='<th>Spice</th>';
-  if(showVegNonVeg)html+='<th>Type</th>';
-  if(showPopular)html+='<th>Popular</th>';
-  if(showRating)html+='<th>Rating</th>';
-  if(showAllergies)html+='<th>Allergies</th>';
-  html+='<th>Actions</th>';
-  html+='</tr></thead><tbody>';
+  let html='';
   
-  menuItems.forEach((item,index)=>{
-    html+='<tr>';
-    html+='<td><input type="number" value="'+item.id+'" onchange="updateItem('+index+',\'id\',this.value)" style="width:60px"/></td>';
-    html+='<td><img src="'+item.image+'" class="img-preview" onerror="this.src=\'https://via.placeholder.com/50\'"/><input type="text" value="'+item.image+'" onchange="updateItem('+index+',\'image\',this.value)" style="margin-top:4px;font-size:.7rem"/></td>';
-    html+='<td><input type="text" value="'+item.name+'" onchange="updateItem('+index+',\'name\',this.value)"/></td>';
-    html+='<td><textarea onchange="updateItem('+index+',\'description\',this.value)">'+item.description+'</textarea></td>';
-    html+='<td><input type="number" step="0.01" value="'+item.price+'" onchange="updateItem('+index+',\'price\',this.value)"/></td>';
-    html+='<td><select onchange="updateItem('+index+',\'category\',this.value)">';
-    html+='<option value="starters" '+('starters'===item.category?'selected':'')+'>Starters</option>';
-    html+='<option value="mains" '+('mains'===item.category?'selected':'')+'>Mains</option>';
-    html+='<option value="biryani" '+('biryani'===item.category?'selected':'')+'>Biryani</option>';
-    html+='<option value="breads" '+('breads'===item.category?'selected':'')+'>Breads</option>';
-    html+='<option value="drinks" '+('drinks'===item.category?'selected':'')+'>Drinks</option>';
-    html+='<option value="desserts" '+('desserts'===item.category?'selected':'')+'>Desserts</option>';
-    html+='</select></td>';
-    if(showSpice){
-      html+='<td><select onchange="updateItem('+index+',\'spice\',this.value)">';
-      html+='<option value="None" '+('None'===item.spice?'selected':'')+'>None</option>';
+  if(menuItems.length===0){
+    container.innerHTML='<div class="empty-state"><i class="fas fa-utensils"></i><p>No items yet. Add your first item!</p></div>';
+    return;
+  }
+  
+  // Group items by category
+  const grouped={};
+  menuItems.forEach(item=>{
+    const cat=item.category||'uncategorized';
+    if(!grouped[cat])grouped[cat]=[];
+    grouped[cat].push(item);
+  });
+  
+  // Render each category
+  Object.keys(grouped).forEach(category=>{
+    const categoryItems=grouped[category];
+    if(categoryItems.length===0)return;
+    
+    html+='<div class="category-section">';
+    html+='<div class="category-header">';
+    html+='<span class="category-title">'+category.charAt(0).toUpperCase()+category.slice(1)+'</span>';
+    html+='<span class="category-count">'+categoryItems.length+' items</span>';
+    html+='</div>';
+    html+='<div class="category-items">';
+    
+    categoryItems.forEach((item,itemIndex)=>{
+      const index=menuItems.indexOf(item);
+      html+='<div class="menu-item-card">';
+      html+='<div class="item-header">';
+      html+='<img src="'+item.image+'" class="item-image" onerror="this.src=\'https://via.placeholder.com/80\'"/>';
+      html+='<div class="item-form">';
+      html+='<div class="form-row">';
+      html+='<div class="form-group">';
+      html+='<label class="form-label">Name</label>';
+      html+='<input type="text" class="form-input" value="'+item.name+'" onchange="updateItem('+index+',\'name\',this.value)"/>';
+      html+='</div>';
+      html+='<div class="form-group">';
+      html+='<label class="form-label">Price (€)</label>';
+      html+='<input type="number" step="0.01" class="form-input" value="'+item.price+'" onchange="updateItem('+index+',\'price\',this.value)"/>';
+      html+='</div>';
+      html+='</div>';
+      html+='<div class="form-group">';
+      html+='<label class="form-label">Description</label>';
+      html+='<textarea class="form-textarea" onchange="updateItem('+index+',\'description\',this.value)">'+item.description+'</textarea>';
+      html+='</div>';
+      html+='<div class="form-group">';
+      html+='<label class="form-label">Image URL</label>';
+      html+='<input type="text" class="form-input" value="'+item.image+'" onchange="updateItem('+index+',\'image\',this.value)"/>';
+      html+='</div>';
+      html+='</div>';
+      html+='</div>';
+      html+='<div class="form-row">';
+      html+='<div class="form-group">';
+      html+='<label class="form-label">Spice Level</label>';
+      html+='<select class="form-select" onchange="updateItem('+index+',\'spice\',this.value)">';
+      html+='<option value="none" '+('none'===item.spice?'selected':'')+'>None</option>';
       html+='<option value="Mild" '+('Mild'===item.spice?'selected':'')+'>Mild</option>';
       html+='<option value="Medium" '+('Medium'===item.spice?'selected':'')+'>Medium</option>';
       html+='<option value="Hot" '+('Hot'===item.spice?'selected':'')+'>Hot</option>';
       html+='<option value="Extra Hot" '+('Extra Hot'===item.spice?'selected':'')+'>Extra Hot</option>';
-      html+='</select></td>';
-    }
-    if(showVegNonVeg){
-      html+='<td><select onchange="updateItem('+index+',\'type\',this.value)">';
+      html+='</select>';
+      html+='</div>';
+      html+='<div class="form-group">';
+      html+='<label class="form-label">Type</label>';
+      html+='<select class="form-select" onchange="updateItem('+index+',\'type\',this.value)">';
+      html+='<option value="none" '+('none'===item.type?'selected':'')+'>None</option>';
       html+='<option value="veg" '+('veg'===item.type?'selected':'')+'>Vegetarian</option>';
-      html+='<option value="nonveg" '+('nonveg'===item.type?'selected':'')+'>Non-Vegetarian</option>';
-      html+='</select></td>';
-    }
-    if(showPopular)html+='<td><input type="checkbox" '+(item.popular?'checked':'')+' onchange="updateItem('+index+',\'popular\',this.checked)"/></td>';
-    if(showRating)html+='<td><input type="number" step="0.1" min="0" max="5" value="'+item.rating+'" onchange="updateItem('+index+',\'rating\',this.value)" style="width:70px"/></td>';
-    if(showAllergies)html+='<td><input type="text" value="'+(item.allergies||[]).join(', ')+'" onchange="updateItem('+index+',\'allergies\',this.value)" placeholder="L, G, etc."/></td>';
-    html+='<td><div class="table-actions">';
-    html+='<button class="table-btn delete" onclick="deleteItem('+index+')"><i class="fas fa-trash"></i></button>';
-    html+='</div></td>';
-    html+='</tr>';
+      html+='<option value="nonveg" '+('nonveg'===item.type?'selected':'')+'>Non-Veg</option>';
+      html+='</select>';
+      html+='</div>';
+      html+='</div>';
+      html+='<div class="form-row">';
+      html+='<div class="form-group">';
+      html+='<label class="form-label">Tags</label>';
+      html+='<div class="tags-section">';
+      html+='<select class="tag-select" onchange="updateItem('+index+',\'popular\',this.value===\'popular\')">';
+      html+='<option value="">None</option>';
+      html+='<option value="popular" '+(item.popular?'selected':'')+'>⭐ Popular</option>';
+      html+='</select>';
+      html+='</div>';
+      html+='</div>';
+      html+='<div class="form-group">';
+      html+='<div class="available-row">';
+      html+='<label class="available-switch">';
+      html+='<input type="checkbox" '+(item.available!==false?'checked':'')+' onchange="updateItem('+index+',\'available\',this.checked)"/>';
+      html+='<span class="available-slider"></span>';
+      html+='</label>';
+      html+='<span class="available-label">Available</span>';
+      html+='</div>';
+      html+='</div>';
+      html+='</div>';
+      html+='<div class="item-actions">';
+      html+='<button class="action-icon delete" onclick="deleteItem('+index+')"><i class="fas fa-trash"></i> Delete</button>';
+      html+='</div>';
+      html+='</div>';
+    });
+    
+    html+='</div></div>';
   });
   
-  html+='</tbody></table>';
-  container.innerHTML=html;
+  container.innerHTML=html||'<div class="empty-state"><i class="fas fa-utensils"></i><p>No items yet. Add your first item!</p></div>';
 }
 
 // Update item
@@ -369,7 +427,8 @@ function addNewItem(){
     type:'veg',
     popular:false,
     rating:0,
-    allergies:[]
+    allergies:[],
+    available:true
   };
   menuItems.push(newItem);
   renderTable();
@@ -427,7 +486,8 @@ function confirmJsonImport(){
       type:item.type||'veg',
       popular:item.popular||false,
       rating:item.rating||0,
-      allergies:item.allergies||[]
+      allergies:item.allergies||[],
+      available:item.available!==false
     }));
   }else if(importedJsonData.items){
     menuItems=Object.entries(importedJsonData.items).map(([id,item],index)=>({
@@ -441,7 +501,8 @@ function confirmJsonImport(){
       type:item.type||'veg',
       popular:item.popular||false,
       rating:item.rating||0,
-      allergies:item.allergies||[]
+      allergies:item.allergies||[],
+      available:item.available!==false
     }));
   }
   
@@ -460,8 +521,6 @@ function closeJsonPreview(){
 // Save to Firebase
 function saveToFirebase(){
   const items={};
-  const categories=['starters','mains','biryani','breads','drinks','desserts'];
-  
   menuItems.forEach(item=>{
     items[item.id]=item;
   });
@@ -474,6 +533,47 @@ function saveToFirebase(){
   }).catch((error)=>{
     showToast('Error saving to Firebase: '+error.message,true);
   });
+}
+
+// Category management functions
+function showCategoryManager(){
+  document.getElementById('categoryManager').style.display='block';
+  renderCategoryList();
+}
+
+function hideCategoryManager(){
+  document.getElementById('categoryManager').style.display='none';
+}
+
+function renderCategoryList(){
+  const list=document.getElementById('categoryList');
+  list.innerHTML=categories.map(cat=>`
+    <div class="category-tag">
+      ${cat}
+      <span class="remove-cat" onclick="removeCategory('${cat}')">×</span>
+    </div>
+  `).join('');
+}
+
+function addCategory(){
+  const input=document.getElementById('newCategoryInput');
+  const newCat=input.value.trim().toLowerCase().replace(/\s+/g,'');
+  if(newCat&&!categories.includes(newCat)){
+    categories.push(newCat);
+    renderCategoryList();
+    input.value='';
+    showToast('Category added');
+  }else if(categories.includes(newCat)){
+    showToast('Category already exists',true);
+  }
+}
+
+function removeCategory(cat){
+  if(confirm('Remove category "'+cat+'"? Items in this category will need to be reassigned.')){
+    categories=categories.filter(c=>c!==cat);
+    renderCategoryList();
+    showToast('Category removed');
+  }
 }
 
 // Toast notification
