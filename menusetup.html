@@ -208,6 +208,12 @@ img{display:block;width:100%;object-fit:cover}
         </div>
       </div>
       <div style="display:flex;gap:10px">
+        <button class="action-btn secondary" onclick="showJsonFormatExample()">
+          <i class="fas fa-file-code"></i> JSON Format
+        </button>
+        <button class="action-btn secondary danger" onclick="deleteAllItems()">
+          <i class="fas fa-trash-alt"></i> Delete All
+        </button>
         <a href="food-ordering.html" class="action-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px">
           <i class="fas fa-eye"></i> View Menu
         </a>
@@ -322,6 +328,28 @@ img{display:block;width:100%;object-fit:cover}
         </div>
       </div>
     </div>
+
+    <!-- JSON Format Example Modal -->
+    <div class="modal-overlay" id="jsonFormatModal" style="display:none">
+      <div class="modal-content" style="max-width:700px">
+        <div class="modal-header">
+          <h2>JSON Format Example</h2>
+          <button class="close-btn" onclick="closeJsonFormatModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="color:var(--text-muted);margin-bottom:16px;font-size:.9rem">Copy this format to create your menu JSON file. Import will merge with existing items.</p>
+          <div class="json-preview" style="max-height:500px">
+            <pre id="jsonFormatContent" style="color:#4ade80;font-family:'Monaco','Consolas',monospace;font-size:.75rem;white-space:pre-wrap;word-wrap:break-word"></pre>
+          </div>
+          <button class="action-btn secondary" onclick="copyJsonFormat()" style="margin-top:16px;width:100%">
+            <i class="fas fa-copy"></i> Copy to Clipboard
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button class="action-btn secondary" onclick="closeJsonFormatModal()">Close</button>
+        </div>
+      </div>
+    </div>
     
   </div>
 </div>
@@ -379,6 +407,8 @@ function loadMenuFromFirebase(){
       if(data.categories&&Array.isArray(data.categories)){
         categories=data.categories;
       }
+      // Sync categories with actual categories used by menu items
+      syncCategoriesWithItems();
     }else{
       menuItems=[...defaultItems];
       nextId=13;
@@ -391,6 +421,36 @@ function loadMenuFromFirebase(){
     menuItems=[...defaultItems];
     nextId=13;
     renderTable();
+  });
+}
+
+// Sync categories with actual categories used by menu items
+function syncCategoriesWithItems(){
+  const usedCategories=new Set();
+  menuItems.forEach(item=>{
+    if(item.category){
+      const catLower=item.category.toLowerCase().replace(/\s+/g,'');
+      usedCategories.add(catLower);
+    }
+  });
+  // Add any missing categories
+  usedCategories.forEach(cat=>{
+    if(!categories.includes(cat)){
+      categories.push(cat);
+    }
+  });
+  // Also ensure all categories in the list are actually used by items
+  // (optional: remove unused categories - commented out for now)
+  // const usedCatArray=Array.from(usedCategories);
+  // categories=categories.filter(cat=>usedCatArray.includes(cat));
+  // Save updated categories to Firebase
+  saveCategoriesToFirebase();
+}
+
+// Save categories to Firebase
+function saveCategoriesToFirebase(){
+  db.ref('menu/categories').set(categories).catch((error)=>{
+    console.error('Error saving categories:',error);
   });
 }
 
@@ -420,7 +480,7 @@ function renderTable(){
     
     html+='<div class="category-section">';
     html+='<div class="category-header">';
-    html+='<span class="category-title">'+category.charAt(0).toUpperCase()+category.slice(1)+'</span>';
+    html+='<span class="category-title">'+formatCategoryName(category)+'</span>';
     html+='<div style="display:flex;align-items:center;gap:12px">';
     html+='<span class="category-count">'+categoryItems.length+' items</span>';
     html+='<button class="action-btn small" onclick="addItemToCategory(\''+category+'\')"><i class="fas fa-plus"></i> Add Item</button>';
@@ -561,7 +621,7 @@ function closeEditModal(){
 // Save edit
 function saveEdit(){
   if(editingIndex===null)return;
-  
+
   const item=menuItems[editingIndex];
   item.name=document.getElementById('editName').value;
   item.price=parseFloat(document.getElementById('editPrice').value)||0;
@@ -571,12 +631,13 @@ function saveEdit(){
   item.category=document.getElementById('editCategory').value;
   item.popular=document.getElementById('editPopular').value==='popular';
   item.available=document.getElementById('editAvailable').checked;
-  
+
   const preview=document.getElementById('editImagePreview');
   if(preview.style.display!=='none'){
     item.image=preview.src;
   }
-  
+
+  syncCategoriesWithItems();
   renderTable();
   closeEditModal();
   showToast('Item saved');
@@ -599,6 +660,7 @@ function addNewItem(){
     available:true
   };
   menuItems.push(newItem);
+  syncCategoriesWithItems();
   renderTable();
   showToast('New item added');
 }
@@ -620,6 +682,7 @@ function addItemToCategory(category){
     available:true
   };
   menuItems.push(newItem);
+  syncCategoriesWithItems();
   renderTable();
   openEditModal(menuItems.length-1);
   showToast('New item added to '+category);
@@ -663,10 +726,12 @@ function importJSON(event){
 // Confirm JSON import
 function confirmJsonImport(){
   if(!importedJsonData)return;
-  
+
+  let newItems=[];
+
   if(Array.isArray(importedJsonData)){
-    menuItems=importedJsonData.map((item,index)=>({
-      id:item.id||index+1,
+    newItems=importedJsonData.map((item,index)=>({
+      id:item.id||nextId++,
       name:item.name||'',
       description:item.description||'',
       price:item.price||0,
@@ -680,23 +745,8 @@ function confirmJsonImport(){
       available:item.available!==false
     }));
   }else if(importedJsonData.items){
-    menuItems=Object.entries(importedJsonData.items).map(([id,item],index)=>({
-      id:parseInt(id)||index+1,
-      name:item.name||'',
-      description:item.description||'',
-      price:item.price||0,
-      category:item.category||'starters',
-      image:item.image||'',
-      spice:item.spice||'Mild',
-      type:item.type||'veg',
-      popular:item.popular||false,
-      rating:item.rating||0,
-      allergies:item.allergies||[],
-      available:item.available!==false
-    }));
-  }else if(importedJsonData.items){
-    menuItems=Object.entries(importedJsonData.items).map(([id,item],index)=>({
-      id:parseInt(id)||index+1,
+    newItems=Object.entries(importedJsonData.items).map(([id,item],index)=>({
+      id:parseInt(id)||nextId++,
       name:item.name||'',
       description:item.description||'',
       price:item.price||0,
@@ -710,8 +760,8 @@ function confirmJsonImport(){
       available:item.available!==false
     }));
   }else if(importedJsonData.menu){
-    menuItems=importedJsonData.menu.map((item,index)=>({
-      id:item.id||index+1,
+    newItems=importedJsonData.menu.map((item,index)=>({
+      id:item.id||nextId++,
       name:item.name||'',
       description:item.description||'',
       price:item.price||0,
@@ -728,7 +778,23 @@ function confirmJsonImport(){
     showToast('Invalid JSON format. Expected array or object with items/menu property',true);
     return;
   }
-  
+
+  // Merge new items with existing items
+  menuItems=[...menuItems,...newItems];
+
+  // Merge categories if present in imported JSON
+  if(importedJsonData.categories&&Array.isArray(importedJsonData.categories)){
+    importedJsonData.categories.forEach(cat=>{
+      const catLower=cat.toLowerCase().replace(/\s+/g,'');
+      if(!categories.includes(catLower)){
+        categories.push(catLower);
+      }
+    });
+  }
+
+  // Sync categories with items to ensure all used categories are included
+  syncCategoriesWithItems();
+
   nextId=Math.max(...menuItems.map(i=>parseInt(i.id)||0))+1;
   closeJsonPreview();
   renderTable();
@@ -772,10 +838,15 @@ function renderCategoryList(){
   const list=document.getElementById('categoryList');
   list.innerHTML=categories.map(cat=>`
     <div class="category-tag">
-      ${cat}
+      ${formatCategoryName(cat)}
       <span class="remove-cat" onclick="removeCategory('${cat}')">×</span>
     </div>
   `).join('');
+}
+
+// Format category name for display (capitalize first letter, add spaces)
+function formatCategoryName(cat){
+  return cat.charAt(0).toUpperCase()+cat.slice(1).replace(/([A-Z])/g,' $1').trim();
 }
 
 function addCategory(){
@@ -783,6 +854,7 @@ function addCategory(){
   const newCat=input.value.trim().toLowerCase().replace(/\s+/g,'');
   if(newCat&&!categories.includes(newCat)){
     categories.push(newCat);
+    saveCategoriesToFirebase();
     renderCategoryList();
     input.value='';
     showToast('Category added');
@@ -794,6 +866,7 @@ function addCategory(){
 function removeCategory(cat){
   if(confirm('Remove category "'+cat+'"? Items in this category will need to be reassigned.')){
     categories=categories.filter(c=>c!==cat);
+    saveCategoriesToFirebase();
     renderCategoryList();
     showToast('Category removed');
   }
@@ -807,6 +880,79 @@ function showToast(msg,isError=false){
   toast.querySelector('i').className=isError?'fas fa-exclamation-circle':'fas fa-check-circle';
   toast.classList.add('show');
   setTimeout(()=>toast.classList.remove('show'),3500);
+}
+
+// Delete all items
+function deleteAllItems(){
+  if(confirm('Are you sure you want to delete ALL items? This action cannot be undone.')){
+    menuItems=[];
+    nextId=1;
+    renderTable();
+    showToast('All items deleted');
+  }
+}
+
+// Show JSON format example
+function showJsonFormatExample(){
+  const example=[
+    {
+      "id":1,
+      "name":"Butter Chicken",
+      "description":"Creamy tomato-based curry with tender chicken",
+      "price":14.50,
+      "category":"mains",
+      "image":"https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80",
+      "spice":"Mild",
+      "type":"nonveg",
+      "popular":true,
+      "rating":4.9,
+      "allergies":[],
+      "available":true
+    },
+    {
+      "id":2,
+      "name":"Palak Paneer",
+      "description":"Cottage cheese in creamy spinach gravy",
+      "price":12.00,
+      "category":"mains",
+      "image":"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80",
+      "spice":"Mild",
+      "type":"veg",
+      "popular":false,
+      "rating":4.5,
+      "allergies":[],
+      "available":true
+    }
+  ];
+
+  const exampleWithCategories={
+    "categories":["starters","mains","biryani","breads","drinks","desserts"],
+    "menu":example
+  };
+
+  const formatText=`// Option 1: Array of items (categories will be auto-detected from items)
+${JSON.stringify(example,null,2)}
+
+// Option 2: With categories array (recommended - categories will be merged with existing)
+${JSON.stringify(exampleWithCategories,null,2)}`;
+
+  document.getElementById('jsonFormatContent').textContent=formatText;
+  document.getElementById('jsonFormatModal').style.display='flex';
+}
+
+// Close JSON format modal
+function closeJsonFormatModal(){
+  document.getElementById('jsonFormatModal').style.display='none';
+}
+
+// Copy JSON format to clipboard
+function copyJsonFormat(){
+  const content=document.getElementById('jsonFormatContent').textContent;
+  navigator.clipboard.writeText(content).then(()=>{
+    showToast('JSON format copied to clipboard');
+  }).catch(()=>{
+    showToast('Failed to copy',true);
+  });
 }
 
 // Initialize
