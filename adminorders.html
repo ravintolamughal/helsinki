@@ -42,7 +42,11 @@
     /* Main Content */
     .main-content{flex:1}
     .section-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);margin-bottom:24px}
-    .orders-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
+    .section-subtitle{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:600;color:rgba(255,255,255,.9);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+    .section-subtitle i{color:var(--gold)}
+    .section-badge{background:var(--gold);color:var(--purple-deep);padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:700;margin-left:auto}
+    .order-section{margin-bottom:40px}
+    .orders-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
     
     @media(max-width:1400px){
       .orders-grid{grid-template-columns:repeat(3,1fr)}
@@ -59,7 +63,7 @@
     }
     
     /* Order Card */
-    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;transition:var(--t);min-height:220px;display:flex;flex-direction:column}
+    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:16px;transition:var(--t);min-height:280px;display:flex;flex-direction:column;overflow:hidden}
     .order-card.new-order{border:2px solid var(--gold);background:rgba(245,200,66,.08);box-shadow:0 0 20px rgba(245,200,66,.3);animation:orderPulse 1.5s ease-in-out infinite}
     @keyframes orderPulse{
       0%,100%{transform:scale(1);box-shadow:0 0 20px rgba(245,200,66,.3)}
@@ -68,22 +72,28 @@
     .order-card.preorder{border:2px solid #3b82f6;background:rgba(59,130,246,.08)}
     .order-card:hover{transform:translateY(-2px)}
     .order-card.expanded{min-height:auto}
-    
-    /* Order Header */
-    .order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.1)}
-    .order-number{font-size:1rem;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif}
+
+    /* Order Card Header */
+    .card-header{background:rgba(0,0,0,.2);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.1)}
+    .header-left{display:flex;flex-direction:column;gap:4px}
+    .order-number{font-size:1.1rem;font-weight:800;color:var(--gold);font-family:'Poppins',sans-serif;letter-spacing:0.5px}
     .order-time{font-size:.7rem;color:rgba(255,255,255,.5)}
-    .order-status{padding:3px 10px;border-radius:15px;font-size:.7rem;font-weight:600}
-    .order-status.pending{background:rgba(245,200,66,.2);color:var(--gold)}
-    .order-status.confirmed{background:rgba(59,130,246,.2);color:#3b82f6}
-    .order-status.preparing{background:rgba(245,158,11,.2);color:#f59e0b}
-    .order-status.ready{background:rgba(34,197,94,.2);color:#22c55e}
-    
+    .order-status-badge{padding:6px 12px;border-radius:20px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+    .order-status-badge.pending{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep)}
+    .order-status-badge.confirmed{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
+    .order-status-badge.preparing{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
+    .order-status-badge.ready{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+    .order-status-badge.delivered{background:linear-gradient(135deg,#6b7280,#4b5563);color:#fff}
+    .order-status-badge.rejected{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+
+    /* Order Card Body */
+    .card-body{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px}
+
     /* Customer Info */
-    .customer-info{margin-bottom:12px}
-    .customer-name{font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:2px}
-    .customer-contact{font-size:.75rem;color:rgba(255,255,255,.5);margin-bottom:1px}
-    .customer-contact i{margin-right:4px;color:var(--gold);width:12px}
+    .customer-info{background:rgba(255,255,255,.03);border-radius:10px;padding:10px}
+    .customer-name{font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:4px}
+    .customer-contact{font-size:.75rem;color:rgba(255,255,255,.5);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+    .customer-contact i{color:var(--gold);width:12px}
     
     /* Preorder Badge */
     .preorder-badge{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;padding:4px 10px;border-radius:6px;font-size:.7rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;margin-bottom:8px}
@@ -91,12 +101,20 @@
     .preorder-time{font-size:.75rem;color:#3b82f6;font-weight:600;margin-top:2px}
     
     /* Order Items */
-    .order-items{flex:1;margin-bottom:12px}
+    .order-items{flex:1;background:rgba(255,255,255,.02);border-radius:10px;padding:10px}
     .order-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
     .order-item:last-child{border-bottom:none}
-    .item-qty{background:var(--gold);color:var(--purple-deep);width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0}
-    .item-name{flex:1;font-size:.8rem;color:var(--white)}
+    .item-qty{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0}
+    .item-name{flex:1;font-size:.8rem;color:var(--white);font-weight:500}
     .item-price{font-size:.8rem;color:var(--gold);font-weight:600}
+
+    /* Card Footer */
+    .card-footer{background:rgba(0,0,0,.3);padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:12px}
+    .order-total{display:flex;justify-content:space-between;align-items:center}
+    .total-label{font-size:.85rem;color:rgba(255,255,255,.7);font-weight:500}
+    .total-amount{font-size:1.3rem;color:var(--gold);font-weight:800;font-family:'Poppins',sans-serif}
+    .order-actions{display:flex;gap:6px}
+    .action-btn{flex:1;padding:8px;border-radius:8px;font-size:.7rem;font-weight:600;cursor:pointer;transition:.3s;border:none;display:flex;align-items:center;justify-content:center;gap:4px;font-family:'Poppins',sans-serif}
     
     /* View More */
     .view-more{color:var(--gold);font-size:.85rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;margin-top:8px;transition:.3s}
@@ -131,19 +149,20 @@
     .btn-view:hover{background:rgba(255,255,255,.15);border-color:var(--gold)}
     
     /* New Order Notification */
-    .new-order-modal{position:fixed;inset:0;background:linear-gradient(135deg,var(--purple-deep),var(--purple));z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
+    .new-order-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
     .new-order-modal.show{display:flex;animation:slideIn 0.5s ease}
     @keyframes slideIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
-    .new-order-content{background:rgba(255,255,255,.1);backdrop-filter:blur(20px);border:2px solid var(--gold);border-radius:24px;padding:40px;max-width:500px;width:100%;text-align:center}
-    .new-order-icon{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;color:var(--purple-deep);font-size:2.5rem;margin:0 auto 20px;animation:pulse 1.5s infinite}
+    .new-order-content{background:linear-gradient(135deg,var(--purple-deep),var(--purple));backdrop-filter:blur(20px);border:3px solid var(--gold);border-radius:24px;padding:50px;max-width:600px;width:100%;text-align:center;box-shadow:0 0 60px rgba(245,200,66,.5),0 0 100px rgba(245,200,66,.3);animation:modalPulse 2s ease-in-out infinite}
+    @keyframes modalPulse{0%,100%{box-shadow:0 0 60px rgba(245,200,66,.5),0 0 100px rgba(245,200,66,.3)}50%{box-shadow:0 0 80px rgba(245,200,66,.7),0 0 120px rgba(245,200,66,.5)}}
+    .new-order-icon{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;color:var(--purple-deep);font-size:3rem;margin:0 auto 24px;animation:pulse 1.5s infinite;box-shadow:0 0 30px rgba(245,200,66,.6)}
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-    .new-order-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);margin-bottom:12px}
-    .new-order-text{color:rgba(255,255,255,.8);font-size:1.1rem;margin-bottom:24px}
-    .new-order-details{background:rgba(255,255,255,.05);border-radius:12px;padding:20px;margin-bottom:24px;text-align:left}
-    .new-order-details p{color:rgba(255,255,255,.8);margin-bottom:8px;font-size:.95rem}
-    .new-order-details strong{color:var(--gold)}
-    .new-order-btn{padding:18px 40px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:14px;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;transition:.3s;font-family:'Poppins',sans-serif}
-    .new-order-btn:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(34,197,94,.4)}
+    .new-order-title{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:var(--gold);margin-bottom:8px;text-shadow:0 2px 10px rgba(245,200,66,.3)}
+    .new-order-text{color:rgba(255,255,255,.9);font-size:1.3rem;margin-bottom:30px;font-weight:500}
+    .new-order-details{background:rgba(255,255,255,.08);border:2px solid rgba(245,200,66,.3);border-radius:16px;padding:24px;margin-bottom:30px;text-align:left}
+    .new-order-details p{color:rgba(255,255,255,.9);margin-bottom:12px;font-size:1.05rem;line-height:1.6}
+    .new-order-details strong{color:var(--gold);font-weight:700}
+    .new-order-btn{padding:20px 50px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:16px;color:#fff;font-size:1.3rem;font-weight:700;cursor:pointer;transition:.3s;font-family:'Poppins',sans-serif;box-shadow:0 8px 25px rgba(34,197,94,.4)}
+    .new-order-btn:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(34,197,94,.6)}
     
     /* Time Selection Modal */
     .time-modal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9998;display:none;align-items:center;justify-content:center;padding:20px}
@@ -202,37 +221,37 @@
     <div class="sidebar">
       <h2 class="sidebar-title">Orders</h2>
       <div class="sidebar-tabs">
-        <div class="sidebar-tab active" onclick="switchTab('pending')" id="tab-pending">
-          <i class="fas fa-clock"></i>
-          New Orders
-          <span class="tab-badge" id="pendingBadge">0</span>
-        </div>
-        <div class="sidebar-tab" onclick="switchTab('preparing')" id="tab-preparing">
+        <div class="sidebar-tab active" onclick="toggleSection('active')" id="tab-active">
           <i class="fas fa-fire"></i>
-          Confirmed & Preparing
-          <span class="tab-badge" id="preparingBadge">0</span>
+          Active Orders
+          <span class="tab-badge" id="activeBadge">0</span>
         </div>
-        <div class="sidebar-tab" onclick="switchTab('ready')" id="tab-ready">
-          <i class="fas fa-check-circle"></i>
-          Ready
-          <span class="tab-badge" id="readyBadge">0</span>
-        </div>
-        <div class="sidebar-tab" onclick="switchTab('delivered')" id="tab-delivered">
+        <div class="sidebar-tab" onclick="toggleSection('delivered')" id="tab-delivered">
           <i class="fas fa-check-double"></i>
           Completed
           <span class="tab-badge" id="deliveredBadge">0</span>
         </div>
-        <div class="sidebar-tab" onclick="switchTab('rejected')" id="tab-rejected">
+        <div class="sidebar-tab" onclick="toggleSection('rejected')" id="tab-rejected">
           <i class="fas fa-times-circle"></i>
           Cancelled
           <span class="tab-badge" id="rejectedBadge">0</span>
+        </div>
+      </div>
+      <div class="date-toggle" style="margin-top:20px">
+        <button onclick="toggleDateSelector()" id="dateToggleBtn" style="width:100%;padding:12px;background:rgba(245,200,66,.2);border:1px solid var(--gold);border-radius:12px;color:var(--gold);font-size:.9rem;font-weight:600;cursor:pointer;transition:.3s;font-family:'Poppins',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+          <i class="fas fa-calendar"></i> Select Date
+        </button>
+        <div id="dateSelectorPanel" style="margin-top:12px;padding:16px;background:rgba(255,255,255,.05);border-radius:12px;display:none">
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;font-weight:600;margin-bottom:8px;display:block">Select Date</label>
+          <input type="date" id="dateSelector" class="date-input" style="width:100%;padding:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:.9rem;font-family:'Poppins',sans-serif" onchange="selectDate()"/>
+          <button onclick="resetToToday()" style="width:100%;margin-top:8px;padding:10px;background:rgba(245,200,66,.2);border:1px solid var(--gold);border-radius:8px;color:var(--gold);font-size:.85rem;font-weight:600;cursor:pointer;transition:.3s;font-family:'Poppins',sans-serif">Today</button>
         </div>
       </div>
     </div>
     
     <!-- Main Content -->
     <div class="main-content">
-      <h2 class="section-title" id="sectionTitle">Pending Orders</h2>
+      <h2 class="section-title" id="sectionTitle">Active Orders</h2>
       <div class="orders-grid" id="ordersContainer">
         <div class="empty-state">
           <i class="fas fa-inbox"></i>
@@ -317,9 +336,10 @@
     let selectedTime=15;
     let ordersRef=null;
     let processedOrders=new Set();
-    let currentTab='pending';
+    let currentSection='active';
     let notificationInterval=null;
     let currentDate=new Date().toDateString();
+    let selectedDate=new Date();
     
     // Listen for orders
     document.addEventListener('DOMContentLoaded',()=>{
@@ -347,8 +367,8 @@
     
     // Process orders from real-time data
     function processOrders(data){
-      const today=new Date();
-      today.setHours(0,0,0,0);
+      const filterDate=new Date(selectedDate);
+      filterDate.setHours(0,0,0,0);
 
       const ordersByStatus={
         pending:[],
@@ -363,7 +383,7 @@
         const orderDate=new Date(order.timestamp||Date.now());
         orderDate.setHours(0,0,0,0);
 
-        if(orderDate.getTime()===today.getTime()){
+        if(orderDate.getTime()===filterDate.getTime()){
           if(ordersByStatus[order.status]){
             ordersByStatus[order.status].push({id,...order});
           }
@@ -374,19 +394,19 @@
         ordersByStatus[status].sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
       });
 
-      let combinedOrders;
-      if(currentTab==='pending'){
-        combinedOrders=ordersByStatus.pending;
-      }else if(currentTab==='preparing'){
-        combinedOrders=[...ordersByStatus.confirmed,...ordersByStatus.preparing];
-      }else{
-        combinedOrders=ordersByStatus[currentTab];
+      updateBadges(ordersByStatus);
+
+      let ordersToShow=[];
+      if(currentSection==='active'){
+        ordersToShow=[...ordersByStatus.pending,...ordersByStatus.confirmed,...ordersByStatus.preparing,...ordersByStatus.ready];
+      }else if(currentSection==='delivered'){
+        ordersToShow=ordersByStatus.delivered;
+      }else if(currentSection==='rejected'){
+        ordersToShow=ordersByStatus.rejected;
       }
 
-      combinedOrders.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
-
-      updateBadges(ordersByStatus);
-      renderOrders(combinedOrders);
+      ordersToShow.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+      renderOrders(ordersToShow);
     }
     
     // Check if date has changed
@@ -394,8 +414,28 @@
       const today=new Date().toDateString();
       if(today!==currentDate){
         currentDate=today;
-        loadOrders();
+        if(selectedDate.toDateString()===today){
+          loadOrders();
+        }
       }
+    }
+
+    // Select custom date
+    function selectDate(){
+      const dateInput=document.getElementById('dateSelector');
+      if(dateInput.value){
+        selectedDate=new Date(dateInput.value);
+        loadOrders();
+        showToast(`Showing orders for ${selectedDate.toLocaleDateString()}`);
+      }
+    }
+
+    // Reset to today
+    function resetToToday(){
+      selectedDate=new Date();
+      document.getElementById('dateSelector').value='';
+      loadOrders();
+      showToast('Showing today\'s orders');
     }
     
     // Manual refresh
@@ -405,22 +445,26 @@
       showToast('Orders refreshed');
     }
     
-    // Switch tab
-    function switchTab(tab){
-      currentTab=tab;
+    // Toggle section
+    function toggleSection(section){
+      currentSection=section;
       document.querySelectorAll('.sidebar-tab').forEach(t=>t.classList.remove('active'));
-      document.getElementById(`tab-${tab}`).classList.add('active');
+      document.getElementById(`tab-${section}`).classList.add('active');
 
       const titles={
-        pending:'New Orders',
-        preparing:'Confirmed & Preparing Orders',
-        ready:'Ready Orders',
+        active:'Active Orders',
         delivered:'Completed Orders',
         rejected:'Cancelled Orders'
       };
-      document.getElementById('sectionTitle').textContent=titles[tab];
+      document.getElementById('sectionTitle').textContent=titles[section];
 
       loadOrders();
+    }
+
+    // Toggle date selector
+    function toggleDateSelector(){
+      const panel=document.getElementById('dateSelectorPanel');
+      panel.style.display=panel.style.display==='none'?'block':'none';
     }
     
     // Start repeating notification sound
@@ -453,13 +497,13 @@
         const data=snapshot.val();
         console.log('Orders data:', data);
         if(!data){
-          document.getElementById('ordersContainer').innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>No orders</p></div>';
           updateBadges({});
+          renderOrders([]);
           return;
         }
 
-        const today=new Date();
-        today.setHours(0,0,0,0);
+        const filterDate=new Date(selectedDate);
+        filterDate.setHours(0,0,0,0);
 
         const ordersByStatus={
           pending:[],
@@ -474,47 +518,43 @@
           const orderDate=new Date(order.timestamp||Date.now());
           orderDate.setHours(0,0,0,0);
 
-          // Only show today's orders
-          if(orderDate.getTime()===today.getTime()){
+          // Only show selected date's orders
+          if(orderDate.getTime()===filterDate.getTime()){
             if(ordersByStatus[order.status]){
               ordersByStatus[order.status].push({id,...order});
             }
           }
         });
 
-        // Sort orders by timestamp (oldest first so newest appears on right)
+        // Sort orders by timestamp
         Object.keys(ordersByStatus).forEach(status=>{
           ordersByStatus[status].sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
         });
 
-        // Combine confirmed and preparing for the preparing tab
-        let combinedOrders;
-        if(currentTab==='pending'){
-          combinedOrders=ordersByStatus.pending;
-        }else if(currentTab==='preparing'){
-          combinedOrders=[...ordersByStatus.confirmed,...ordersByStatus.preparing];
-        }else{
-          combinedOrders=ordersByStatus[currentTab];
+        updateBadges(ordersByStatus);
+
+        let ordersToShow=[];
+        if(currentSection==='active'){
+          ordersToShow=[...ordersByStatus.pending,...ordersByStatus.confirmed,...ordersByStatus.preparing,...ordersByStatus.ready];
+        }else if(currentSection==='delivered'){
+          ordersToShow=ordersByStatus.delivered;
+        }else if(currentSection==='rejected'){
+          ordersToShow=ordersByStatus.rejected;
         }
 
-        // Sort combined orders
-        combinedOrders.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
-
-        updateBadges(ordersByStatus);
-        renderOrders(combinedOrders);
+        ordersToShow.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+        renderOrders(ordersToShow);
       });
     }
     
     // Update badges
     function updateBadges(ordersByStatus){
-      document.getElementById('pendingBadge').textContent=ordersByStatus.pending?.length||0;
-      const preparingCount=(ordersByStatus.confirmed?.length||0)+(ordersByStatus.preparing?.length||0);
-      document.getElementById('preparingBadge').textContent=preparingCount;
-      document.getElementById('readyBadge').textContent=ordersByStatus.ready?.length||0;
+      const activeCount=(ordersByStatus.pending?.length||0)+(ordersByStatus.confirmed?.length||0)+(ordersByStatus.preparing?.length||0)+(ordersByStatus.ready?.length||0);
+      document.getElementById('activeBadge').textContent=activeCount;
       document.getElementById('deliveredBadge').textContent=ordersByStatus.delivered?.length||0;
       document.getElementById('rejectedBadge').textContent=ordersByStatus.rejected?.length||0;
     }
-    
+
     // Render orders
     function renderOrders(orders){
       const container=document.getElementById('ordersContainer');
@@ -523,7 +563,7 @@
         container.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>No orders</p></div>';
         return;
       }
-      
+
       try{
         const cardsHtml=orders.map(order=>createOrderCard(order)).join('');
         console.log('Cards HTML generated:', cardsHtml.substring(0,200));
@@ -541,84 +581,90 @@
         console.error('Invalid order data:', order);
         return '';
       }
-      
+
       const itemsToShow=order.items.slice(0,3);
       const hasMoreItems=order.items.length>3;
       const isPreorder=order.preorder;
-      const orderId=order.id.replace('order_','');
+      const numericId=order.id.replace(/\D/g,'')||'1';
+      const orderId='ORD'+numericId.padStart(4,'0');
       const orderDate=new Date(order.timestamp||Date.now());
       
       return `
         <div class="order-card ${order.status==='pending'?'new-order':''} ${isPreorder?'preorder':''}" id="card_${order.id}">
-          <div class="order-header">
-            <span class="order-number">#${orderId}</span>
-            <span class="order-status ${order.status}">${order.status.charAt(0).toUpperCase()+order.status.slice(1)}</span>
-          </div>
-          <p class="order-time">${orderDate.toLocaleDateString()} ${orderDate.toLocaleTimeString()}</p>
-          
-          ${isPreorder?`
-            <div class="preorder-badge">
-              <i class="fas fa-clock"></i> Preorder
+          <div class="card-header">
+            <div class="header-left">
+              <span class="order-number">#${orderId}</span>
+              <span class="order-time">${orderDate.toLocaleDateString()} ${orderDate.toLocaleTimeString()}</span>
             </div>
-            <p class="preorder-time"><i class="fas fa-calendar"></i> Pickup: ${order.pickupTime}</p>
-          `:''}
-          
-          <div class="customer-info">
-            <p class="customer-name">${order.customer.name}</p>
-            <p class="customer-contact"><i class="fas fa-phone"></i> ${order.customer.phone}</p>
-            <p class="customer-contact"><i class="fas fa-envelope"></i> ${order.customer.email}</p>
+            <span class="order-status-badge ${order.status}">${order.status.charAt(0).toUpperCase()+order.status.slice(1)}</span>
           </div>
           
-          <div class="order-items" id="items_${order.id}">
-            ${itemsToShow.map(item=>`
-              <div class="order-item">
-                <span class="item-qty">${item.quantity}</span>
-                <span class="item-name">${item.name}</span>
-                <span class="item-price">€${item.price.toFixed(2)}</span>
+          <div class="card-body">
+            ${isPreorder?`
+              <div class="preorder-badge">
+                <i class="fas fa-clock"></i> Preorder
               </div>
-            `).join('')}
-          </div>
-          
-          ${hasMoreItems?`
-            <div class="view-more" onclick="toggleViewMore('${order.id}',${order.items.length})">
-              <span id="viewMoreText_${order.id}">View ${order.items.length-3} more items</span>
-              <i class="fas fa-chevron-down" id="viewMoreIcon_${order.id}"></i>
+              <p class="preorder-time"><i class="fas fa-calendar"></i> Pickup: ${order.pickupTime}</p>
+            `:''}
+            
+            <div class="customer-info">
+              <p class="customer-name">${order.customer.name}</p>
+              <p class="customer-contact"><i class="fas fa-phone"></i> ${order.customer.phone}</p>
+              <p class="customer-contact"><i class="fas fa-envelope"></i> ${order.customer.email}</p>
             </div>
-          `:''}
-          
-          <div class="order-notes" id="notes_${order.id}">
-            ${order.items.map(item=>`
-              ${item.note?`<div class="note-item"><strong>${item.name}:</strong> ${item.note}</div>`:''}
-            `).join('')}
+            
+            <div class="order-items" id="items_${order.id}">
+              ${itemsToShow.map(item=>`
+                <div class="order-item">
+                  <span class="item-qty">${item.quantity}</span>
+                  <span class="item-name">${item.name}</span>
+                  <span class="item-price">€${item.price.toFixed(2)}</span>
+                </div>
+              `).join('')}
+            </div>
+            
+            ${hasMoreItems?`
+              <div class="view-more" onclick="toggleViewMore('${order.id}',${order.items.length})">
+                <span id="viewMoreText_${order.id}">View ${order.items.length-3} more items</span>
+                <i class="fas fa-chevron-down" id="viewMoreIcon_${order.id}"></i>
+              </div>
+            `:''}
+            
+            <div class="order-notes" id="notes_${order.id}">
+              ${order.items.map(item=>`
+                ${item.note?`<div class="note-item"><strong>${item.name}:</strong> ${item.note}</div>`:''}
+              `).join('')}
+            </div>
           </div>
           
-          <div class="order-total">
-            <span class="total-label">Total</span>
-            <span class="total-amount">€${order.total.toFixed(2)}</span>
-          </div>
-          
-          <div class="order-actions">
-            ${order.status==='pending'?`
-              <button class="action-btn btn-accept" onclick="openTimeModal('${order.id}')">
-                <i class="fas fa-check"></i> Accept
-              </button>
-              <button class="action-btn btn-cancel" onclick="cancelOrder('${order.id}')">
-                <i class="fas fa-times"></i> Cancel
-              </button>
-            `:''}
-            ${order.status==='confirmed'?`
-              <button class="action-btn btn-ready" onclick="updateOrderStatus('${order.id}','ready')">
-                <i class="fas fa-check-circle"></i> Mark Ready
-              </button>
-              <button class="action-btn btn-cancel" onclick="cancelOrder('${order.id}')">
-                <i class="fas fa-times"></i> Cancel
-              </button>
-            `:''}
-            ${order.status==='preparing'?`
-              <button class="action-btn btn-complete" onclick="updateOrderStatus('${order.id}','ready')">
-                <i class="fas fa-check-circle"></i> Mark Ready
-              </button>
-            `:''}
+          <div class="card-footer">
+            <div class="order-total">
+              <span class="total-label">Total</span>
+              <span class="total-amount">€${order.total.toFixed(2)}</span>
+            </div>
+            <div class="order-actions">
+              ${order.status==='pending'?`
+                <button class="action-btn btn-accept" onclick="openTimeModal('${order.id}')">
+                  <i class="fas fa-check"></i> Accept
+                </button>
+                <button class="action-btn btn-cancel" onclick="cancelOrder('${order.id}')">
+                  <i class="fas fa-times"></i> Cancel
+                </button>
+              `:''}
+              ${order.status==='confirmed'||order.status==='preparing'?`
+                <button class="action-btn btn-ready" onclick="updateOrderStatus('${order.id}','ready')">
+                  <i class="fas fa-check-circle"></i> Ready
+                </button>
+                <button class="action-btn btn-cancel" onclick="cancelOrder('${order.id}')">
+                  <i class="fas fa-times"></i> Cancel
+                </button>
+              `:''}
+              ${order.status==='ready'?`
+                <button class="action-btn btn-complete" onclick="updateOrderStatus('${order.id}','delivered')">
+                  <i class="fas fa-check-double"></i> Completed
+                </button>
+              `:''}
+            </div>
           </div>
         </div>
       `;
@@ -668,12 +714,14 @@
     // Show new order modal
     function showNewOrderModal(orderId,order){
       currentNewOrderId=orderId;
-      document.getElementById('newOrderNumber').textContent=orderId.replace('order_','');
+      const numericId=orderId.replace(/\D/g,'')||'1';
+      const formattedId='ORD'+numericId.padStart(4,'0');
+      document.getElementById('newOrderNumber').textContent=formattedId;
       document.getElementById('newOrderCustomer').textContent=order.customer.name;
       document.getElementById('newOrderItems').textContent=order.items.map(i=>`${i.quantity}x ${i.name}`).join(', ');
       document.getElementById('newOrderTotal').textContent='€'+order.total.toFixed(2);
       document.getElementById('newOrderModal').classList.add('show');
-      
+
       // Play notification sound
       playNotificationSound();
     }
