@@ -25,15 +25,15 @@
     .receipt-date{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:12px}
     
     /* Order Status */
-    .order-status{text-align:center;padding:20px;background:rgba(34,197,94,.1);border-radius:12px;margin-bottom:24px;transition:var(--t)}
-    .status-icon{font-size:3rem;color:#22c55e;margin-bottom:12px}
-    .status-text{font-size:1.1rem;font-weight:600;color:#22c55e}
-    .status-sub{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:4px}
-    
-    .order-status.pending{background:rgba(245,200,66,.1);border:2px solid var(--gold);animation:pendingPulse 2s ease-in-out infinite}
+    .order-status{text-align:center;padding:24px;background:rgba(34,197,94,.1);border-radius:16px;margin-bottom:24px;transition:var(--t)}
+    .status-icon{font-size:3.5rem;color:#22c55e;margin-bottom:12px}
+    .status-text{font-size:1.3rem;font-weight:700;color:#22c55e}
+    .status-sub{font-size:.9rem;color:rgba(255,255,255,.6);margin-top:6px}
+
+    .order-status.pending{background:rgba(245,200,66,.15);border:2px solid var(--gold);animation:pendingPulse 2s ease-in-out infinite}
     @keyframes pendingPulse{
-      0%,100%{opacity:1}
-      50%{opacity:0.7}
+      0%,100%{opacity:1;box-shadow:0 0 20px rgba(245,200,66,.2)}
+      50%{opacity:0.8;box-shadow:0 0 30px rgba(245,200,66,.4)}
     }
     .order-status.pending .status-icon{color:var(--gold);animation:iconSpin 2s linear infinite}
     @keyframes iconSpin{
@@ -41,20 +41,52 @@
       100%{transform:rotate(360deg)}
     }
     .order-status.pending .status-text{color:var(--gold)}
-    
-    .order-status.confirmed{background:rgba(59,130,246,.1);border:2px solid #3b82f6}
-    .order-status.confirmed .status-icon{color:#3b82f6}
+
+    .order-status.confirmed{background:rgba(59,130,246,.15);border:2px solid #3b82f6;animation:confirmedPulse 1s ease-in-out}
+    @keyframes confirmedPulse{
+      0%{transform:scale(0.95);opacity:0.8}
+      50%{transform:scale(1.02);opacity:1}
+      100%{transform:scale(1);opacity:1}
+    }
+    .order-status.confirmed .status-icon{color:#3b82f6;animation:checkBounce 0.6s ease-out}
+    @keyframes checkBounce{
+      0%{transform:scale(0);opacity:0}
+      50%{transform:scale(1.3);opacity:1}
+      100%{transform:scale(1);opacity:1}
+    }
     .order-status.confirmed .status-text{color:#3b82f6}
-    
-    .order-status.preparing{background:rgba(245,158,11,.1);border:2px solid #f59e0b}
-    .order-status.preparing .status-icon{color:#f59e0b}
+
+    .order-status.preparing{background:rgba(245,158,11,.15);border:2px solid #f59e0b;animation:preparingGlow 1.5s ease-in-out infinite}
+    @keyframes preparingGlow{
+      0%,100%{box-shadow:0 0 15px rgba(245,158,11,.2)}
+      50%{box-shadow:0 0 25px rgba(245,158,11,.4)}
+    }
+    .order-status.preparing .status-icon{color:#f59e0b;animation:fireFlicker 0.5s ease-in-out infinite}
+    @keyframes fireFlicker{
+      0%,100%{transform:scale(1);opacity:1}
+      50%{transform:scale(1.1);opacity:0.9}
+    }
     .order-status.preparing .status-text{color:#f59e0b}
-    
-    .order-status.ready{background:rgba(34,197,94,.1);border:2px solid #22c55e;box-shadow:0 0 20px rgba(34,197,94,.3)}
-    .order-status.ready .status-icon{color:#22c55e}
+
+    .order-status.ready{background:rgba(34,197,94,.15);border:2px solid #22c55e;box-shadow:0 0 30px rgba(34,197,94,.4);animation:readyPop 0.8s ease-out}
+    @keyframes readyPop{
+      0%{transform:scale(0.9);opacity:0.8}
+      50%{transform:scale(1.05);opacity:1}
+      100%{transform:scale(1);opacity:1}
+    }
+    .order-status.ready .status-icon{color:#22c55e;animation:readyPulse 1s ease-in-out infinite}
+    @keyframes readyPulse{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.1)}
+    }
     .order-status.ready .status-text{color:#22c55e}
-    
-    .order-timer{background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.3);border-radius:8px;padding:12px 16px;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--gold);font-size:.9rem;font-weight:600}
+
+    .order-timer{background:rgba(245,200,66,.2);border:1px solid rgba(245,200,66,.4);border-radius:10px;padding:14px 20px;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--gold);font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+
+    /* Order Number Badge */
+    .order-number-badge{text-align:center;padding:20px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:16px;margin-bottom:24px;box-shadow:0 8px 25px rgba(245,200,66,.3)}
+    .order-number-label{font-size:.85rem;color:var(--purple-deep);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+    .order-number-value{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--purple-deep);letter-spacing:2px}
     
     /* Customer Info */
     .info-section{margin-bottom:24px}
@@ -114,18 +146,40 @@
         <div class="receipt-address">Aallonhalkoja 3, Helsinki</div>
         <div class="receipt-address" id="orderDate"></div>
       </div>
-      
+
+      <!-- Order Number Badge -->
+      <div class="order-number-badge">
+        <div class="order-number-label">Order Number</div>
+        <div class="order-number-value" id="orderNumber">MUGHAL001</div>
+      </div>
+
+      <!-- Order Status -->
       <div class="order-status pending" id="orderStatus">
         <i class="fas fa-clock status-icon"></i>
         <div class="status-text">Please Wait</div>
-        <div class="status-sub">Your order will be confirmed soon</div>
+        <div class="status-sub">Confirming your order...</div>
       </div>
-      
+
+      <!-- Order Items -->
+      <div class="items-section">
+        <div class="info-title">Order Items</div>
+        <div id="orderItems"></div>
+      </div>
+
+      <!-- Order Summary -->
       <div class="info-section">
-        <div class="info-title">Order Details</div>
-        <div class="info-row">
-          <span class="info-label">Order ID</span>
-          <span class="info-value" id="orderId"></span>
+        <div class="info-title">Order Summary</div>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="subtotal"></span>
+        </div>
+        <div class="summary-row">
+          <span>Discount</span>
+          <span id="discount"></span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="total"></span>
         </div>
         <div class="info-row">
           <span class="info-label">Pickup Time</span>
@@ -136,7 +190,8 @@
           <span class="info-value" id="paymentMethod"></span>
         </div>
       </div>
-      
+
+      <!-- Customer Information -->
       <div class="info-section">
         <div class="info-title">Customer Information</div>
         <div class="info-row">
@@ -152,25 +207,7 @@
           <span class="info-value" id="customerEmail"></span>
         </div>
       </div>
-      
-      <div class="items-section">
-        <div class="info-title">Order Items</div>
-        <div id="orderItems"></div>
-      </div>
-      
-      <div class="summary-row">
-        <span>Subtotal</span>
-        <span id="subtotal"></span>
-      </div>
-      <div class="summary-row">
-        <span>Discount</span>
-        <span id="discount"></span>
-      </div>
-      <div class="summary-row total">
-        <span>Total</span>
-        <span id="total"></span>
-      </div>
-      
+
       <div class="map-buttons">
         <a href="https://www.google.com/maps/search/?api=1&query=Aallonhalkoja+3+Helsinki" target="_blank" class="map-btn google">
           <i class="fab fa-google"></i> Google Maps
@@ -179,11 +216,11 @@
           <i class="fab fa-apple"></i> Apple Maps
         </a>
       </div>
-      
-      <a href="tel:+358401234567" class="call-btn">
+
+      <a href="tel:+358458527515" class="call-btn">
         <i class="fas fa-phone"></i> Call Restaurant
       </a>
-      
+
       <div class="action-buttons">
         <button class="action-btn" onclick="saveReceiptAsPhoto()">
           <i class="fas fa-camera"></i> Save Receipt
@@ -192,7 +229,7 @@
           <i class="fas fa-check"></i> Done
         </a>
       </div>
-      
+
       <div style="margin-top:24px;text-align:center">
         <a href="#" onclick="openTrackOrder()" style="color:var(--gold);text-decoration:none;font-size:.9rem;font-weight:500">
           <i class="fas fa-truck"></i> Track Order
@@ -224,18 +261,26 @@
     const db=firebase.database();
     
     let orderData=null;
-    
+    let orderCounter=0;
+
+    // Format order number as MUGHAL001, MUGHAL002, etc.
+    function formatOrderNumber(orderId){
+      const numericId=orderId.replace(/\D/g,'')||'1';
+      const paddedId=numericId.padStart(3,'0');
+      return 'MUGHAL'+paddedId;
+    }
+
     // Load order data
     function loadOrderData(){
       const urlParams=new URLSearchParams(window.location.search);
       const orderId=urlParams.get('orderId');
-      
+
       if(!orderId){
         showToast('Order ID not found',true);
         setTimeout(()=>window.location.href='food-ordering.html',2000);
         return;
       }
-      
+
       db.ref('orders/'+orderId).on('value',(snapshot)=>{
         orderData=snapshot.val();
         if(!orderData){
@@ -249,10 +294,11 @@
         console.error(error);
       });
     }
-    
+
     // Render receipt
     function renderReceipt(){
-      document.getElementById('orderId').textContent=orderData.id.replace('order_','');
+      const formattedOrderNumber=formatOrderNumber(orderData.id);
+      document.getElementById('orderNumber').textContent=formattedOrderNumber;
       document.getElementById('orderDate').textContent=new Date(orderData.createdAt).toLocaleString();
       document.getElementById('pickupTime').textContent=orderData.preorder?orderData.pickupTime:'ASAP';
       document.getElementById('paymentMethod').textContent=orderData.paymentMethod.charAt(0).toUpperCase()+orderData.paymentMethod.slice(1);
@@ -262,7 +308,7 @@
       document.getElementById('subtotal').textContent='€'+orderData.subtotal.toFixed(2);
       document.getElementById('discount').textContent='€'+orderData.discount.toFixed(2);
       document.getElementById('total').textContent='€'+orderData.total.toFixed(2);
-      
+
       // Render items
       const itemsHtml=orderData.items.map(item=>`
         <div class="order-item">
@@ -275,7 +321,7 @@
         </div>
       `).join('');
       document.getElementById('orderItems').innerHTML=itemsHtml;
-      
+
       // Update status
       updateOrderStatus(orderData.status);
     }
@@ -284,23 +330,23 @@
     function updateOrderStatus(status){
       const statusEl=document.getElementById('orderStatus');
       statusEl.className='order-status '+status;
-      
+
       let icon,text,sub;
       switch(status){
         case 'pending':
           icon='fa-clock';
           text='Please Wait';
-          sub='Your order will be confirmed soon';
+          sub='Confirming your order...';
           break;
         case 'confirmed':
           icon='fa-check-circle';
           text='Order Confirmed';
-          sub='Your order is being prepared';
+          sub='Your order has been confirmed and is being prepared';
           break;
         case 'preparing':
           icon='fa-fire';
           text='Preparing';
-          sub='Your order is being cooked';
+          sub='Your food is being prepared with care';
           break;
         case 'ready':
           icon='fa-utensils';
@@ -310,20 +356,20 @@
         case 'delivered':
           icon='fa-check-double';
           text='Completed';
-          sub='Your order has been completed';
+          sub='Thank you for your order!';
           break;
         default:
           icon='fa-clock';
           text='Please Wait';
-          sub='Your order will be confirmed soon';
+          sub='Confirming your order...';
       }
-      
+
       statusEl.querySelector('.status-icon').className='fas '+icon+' status-icon';
       statusEl.querySelector('.status-text').textContent=text;
       statusEl.querySelector('.status-sub').textContent=sub;
-      
-      // Update timer
-      const showTimer=status!=='ready'&&status!=='delivered'&&orderData.estimatedTime&&orderData.estimatedSetAt;
+
+      // Update timer - start when confirmed
+      const showTimer=(status==='confirmed'||status==='preparing')&&orderData.estimatedTime&&orderData.estimatedSetAt;
       let timerEl=document.getElementById('orderTimer');
       if(!timerEl&&showTimer){
         timerEl=document.createElement('div');
@@ -370,46 +416,22 @@
     // Save receipt as photo
     function saveReceiptAsPhoto(){
       const receiptCard=document.getElementById('receiptCard');
-      const clone=receiptCard.cloneNode(true);
-      clone.style.position='fixed';
-      clone.style.left='-9999px';
-      clone.style.top='0';
-      clone.style.width='400px';
-      clone.style.background='#ffffff';
-      clone.style.color='#000000';
-      clone.style.padding='20px';
-      clone.style.border='2px solid #000000';
-      clone.style.borderRadius='10px';
-      
-      document.body.appendChild(clone);
-      
-      const allText=clone.querySelectorAll('*');
-      allText.forEach(el=>{
-        if(el.children.length===0){
-          const computedStyle=window.getComputedStyle(el);
-          if(computedStyle.color){
-            el.style.color='#000000';
-          }
-        }
-      });
-      
-      clone.querySelectorAll('.receipt-logo').forEach(el=>el.style.color='#000000');
-      clone.querySelectorAll('.order-status').forEach(el=>el.style.color='#000000');
-      clone.querySelectorAll('.status-icon').forEach(el=>el.style.color='#000000');
-      clone.querySelectorAll('.status-text').forEach(el=>el.style.color='#000000');
-      clone.querySelectorAll('.cart-item-price').forEach(el=>el.style.color='#000000');
-      clone.querySelectorAll('.summary-row.total').forEach(el=>el.style.color='#000000');
-      clone.querySelectorAll('.info-title').forEach(el=>el.style.color='#000000');
-      
-      html2canvas(clone,{scale:0.8,width:400,height:clone.offsetHeight}).then((canvas)=>{
+      const container=document.querySelector('.container');
+
+      // Capture the full receipt as shown on screen
+      html2canvas(receiptCard,{
+        scale:2,
+        backgroundColor:null,
+        useCORS:true,
+        logging:false
+      }).then((canvas)=>{
         const link=document.createElement('a');
-        link.download='mughal_receipt_'+orderData.id+'.png';
-        link.href=canvas.toDataURL();
+        const formattedOrderNumber=formatOrderNumber(orderData.id);
+        link.download='Mughal_Receipt_'+formattedOrderNumber+'.png';
+        link.href=canvas.toDataURL('image/png');
         link.click();
-        document.body.removeChild(clone);
         showToast('Receipt saved as photo');
       }).catch((error)=>{
-        document.body.removeChild(clone);
         showToast('Failed to save receipt',true);
         console.error(error);
       });
