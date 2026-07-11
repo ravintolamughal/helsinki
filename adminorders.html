@@ -204,12 +204,12 @@
       <div class="sidebar-tabs">
         <div class="sidebar-tab active" onclick="switchTab('pending')" id="tab-pending">
           <i class="fas fa-clock"></i>
-          Pending & Confirmed
+          New Orders
           <span class="tab-badge" id="pendingBadge">0</span>
         </div>
         <div class="sidebar-tab" onclick="switchTab('preparing')" id="tab-preparing">
           <i class="fas fa-fire"></i>
-          Preparing
+          Confirmed & Preparing
           <span class="tab-badge" id="preparingBadge">0</span>
         </div>
         <div class="sidebar-tab" onclick="switchTab('ready')" id="tab-ready">
@@ -349,7 +349,7 @@
     function processOrders(data){
       const today=new Date();
       today.setHours(0,0,0,0);
-      
+
       const ordersByStatus={
         pending:[],
         confirmed:[],
@@ -358,30 +358,35 @@
         delivered:[],
         rejected:[]
       };
-      
+
       Object.entries(data).forEach(([id,order])=>{
         const orderDate=new Date(order.timestamp||Date.now());
         orderDate.setHours(0,0,0,0);
-        
+
         if(orderDate.getTime()===today.getTime()){
           if(ordersByStatus[order.status]){
             ordersByStatus[order.status].push({id,...order});
           }
         }
       });
-      
+
       Object.keys(ordersByStatus).forEach(status=>{
         ordersByStatus[status].sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
       });
-      
-      const combinedPending=currentTab==='pending'
-        ?[...ordersByStatus.pending,...ordersByStatus.confirmed]
-        :ordersByStatus[currentTab];
-      
-      combinedPending.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
-      
+
+      let combinedOrders;
+      if(currentTab==='pending'){
+        combinedOrders=ordersByStatus.pending;
+      }else if(currentTab==='preparing'){
+        combinedOrders=[...ordersByStatus.confirmed,...ordersByStatus.preparing];
+      }else{
+        combinedOrders=ordersByStatus[currentTab];
+      }
+
+      combinedOrders.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+
       updateBadges(ordersByStatus);
-      renderOrders(combinedPending);
+      renderOrders(combinedOrders);
     }
     
     // Check if date has changed
@@ -405,16 +410,16 @@
       currentTab=tab;
       document.querySelectorAll('.sidebar-tab').forEach(t=>t.classList.remove('active'));
       document.getElementById(`tab-${tab}`).classList.add('active');
-      
+
       const titles={
-        pending:'Pending & Confirmed Orders',
-        preparing:'Preparing Orders',
+        pending:'New Orders',
+        preparing:'Confirmed & Preparing Orders',
         ready:'Ready Orders',
         delivered:'Completed Orders',
         rejected:'Cancelled Orders'
       };
       document.getElementById('sectionTitle').textContent=titles[tab];
-      
+
       loadOrders();
     }
     
@@ -422,9 +427,15 @@
     function startNotificationSound(){
       stopNotificationSound();
       notificationInterval=setInterval(()=>{
-        const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+        const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3');
         audio.play().catch(()=>{});
       },3000);
+    }
+
+// Play single notification sound
+    function playNotificationSound(){
+      const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3');
+      audio.play().catch(()=>{});
     }
     
     // Stop notification sound
@@ -446,10 +457,10 @@
           updateBadges({});
           return;
         }
-        
+
         const today=new Date();
         today.setHours(0,0,0,0);
-        
+
         const ordersByStatus={
           pending:[],
           confirmed:[],
@@ -458,11 +469,11 @@
           delivered:[],
           rejected:[]
         };
-        
+
         Object.entries(data).forEach(([id,order])=>{
           const orderDate=new Date(order.timestamp||Date.now());
           orderDate.setHours(0,0,0,0);
-          
+
           // Only show today's orders
           if(orderDate.getTime()===today.getTime()){
             if(ordersByStatus[order.status]){
@@ -470,30 +481,35 @@
             }
           }
         });
-        
+
         // Sort orders by timestamp (oldest first so newest appears on right)
         Object.keys(ordersByStatus).forEach(status=>{
           ordersByStatus[status].sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
         });
-        
-        // Combine pending and confirmed for the pending tab
-        const combinedPending=currentTab==='pending'
-          ?[...ordersByStatus.pending,...ordersByStatus.confirmed]
-          :ordersByStatus[currentTab];
-        
+
+        // Combine confirmed and preparing for the preparing tab
+        let combinedOrders;
+        if(currentTab==='pending'){
+          combinedOrders=ordersByStatus.pending;
+        }else if(currentTab==='preparing'){
+          combinedOrders=[...ordersByStatus.confirmed,...ordersByStatus.preparing];
+        }else{
+          combinedOrders=ordersByStatus[currentTab];
+        }
+
         // Sort combined orders
-        combinedPending.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
-        
+        combinedOrders.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+
         updateBadges(ordersByStatus);
-        renderOrders(combinedPending);
+        renderOrders(combinedOrders);
       });
     }
     
     // Update badges
     function updateBadges(ordersByStatus){
-      const pendingCount=(ordersByStatus.pending?.length||0)+(ordersByStatus.confirmed?.length||0);
-      document.getElementById('pendingBadge').textContent=pendingCount;
-      document.getElementById('preparingBadge').textContent=ordersByStatus.preparing?.length||0;
+      document.getElementById('pendingBadge').textContent=ordersByStatus.pending?.length||0;
+      const preparingCount=(ordersByStatus.confirmed?.length||0)+(ordersByStatus.preparing?.length||0);
+      document.getElementById('preparingBadge').textContent=preparingCount;
       document.getElementById('readyBadge').textContent=ordersByStatus.ready?.length||0;
       document.getElementById('deliveredBadge').textContent=ordersByStatus.delivered?.length||0;
       document.getElementById('rejectedBadge').textContent=ordersByStatus.rejected?.length||0;
@@ -591,16 +607,16 @@
               </button>
             `:''}
             ${order.status==='confirmed'?`
-              <button class="action-btn btn-ready" onclick="updateOrderStatus('${order.id}','preparing')">
-                <i class="fas fa-fire"></i> Start Preparing
+              <button class="action-btn btn-ready" onclick="updateOrderStatus('${order.id}','ready')">
+                <i class="fas fa-check-circle"></i> Mark Ready
               </button>
               <button class="action-btn btn-cancel" onclick="cancelOrder('${order.id}')">
                 <i class="fas fa-times"></i> Cancel
               </button>
             `:''}
             ${order.status==='preparing'?`
-              <button class="action-btn btn-complete" onclick="updateOrderStatus('${order.id}','delivered')">
-                <i class="fas fa-check-double"></i> Ready
+              <button class="action-btn btn-complete" onclick="updateOrderStatus('${order.id}','ready')">
+                <i class="fas fa-check-circle"></i> Mark Ready
               </button>
             `:''}
           </div>
