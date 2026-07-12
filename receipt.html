@@ -84,10 +84,19 @@
     .order-timer{background:rgba(245,200,66,.2);border:1px solid rgba(245,200,66,.4);border-radius:10px;padding:14px 20px;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--gold);font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
 
     /* Order Number Badge */
-    .order-number-badge{text-align:center;padding:24px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:3px solid rgba(255,255,255,.3);border-radius:20px;margin-bottom:24px;box-shadow:0 8px 30px rgba(245,200,66,.4)}
-    .order-number-label{font-size:.8rem;color:var(--purple-deep);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
-    .order-number-value{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--purple-deep);letter-spacing:2px;text-shadow:0 2px 4px rgba(0,0,0,.1)}
+    .order-number-badge{text-align:center;padding:18px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:3px solid rgba(255,255,255,.3);border-radius:20px;margin-bottom:24px;box-shadow:0 8px 30px rgba(245,200,66,.4)}
+    .order-number-label{font-size:.7rem;color:var(--purple-deep);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px}
+    .order-number-value{font-family:'Courier New',monospace;font-size:1.3rem;font-weight:700;color:var(--purple-deep);letter-spacing:3px;text-shadow:0 2px 4px rgba(0,0,0,.1)}
     
+    /* Restaurant Address */
+    .restaurant-address-section{margin-bottom:24px;padding:20px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(245,200,66,.3)}
+    .restaurant-address-title{font-size:.85rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+    .restaurant-address-details{display:flex;flex-direction:column;gap:8px}
+    .address-line{font-size:.95rem;color:var(--white);display:flex;align-items:center;gap:10px}
+    .address-line i{color:var(--gold);width:20px;text-align:center}
+    .address-line a{color:var(--gold);text-decoration:none;transition:.3s}
+    .address-line a:hover{text-decoration:underline}
+
     /* Customer Info */
     .info-section{margin-bottom:24px}
     .info-title{font-size:.9rem;font-weight:600;color:var(--gold);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
@@ -111,10 +120,12 @@
     
     /* Map Buttons */
     .map-buttons{display:flex;gap:12px;margin-bottom:24px}
-    .map-btn{flex:1;padding:14px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.15);border-radius:10px;color:var(--white);font-size:.9rem;font-weight:500;cursor:pointer;transition:.3s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px}
-    .map-btn:hover{border-color:var(--gold)}
-    .map-btn.google{color:#4285f4}
-    .map-btn.apple{color:#fff}
+    .map-btn{flex:1;padding:14px;border:2px solid transparent;border-radius:10px;color:#fff;font-size:.9rem;font-weight:600;cursor:pointer;transition:.3s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px}
+    .map-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+    .map-btn.google{background:#4285f4;color:#fff}
+    .map-btn.google:hover{background:#3367d6}
+    .map-btn.apple{background:#000;color:#fff}
+    .map-btn.apple:hover{background:#333}
     
     /* Call Button */
     .call-btn{width:100%;padding:16px;background:linear-gradient(135deg,#22c55e,#16a34a);border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:600;cursor:pointer;transition:.3s;margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none}
@@ -141,7 +152,7 @@
       .container{padding:12px}
       .receipt-card{padding:20px}
       .receipt-logo{font-size:1.5rem}
-      .order-number-value{font-size:1.5rem}
+      .order-number-value{font-size:1.1rem}
       .status-icon{font-size:2.5rem}
       .status-text{font-size:1.1rem}
       .status-sub{font-size:.8rem}
@@ -233,6 +244,25 @@
         </div>
       </div>
 
+      <!-- Restaurant Address -->
+      <div class="restaurant-address-section">
+        <div class="restaurant-address-title">Restaurant Location</div>
+        <div class="restaurant-address-details">
+          <div class="address-line">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Aallonhalkoja 3, Helsinki</span>
+          </div>
+          <div class="address-line">
+            <i class="fas fa-phone"></i>
+            <span>+358 45 852 7515</span>
+          </div>
+          <div class="address-line">
+            <i class="fas fa-envelope"></i>
+            <span>info@mughal.fi</span>
+          </div>
+        </div>
+      </div>
+
       <div class="map-buttons">
         <a href="https://www.google.com/maps/search/?api=1&query=Aallonhalkoja+3+Helsinki" target="_blank" class="map-btn google">
           <i class="fab fa-google"></i> Google Maps
@@ -255,11 +285,6 @@
         </a>
       </div>
 
-      <div style="margin-top:24px;text-align:center">
-        <a href="#" onclick="openTrackOrder()" style="color:var(--gold);text-decoration:none;font-size:.9rem;font-weight:500">
-          <i class="fas fa-truck"></i> Track Order
-        </a>
-      </div>
     </div>
   </div>
   
