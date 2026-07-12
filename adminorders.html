@@ -47,6 +47,16 @@
     .section-badge{background:var(--gold);color:var(--purple-deep);padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:700;margin-left:auto}
     .order-section{margin-bottom:40px}
     .orders-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+    /* Pagination */
+    .pagination{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:32px;padding:16px;background:rgba(255,255,255,.05);border-radius:12px}
+    .pagination-btn{padding:10px 16px;background:rgba(245,200,66,.2);border:1px solid var(--gold);border-radius:8px;color:var(--gold);cursor:pointer;transition:.3s;font-size:.9rem}
+    .pagination-btn:hover{background:var(--gold);color:var(--purple-deep)}
+    .pagination-btn:disabled{opacity:.5;cursor:not-allowed}
+    .pagination-numbers{display:flex;gap:8px}
+    .pagination-number{padding:8px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:rgba(255,255,255,.8);cursor:pointer;transition:.3s;font-size:.9rem;min-width:36px;text-align:center}
+    .pagination-number:hover{background:rgba(245,200,66,.1);border-color:var(--gold);color:var(--gold)}
+    .pagination-number.active{background:var(--gold);color:var(--purple-deep);border-color:var(--gold);font-weight:700}
     
     @media(max-width:1400px){
       .orders-grid{grid-template-columns:repeat(3,1fr)}
@@ -236,16 +246,18 @@
           Cancelled
           <span class="tab-badge" id="rejectedBadge">0</span>
         </div>
-      </div>
-      <div class="date-toggle" style="margin-top:20px">
-        <button onclick="toggleDateSelector()" id="dateToggleBtn" style="width:100%;padding:12px;background:rgba(245,200,66,.2);border:1px solid var(--gold);border-radius:12px;color:var(--gold);font-size:.9rem;font-weight:600;cursor:pointer;transition:.3s;font-family:'Poppins',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
-          <i class="fas fa-calendar"></i> Select Date
-        </button>
-        <div id="dateSelectorPanel" style="margin-top:12px;padding:16px;background:rgba(255,255,255,.05);border-radius:12px;display:none">
-          <label style="color:rgba(255,255,255,.7);font-size:.85rem;font-weight:600;margin-bottom:8px;display:block">Select Date</label>
-          <input type="date" id="dateSelector" class="date-input" style="width:100%;padding:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:.9rem;font-family:'Poppins',sans-serif" onchange="selectDate()"/>
-          <button onclick="resetToToday()" style="width:100%;margin-top:8px;padding:10px;background:rgba(245,200,66,.2);border:1px solid var(--gold);border-radius:8px;color:var(--gold);font-size:.85rem;font-weight:600;cursor:pointer;transition:.3s;font-family:'Poppins',sans-serif">Today</button>
+        <div class="sidebar-tab" onclick="toggleDateSelector()" id="tab-date">
+          <i class="fas fa-calendar"></i>
+          Date Filter
         </div>
+      </div>
+      <div id="dateSelectorPanel" style="margin-top:20px;padding:16px;background:rgba(255,255,255,.05);border-radius:12px;display:none">
+        <label style="color:rgba(255,255,255,.7);font-size:.85rem;font-weight:600;margin-bottom:8px;display:block">From Date</label>
+        <input type="date" id="fromDate" class="date-input" style="width:100%;padding:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:.9rem;font-family:'Poppins',sans-serif;margin-bottom:12px"/>
+        <label style="color:rgba(255,255,255,.7);font-size:.85rem;font-weight:600;margin-bottom:8px;display:block">To Date</label>
+        <input type="date" id="toDate" class="date-input" style="width:100%;padding:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:.9rem;font-family:'Poppins',sans-serif;margin-bottom:12px"/>
+        <button onclick="applyDateFilter()" style="width:100%;padding:10px;background:rgba(245,200,66,.2);border:1px solid var(--gold);border-radius:8px;color:var(--gold);font-size:.85rem;font-weight:600;cursor:pointer;transition:.3s;font-family:'Poppins',sans-serif">Apply Filter</button>
+        <button onclick="resetToToday()" style="width:100%;margin-top:8px;padding:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:rgba(255,255,255,.7);font-size:.85rem;font-weight:600;cursor:pointer;transition:.3s;font-family:'Poppins',sans-serif">Reset to Today</button>
       </div>
     </div>
     
@@ -257,6 +269,11 @@
           <i class="fas fa-inbox"></i>
           <p>No orders</p>
         </div>
+      </div>
+      <div class="pagination" id="pagination" style="display:none">
+        <button onclick="changePage(-1)" class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+        <div class="pagination-numbers" id="paginationNumbers"></div>
+        <button onclick="changePage(1)" class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
       </div>
     </div>
   </div>
@@ -340,6 +357,11 @@
     let notificationInterval=null;
     let currentDate=new Date().toDateString();
     let selectedDate=new Date();
+    let fromDate=null;
+    let toDate=null;
+    let allOrders=[];
+    let currentPage=1;
+    const itemsPerPage=30;
     
     // Listen for orders
     document.addEventListener('DOMContentLoaded',()=>{
@@ -367,9 +389,6 @@
     
     // Process orders from real-time data
     function processOrders(data){
-      const filterDate=new Date(selectedDate);
-      filterDate.setHours(0,0,0,0);
-
       const ordersByStatus={
         pending:[],
         confirmed:[],
@@ -381,9 +400,18 @@
 
       Object.entries(data).forEach(([id,order])=>{
         const orderDate=new Date(order.timestamp||Date.now());
-        orderDate.setHours(0,0,0,0);
+        let includeOrder=false;
 
-        if(orderDate.getTime()===filterDate.getTime()){
+        if(fromDate&&toDate){
+          includeOrder=orderDate>=fromDate&&orderDate<=toDate;
+        }else{
+          const filterDate=new Date(selectedDate);
+          filterDate.setHours(0,0,0,0);
+          orderDate.setHours(0,0,0,0);
+          includeOrder=orderDate.getTime()===filterDate.getTime();
+        }
+
+        if(includeOrder){
           if(ordersByStatus[order.status]){
             ordersByStatus[order.status].push({id,...order});
           }
@@ -406,7 +434,8 @@
       }
 
       ordersToShow.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
-      renderOrders(ordersToShow);
+      allOrders=ordersToShow;
+      renderOrders();
     }
     
     // Check if date has changed
@@ -433,7 +462,11 @@
     // Reset to today
     function resetToToday(){
       selectedDate=new Date();
-      document.getElementById('dateSelector').value='';
+      fromDate=null;
+      toDate=null;
+      document.getElementById('fromDate').value='';
+      document.getElementById('toDate').value='';
+      currentPage=1;
       loadOrders();
       showToast('Showing today\'s orders');
     }
@@ -458,27 +491,67 @@
       };
       document.getElementById('sectionTitle').textContent=titles[section];
 
+      // Close date selector tab when switching sections
+      document.getElementById('dateSelectorPanel').style.display='none';
+      document.getElementById('tab-date').classList.remove('active');
+
+      // Reset to today when switching to completed or cancelled
+      if(section==='delivered'||section==='rejected'){
+        fromDate=null;
+        toDate=null;
+        document.getElementById('fromDate').value='';
+        document.getElementById('toDate').value='';
+        selectedDate=new Date();
+        currentPage=1;
+      }
+
       loadOrders();
     }
 
     // Toggle date selector
     function toggleDateSelector(){
       const panel=document.getElementById('dateSelectorPanel');
-      panel.style.display=panel.style.display==='none'?'block':'none';
+      const tab=document.getElementById('tab-date');
+      if(panel.style.display==='none'||panel.style.display===''){
+        panel.style.display='block';
+        tab.classList.add('active');
+      }else{
+        panel.style.display='none';
+        tab.classList.remove('active');
+      }
+    }
+
+// Apply date filter
+    function applyDateFilter(){
+      const fromDateInput=document.getElementById('fromDate').value;
+      const toDateInput=document.getElementById('toDate').value;
+      if(fromDateInput&&toDateInput){
+        fromDate=new Date(fromDateInput);
+        toDate=new Date(toDateInput);
+        fromDate.setHours(0,0,0,0);
+        toDate.setHours(23,59,59,999);
+        currentPage=1;
+        loadOrders();
+        showToast(`Showing orders from ${fromDate.toLocaleDateString()} to ${toDate.toLocaleDateString()}`);
+      }else{
+        showToast('Please select both from and to dates');
+      }
     }
     
     // Start repeating notification sound
     function startNotificationSound(){
       stopNotificationSound();
       notificationInterval=setInterval(()=>{
-        const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3');
+        const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+        audio.volume=1.0;
         audio.play().catch(()=>{});
-      },3000);
+      },1500);
     }
 
 // Play single notification sound
     function playNotificationSound(){
-      const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3');
+      const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+      audio.volume=1.0;
       audio.play().catch(()=>{});
     }
     
@@ -498,12 +571,10 @@
         console.log('Orders data:', data);
         if(!data){
           updateBadges({});
-          renderOrders([]);
+          allOrders=[];
+          renderOrders();
           return;
         }
-
-        const filterDate=new Date(selectedDate);
-        filterDate.setHours(0,0,0,0);
 
         const ordersByStatus={
           pending:[],
@@ -516,10 +587,18 @@
 
         Object.entries(data).forEach(([id,order])=>{
           const orderDate=new Date(order.timestamp||Date.now());
-          orderDate.setHours(0,0,0,0);
+          let includeOrder=false;
 
-          // Only show selected date's orders
-          if(orderDate.getTime()===filterDate.getTime()){
+          if(fromDate&&toDate){
+            includeOrder=orderDate>=fromDate&&orderDate<=toDate;
+          }else{
+            const filterDate=new Date(selectedDate);
+            filterDate.setHours(0,0,0,0);
+            orderDate.setHours(0,0,0,0);
+            includeOrder=orderDate.getTime()===filterDate.getTime();
+          }
+
+          if(includeOrder){
             if(ordersByStatus[order.status]){
               ordersByStatus[order.status].push({id,...order});
             }
@@ -543,7 +622,8 @@
         }
 
         ordersToShow.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
-        renderOrders(ordersToShow);
+        allOrders=ordersToShow;
+        renderOrders();
       });
     }
     
@@ -556,22 +636,64 @@
     }
 
     // Render orders
-    function renderOrders(orders){
+    function renderOrders(){
       const container=document.getElementById('ordersContainer');
-      console.log('Rendering orders:', orders);
-      if(!orders||orders.length===0){
+      console.log('Rendering orders:', allOrders);
+      if(!allOrders||allOrders.length===0){
         container.innerHTML='<div class="empty-state"><i class="fas fa-inbox"></i><p>No orders</p></div>';
+        document.getElementById('pagination').style.display='none';
         return;
       }
 
+      const totalPages=Math.ceil(allOrders.length/itemsPerPage);
+      const startIndex=(currentPage-1)*itemsPerPage;
+      const endIndex=startIndex+itemsPerPage;
+      const ordersToShow=allOrders.slice(startIndex,endIndex);
+
       try{
-        const cardsHtml=orders.map(order=>createOrderCard(order)).join('');
+        const cardsHtml=ordersToShow.map(order=>createOrderCard(order)).join('');
         console.log('Cards HTML generated:', cardsHtml.substring(0,200));
         container.innerHTML=cardsHtml;
+        renderPagination(totalPages);
       }catch(error){
         console.error('Error rendering orders:', error);
         container.innerHTML='<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Error loading orders</p></div>';
+        document.getElementById('pagination').style.display='none';
       }
+    }
+
+    // Render pagination
+    function renderPagination(totalPages){
+      const pagination=document.getElementById('pagination');
+      const numbersContainer=document.getElementById('paginationNumbers');
+
+      if(totalPages<=1){
+        pagination.style.display='none';
+        return;
+      }
+
+      pagination.style.display='flex';
+      let html='';
+      for(let i=1;i<=totalPages;i++){
+        html+=`<button onclick="goToPage(${i})" class="pagination-number ${i===currentPage?'active':''}">${i}</button>`;
+      }
+      numbersContainer.innerHTML=html;
+    }
+
+    // Change page
+    function changePage(direction){
+      const totalPages=Math.ceil(allOrders.length/itemsPerPage);
+      const newPage=currentPage+direction;
+      if(newPage>=1&&newPage<=totalPages){
+        currentPage=newPage;
+        renderOrders();
+      }
+    }
+
+    // Go to specific page
+    function goToPage(page){
+      currentPage=page;
+      renderOrders();
     }
     
     // Create order card
@@ -582,8 +704,8 @@
         return '';
       }
 
-      const itemsToShow=order.items.slice(0,3);
-      const hasMoreItems=order.items.length>3;
+      const itemsToShow=order.items.slice(0,2);
+      const hasMoreItems=order.items.length>2;
       const isPreorder=order.preorder;
       const numericId=order.id.replace(/\D/g,'')||'1';
       const orderId='ORD'+numericId.padStart(4,'0');
@@ -625,7 +747,7 @@
             
             ${hasMoreItems?`
               <div class="view-more" onclick="toggleViewMore('${order.id}',${order.items.length})">
-                <span id="viewMoreText_${order.id}">View ${order.items.length-3} more items</span>
+                <span id="viewMoreText_${order.id}">View ${order.items.length-2} more items</span>
                 <i class="fas fa-chevron-down" id="viewMoreIcon_${order.id}"></i>
               </div>
             `:''}
@@ -644,7 +766,7 @@
             </div>
             <div class="order-actions">
               ${order.status==='pending'?`
-                <button class="action-btn btn-accept" onclick="openTimeModal('${order.id}')">
+                <button class="action-btn btn-accept" onclick="${isPreorder?`acceptOrderDirect('${order.id}')`:`openTimeModal('${order.id}')`}">
                   <i class="fas fa-check"></i> Accept
                 </button>
                 <button class="action-btn btn-cancel" onclick="cancelOrder('${order.id}')">
@@ -677,11 +799,11 @@
       const viewMoreText=document.getElementById(`viewMoreText_${orderId}`);
       const viewMoreIcon=document.getElementById(`viewMoreIcon_${orderId}`);
       const card=document.getElementById(`card_${orderId}`);
-      
+
       if(itemsDiv.classList.contains('expanded')){
         itemsDiv.classList.remove('expanded');
         notesDiv.classList.remove('show');
-        viewMoreText.textContent=`View ${totalItems-3} more items`;
+        viewMoreText.textContent=`View ${totalItems-2} more items`;
         viewMoreIcon.classList.remove('expanded');
         card.classList.remove('expanded');
       }else{
@@ -731,7 +853,7 @@
       const modal=document.getElementById('newOrderModal');
       modal.classList.remove('show');
       stopNotificationSound();
-      
+
       db.ref(`orders/${currentNewOrderId}`).once('value').then((snapshot)=>{
         const order=snapshot.val();
         if(order&&order.preorder){
@@ -740,6 +862,11 @@
           openTimeModal(currentNewOrderId);
         }
       });
+    }
+
+    // Accept order directly (for preorders)
+    function acceptOrderDirect(orderId){
+      updateOrderStatus(orderId,'confirmed');
     }
     
     // Open time modal
