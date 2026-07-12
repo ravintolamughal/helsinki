@@ -86,7 +86,7 @@
     /* Order Number Badge */
     .order-number-badge{text-align:center;padding:18px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:3px solid rgba(255,255,255,.3);border-radius:20px;margin-bottom:24px;box-shadow:0 8px 30px rgba(245,200,66,.4)}
     .order-number-label{font-size:.7rem;color:var(--purple-deep);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px}
-    .order-number-value{font-family:'Courier New',monospace;font-size:1.3rem;font-weight:700;color:var(--purple-deep);letter-spacing:3px;text-shadow:0 2px 4px rgba(0,0,0,.1)}
+    .order-number-value{font-family:'Roboto Mono','Courier New',monospace;font-size:1.5rem;font-weight:700;color:var(--purple-deep);letter-spacing:2px;text-shadow:0 2px 4px rgba(0,0,0,.1)}
     
     /* Restaurant Address */
     .restaurant-address-section{margin-bottom:24px;padding:20px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(245,200,66,.3)}
@@ -152,7 +152,7 @@
       .container{padding:12px}
       .receipt-card{padding:20px}
       .receipt-logo{font-size:1.5rem}
-      .order-number-value{font-size:1.1rem}
+      .order-number-value{font-size:1.3rem}
       .status-icon{font-size:2.5rem}
       .status-text{font-size:1.1rem}
       .status-sub{font-size:.8rem}
@@ -244,22 +244,6 @@
         </div>
       </div>
 
-      <!-- Customer Information (Bottom - Verification) -->
-      <div class="info-section">
-        <div class="info-title">Customer Verification</div>
-        <div class="info-row">
-          <span class="info-label">Name</span>
-          <span class="info-value" id="customerName"></span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">Phone</span>
-          <span class="info-value" id="customerPhone"></span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">Email</span>
-          <span class="info-value" id="customerEmail"></span>
-        </div>
-      </div>
 
       <!-- Restaurant Address -->
       <div class="restaurant-address-section">
@@ -330,11 +314,11 @@
     let orderData=null;
     let orderCounter=0;
 
-    // Format order number as MUGHAL001, MUGHAL002, etc.
+    // Format order number as MG001, MG002, etc.
     function formatOrderNumber(orderId){
       const numericId=orderId.replace(/\D/g,'')||'1';
       const paddedId=numericId.padStart(3,'0');
-      return 'MUGHAL'+paddedId;
+      return 'MG'+paddedId;
     }
 
     // Load order data
@@ -369,9 +353,6 @@
       document.getElementById('orderDate').textContent=new Date(orderData.createdAt).toLocaleString();
       document.getElementById('pickupTime').textContent=orderData.preorder?orderData.pickupTime:'ASAP';
       document.getElementById('paymentMethod').textContent=orderData.paymentMethod.charAt(0).toUpperCase()+orderData.paymentMethod.slice(1);
-      document.getElementById('customerName').textContent=orderData.customer.name;
-      document.getElementById('customerPhone').textContent=orderData.customer.phone;
-      document.getElementById('customerEmail').textContent=orderData.customer.email;
       document.getElementById('customerNameTop').textContent=orderData.customer.name;
       document.getElementById('customerPhoneTop').textContent=orderData.customer.phone;
       document.getElementById('customerEmailTop').textContent=orderData.customer.email;
