@@ -19,12 +19,18 @@
     /* Navbar */
     .navbar{background:rgba(37,0,90,.95);backdrop-filter:blur(20px);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08)}
     .nav-logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold)}
-    .nav-links{display:flex;gap:20px}
-    .nav-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.9rem;transition:.3s}
-    .nav-links a:hover{color:var(--gold)}
+    .nav-links{display:flex;gap:10px}
+    .nav-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.85rem;font-weight:500;padding:8px 16px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);transition:.3s}
+    .nav-links a:hover{background:rgba(245,200,66,.2);border-color:var(--gold);color:var(--gold)}
+    .nav-links a.active{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border-color:var(--gold);font-weight:700}
+    .nav-notification-badge{position:absolute;top:-8px;right:-8px;background:#ef4444;color:#fff;border-radius:50%;width:20px;height:20px;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .nav-links a{position:relative}
 .nav-refresh-btn{padding:10px 20px;background:rgba(245,200,66,.2);color:var(--gold);border:1px solid var(--gold);border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px}
 .nav-refresh-btn:hover{background:var(--gold);color:var(--purple-deep);transform:translateY(-2px)}
 .nav-refresh-btn:active{transform:scale(.95)}
+    .nav-time-info{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+    .nav-date{font-size:.75rem;color:rgba(255,255,255,.7);font-weight:500}
+    .nav-time{font-size:1.1rem;color:var(--gold);font-weight:700;font-family:'Poppins',sans-serif}
     
     /* Container */
     .container{max-width:1600px;margin:0 auto;padding:24px;display:flex;gap:24px}
@@ -73,8 +79,12 @@
     }
     
     /* Order Card */
-    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:16px;transition:var(--t);min-height:280px;display:flex;flex-direction:column;overflow:hidden}
-    .order-card.new-order{border:2px solid var(--gold);background:rgba(245,200,66,.08);box-shadow:0 0 20px rgba(245,200,66,.3);animation:orderPulse 1.5s ease-in-out infinite}
+    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;position:relative;word-break:break-word;animation:slideInLeft 0.5s ease-out}
+    @keyframes slideInLeft{
+      from{transform:translateX(-100%);opacity:0}
+      to{transform:translateX(0);opacity:1}
+    }
+    .order-card.new-order{border:2px solid var(--gold);background:rgba(245,200,66,.08);box-shadow:0 0 20px rgba(245,200,66,.3);animation:orderPulse 1.5s ease-in-out infinite,slideInLeft 0.5s ease-out}
     @keyframes orderPulse{
       0%,100%{transform:scale(1);box-shadow:0 0 20px rgba(245,200,66,.3)}
       50%{transform:scale(1.02);box-shadow:0 0 30px rgba(245,200,66,.5)}
@@ -86,12 +96,96 @@
     .order-card.collapsed{min-height:auto}
     .order-card.collapsed .card-footer{border-top:none}
 
+    /* Table Badge */
+    .tbl-badge{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.1));border:1px solid rgba(245,200,66,.3);border-radius:8px;padding:8px 10px;cursor:pointer}
+    .tbl-name{font-weight:900;font-size:1.15rem;background:rgba(245,200,66,.2);padding:4px 10px;border-radius:6px;letter-spacing:1px;color:var(--gold)}
+
+    /* Order Meta */
+    .order-meta-row{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+    .order-id-txt{font-size:.78rem;color:rgba(255,255,255,.6);font-weight:700}
+    .payment-pill{font-size:.74rem;font-weight:700;color:rgba(255,255,255,.6);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);padding:2px 8px;border-radius:999px;flex-shrink:0}
+
+    /* Timer and Total */
+    .timer-total-row{display:flex;align-items:center;justify-content:space-between;gap:6px}
+    .timer-txt{font-weight:800;font-size:.9rem;color:var(--white);white-space:nowrap}
+    .total-txt{font-weight:900;font-size:.95rem;color:var(--gold)}
+
+    /* Progress Bar */
+    .prog-row{display:flex;align-items:center;gap:8px}
+    .prog-bar{flex:1;height:8px;border-radius:8px;background:rgba(255,255,255,.06);overflow:hidden}
+    .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-dark));width:0%;transition:width .4s}
+    .prog-lbl{font-size:.78rem;font-weight:800;color:rgba(255,255,255,.6);white-space:nowrap}
+
+    /* Card Actions */
+    .card-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+    .card-actions .right{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+    .expand-btn{background:transparent;border:1px solid rgba(255,255,255,.09);color:var(--gold);width:32px;height:32px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+    .collapse-btn{position:absolute;top:10px;right:10px;background:transparent;border:1px solid rgba(255,255,255,.09);color:var(--gold);width:32px;height:32px;border-radius:9px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+
+    /* Section Blocks */
+    .details{margin-top:4px;display:flex;flex-direction:column;gap:8px}
+    .sec-block{border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px;background:rgba(255,255,255,.03)}
+    .sec-block-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .sec-block-title{font-weight:900;font-size:.78rem;color:var(--gold);letter-spacing:.4px;text-transform:uppercase}
+    .sec-count-badge{font-size:.7rem;font-weight:900;background:rgba(245,200,66,.18);border:1px solid rgba(245,200,66,.35);color:var(--gold);padding:1px 7px;border-radius:999px;white-space:nowrap}
+    .item-list{display:flex;flex-direction:column;gap:6px}
+    .item-row{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
+    .item-row-left{display:flex;gap:8px;align-items:center;flex:1;min-width:0}
+    .item-cb{cursor:pointer;flex-shrink:0;width:18px;height:18px;border-radius:4px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center}
+    .item-cb.checked{background:var(--gold);border-color:var(--gold)}
+    .item-cb.checked::after{content:'✓';color:var(--purple-deep);font-size:.65rem;font-weight:900}
+    .item-info{flex:1;min-width:0}
+    .item-name{font-weight:700;font-size:.9rem;color:#fff;cursor:pointer;word-break:break-word;flex:1}
+    .item-name.done{text-decoration:line-through;opacity:.5;color:rgba(255,255,255,.6)}
+    .item-price-line{font-size:.74rem;color:rgba(255,255,255,.6);font-weight:700;margin-top:2px}
+    .item-note-txt{font-size:.74rem;color:var(--gold);font-style:italic;margin-top:2px}
+    .item-row-right{display:flex;gap:5px;align-items:center;flex-shrink:0}
+    .qty-box{padding:4px 10px;border-radius:8px;background:rgba(245,200,66,.2);border:1px solid rgba(245,200,66,.4);font-weight:900;font-size:1rem;white-space:nowrap;color:var(--gold)}
+    .item-price-txt{font-size:1.1rem;color:var(--gold);font-weight:900;white-space:nowrap}
+
+    /* Combo Tag */
+    .combo-tag{display:inline-flex;align-items:center;gap:3px;background:#3d2914;border:1.5px solid var(--gold);color:#ffe082;font-size:.72rem;font-weight:900;padding:3px 9px 3px 7px;border-radius:20px;letter-spacing:.5px;white-space:nowrap;line-height:1.3;margin-top:3px}
+
+    /* Full Screen Overlay */
+    #fullViewOverlay{display:none;position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,var(--purple-deep),var(--purple),var(--purple-mid));flex-direction:column;overflow:hidden}
+    #fullViewOverlay.open{display:flex;animation:fvIn .25s ease}
+    @keyframes fvIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+    .fv-header-bar{display:flex;align-items:center;gap:12px;padding:10px 16px;background:rgba(0,0,0,.6);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0}
+    .fv-close-btn{padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.1));border:1px solid rgba(245,200,66,.3);color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;font-weight:700;transition:all .2s;flex-shrink:0;gap:6px}
+    .fv-close-btn:hover{background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.05));border-color:rgba(245,200,66,.5)}
+    .fv-title{flex:1;font-weight:900;font-size:1rem;color:var(--gold);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .fv-body{flex:1;overflow:hidden;padding:12px;max-width:900px;margin:0 auto;width:100%;display:flex;flex-direction:column}
+    .fv-card{background:rgba(255,255,255,.07);border-radius:12px;border:1px solid rgba(255,255,255,.1);padding:10px;flex:1;display:flex;flex-direction:column;overflow:hidden}
+    .fv-card-header{display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:6px}
+    .fv-tbl-badge{background:linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.1));border:1px solid rgba(245,200,66,.3);color:var(--gold);font-weight:900;font-size:1.1rem;padding:5px 12px;border-radius:8px;letter-spacing:1px}
+    .fv-meta{flex:1}
+    .fv-oid{font-size:.7rem;color:rgba(255,255,255,.6);font-weight:700}
+    .fv-time{font-size:.75rem;color:var(--gold);font-weight:600}
+    .fv-items{flex:1;overflow:hidden;padding:4px 0;display:flex;gap:10px}
+    .fv-col{flex:1;overflow-y:auto;min-height:0;display:flex;flex-direction:column}
+    .fv-sec-title{font-size:.7rem;color:var(--gold);font-weight:900;letter-spacing:1px;text-transform:uppercase;margin:4px 0 3px;padding-bottom:2px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .fv-item{display:flex;align-items:center;gap:8px;padding:4px 6px;background:rgba(255,255,255,.03);border-radius:6px;margin-bottom:2px;position:relative;cursor:pointer}
+    .fv-item-cb{width:18px;height:18px;border-radius:4px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+    .fv-item-cb.checked{background:var(--gold);border-color:var(--gold)}
+    .fv-item-cb.checked::after{content:'✓';color:var(--purple-deep);font-size:.65rem;font-weight:900}
+    .fv-item-info{flex:1;min-width:0}
+    .fv-item-name{font-size:.78rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .fv-item-name.done{text-decoration:line-through;opacity:.5}
+    .fv-item-detail{font-size:.75rem;color:rgba(255,255,255,.7);display:block;margin-top:2px;font-weight:700}
+    .fv-item-right{display:flex;gap:4px;align-items:center;flex-shrink:0}
+    .fv-item-qty{background:rgba(245,200,66,.2);border:1px solid rgba(245,200,66,.3);color:var(--gold);padding:2px 6px;border-radius:4px;font-weight:900;font-size:.75rem}
+    .fv-item-price{font-weight:900;color:var(--gold);font-size:1.1rem}
+    .fv-footer{flex-shrink:0;padding-top:8px;border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .fv-total-lbl{font-size:.65rem;color:rgba(255,255,255,.6);font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+    .fv-total-val{font-size:1.2rem;font-weight:900;color:var(--gold)}
+    .fv-actions{display:flex;gap:6px}
+
     /* Order Card Header */
     .card-header{background:rgba(0,0,0,.2);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.1)}
     .header-left{display:flex;flex-direction:column;gap:4px}
     .order-number{font-size:1rem;font-weight:800;color:var(--gold);font-family:'Poppins',sans-serif;letter-spacing:0.5px}
-    .order-time{font-size:.65rem;color:rgba(255,255,255,.5)}
-    .order-timer{font-size:.7rem;color:var(--gold);font-weight:600;margin-top:2px}
+    .order-time{font-size:.75rem;color:var(--gold);font-weight:600}
+    .order-timer{font-size:.7rem;color:rgba(255,255,255,.7);font-weight:500;margin-top:2px}
     .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
     .order-status-badge{padding:5px 10px;border-radius:18px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap}
     .order-status-badge.pending{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep)}
@@ -222,11 +316,18 @@
     <div class="nav-logo">Mughal Admin</div>
     <div class="nav-links">
       <a href="menusetup.html">Menu Setup</a>
-      <a href="adminorders.html" style="color:var(--gold)">Orders</a>
+      <a href="adminorders.html" class="active">
+        Orders
+        <span class="nav-notification-badge" id="navNewOrdersBadge" style="display:none">0</span>
+      </a>
       <a href="index.html">View Site</a>
       <button class="nav-refresh-btn" onclick="manualRefresh()">
         <i class="fas fa-sync-alt"></i> Refresh
       </button>
+    </div>
+    <div class="nav-time-info">
+      <div class="nav-date" id="finlandDate"></div>
+      <div class="nav-time" id="finlandTime"></div>
     </div>
   </nav>
   
@@ -333,6 +434,15 @@
       </div>
     </div>
   </div>
+
+  <!-- Full Screen Overlay -->
+  <div id="fullViewOverlay">
+    <div class="fv-header-bar">
+      <button class="fv-close-btn" onclick="closeFullView()"><i class="fas fa-times"></i> Back</button>
+      <span class="fv-title" id="fvTitle">Order Details</span>
+    </div>
+    <div class="fv-body" id="fvBody"></div>
+  </div>
   
   <!-- Toast -->
   <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Success!</span></div>
@@ -367,6 +477,7 @@
     let allOrders=[];
     let currentPage=1;
     const itemsPerPage=30;
+    let orderFirstSeen={};
     
     // Listen for orders
     document.addEventListener('DOMContentLoaded',()=>{
@@ -379,6 +490,10 @@
               showNewOrderModal(id,order);
               processedOrders.add(id);
               startNotificationSound();
+            }
+            // Track first seen time for timer (use order's actual creation time, not current time)
+            if(!orderFirstSeen[id]&&order.status!=='delivered'&&order.status!=='rejected'){
+              orderFirstSeen[id]=order.timestamp||Date.now();
             }
           });
           processOrders(data);
@@ -638,6 +753,16 @@
       document.getElementById('activeBadge').textContent=activeCount;
       document.getElementById('deliveredBadge').textContent=ordersByStatus.delivered?.length||0;
       document.getElementById('rejectedBadge').textContent=ordersByStatus.rejected?.length||0;
+
+      // Update navbar notification badge for new orders
+      const newOrdersCount=ordersByStatus.pending?.length||0;
+      const navBadge=document.getElementById('navNewOrdersBadge');
+      if(newOrdersCount>0){
+        navBadge.textContent=newOrdersCount;
+        navBadge.style.display='flex';
+      }else{
+        navBadge.style.display='none';
+      }
     }
 
     // Render orders
@@ -703,15 +828,18 @@
 
     // Update timers for all order cards
     function updateTimers(){
-      document.querySelectorAll('.order-card[data-timestamp]').forEach(card=>{
-        const timestamp=parseInt(card.dataset.timestamp);
+      document.querySelectorAll('.order-card[data-first-seen]').forEach(card=>{
+        const firstSeen=parseInt(card.dataset.firstSeen);
+        const status=card.dataset.status;
         const timerElement=card.querySelector('.order-timer');
-        if(timerElement&&timestamp){
+        if(timerElement&&firstSeen&&status!=='delivered'&&status!=='rejected'){
           const now=Date.now();
-          const elapsed=now-timestamp;
+          const elapsed=now-firstSeen;
           const minutes=Math.floor(elapsed/60000);
           const seconds=Math.floor((elapsed%60000)/1000);
           timerElement.textContent=`${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+        }else if(timerElement&&(status==='delivered'||status==='rejected')){
+          timerElement.textContent='--:--';
         }
       });
     }
@@ -719,6 +847,19 @@
     // Start timer updates
     setInterval(updateTimers,1000);
     updateTimers();
+
+    // Update Finland time and date
+    function updateFinlandTime(){
+      const now=new Date();
+      const finlandTime=new Date(now.toLocaleString('en-US',{timeZone:'Europe/Helsinki'}));
+      const dateOptions={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+      const timeOptions={hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false};
+      document.getElementById('finlandDate').textContent=finlandTime.toLocaleDateString('en-FI',dateOptions);
+      document.getElementById('finlandTime').textContent=finlandTime.toLocaleTimeString('en-FI',timeOptions)+' (Finland)';
+    }
+
+    setInterval(updateFinlandTime,1000);
+    updateFinlandTime();
     
     // Create order card
     function createOrderCard(order){
@@ -734,9 +875,10 @@
       const numericId=order.id.replace(/\D/g,'')||'1';
       const orderId='ORD'+numericId.padStart(4,'0');
       const orderDate=new Date(order.timestamp||Date.now());
-      
+      const firstSeenTimestamp=orderFirstSeen[order.id]||order.timestamp||Date.now();
+
       return `
-        <div class="order-card ${order.status==='pending'?'new-order':''} ${isPreorder?'preorder':''}" id="card_${order.id}" data-timestamp="${order.timestamp||Date.now()}">
+        <div class="order-card ${order.status==='pending'?'new-order':''} ${isPreorder?'preorder':''}" id="card_${order.id}" data-first-seen="${firstSeenTimestamp}" data-status="${order.status}">
           <div class="card-header">
             <div class="header-left">
               <span class="order-number">#${orderId}</span>
