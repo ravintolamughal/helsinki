@@ -98,14 +98,14 @@
     .address-line a:hover{text-decoration:underline}
 
     /* Customer Info */
-    .info-section{margin-bottom:24px}
+    .info-section{margin-bottom:24px;padding:20px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(255,255,255,.1)}
     .info-title{font-size:.9rem;font-weight:600;color:var(--gold);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
     .info-row{display:flex;justify-content:space-between;padding:8px 0;font-size:.9rem}
     .info-label{color:rgba(255,255,255,.6)}
     .info-value{font-weight:500;color:var(--white)}
     
     /* Order Items */
-    .items-section{margin-bottom:24px}
+    .items-section{margin-bottom:24px;padding:20px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(255,255,255,.1)}
     .order-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.1)}
     .order-item:last-child{border-bottom:none}
     .order-item img{width:50px;height:50px;border-radius:8px;object-fit:cover}
@@ -183,6 +183,23 @@
         <div class="receipt-address" id="orderDate"></div>
       </div>
 
+        <!-- Customer Information (Top) -->
+      <div class="info-section">
+        <div class="info-title">Customer Information</div>
+        <div class="info-row">
+          <span class="info-label">Name</span>
+          <span class="info-value" id="customerNameTop"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Phone</span>
+          <span class="info-value" id="customerPhoneTop"></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Email</span>
+          <span class="info-value" id="customerEmailTop"></span>
+        </div>
+      </div>
+
       <!-- Order Number Badge -->
       <div class="order-number-badge">
         <div class="order-number-label">Order Number</div>
@@ -227,9 +244,9 @@
         </div>
       </div>
 
-      <!-- Customer Information -->
+      <!-- Customer Information (Bottom - Verification) -->
       <div class="info-section">
-        <div class="info-title">Customer Information</div>
+        <div class="info-title">Customer Verification</div>
         <div class="info-row">
           <span class="info-label">Name</span>
           <span class="info-value" id="customerName"></span>
@@ -355,6 +372,9 @@
       document.getElementById('customerName').textContent=orderData.customer.name;
       document.getElementById('customerPhone').textContent=orderData.customer.phone;
       document.getElementById('customerEmail').textContent=orderData.customer.email;
+      document.getElementById('customerNameTop').textContent=orderData.customer.name;
+      document.getElementById('customerPhoneTop').textContent=orderData.customer.phone;
+      document.getElementById('customerEmailTop').textContent=orderData.customer.email;
       document.getElementById('subtotal').textContent='€'+orderData.subtotal.toFixed(2);
       document.getElementById('discount').textContent='€'+orderData.discount.toFixed(2);
       document.getElementById('total').textContent='€'+orderData.total.toFixed(2);
