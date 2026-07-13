@@ -6,6 +6,7 @@
   <title>Order Receipt - Mughal Restaurant</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     :root{
       --purple:#4c00b0;--purple-dark:#36007d;--purple-deep:#25005a;--purple-mid:#6a1ec8;
@@ -310,7 +311,10 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db=firebase.database();
-    
+
+    // Initialize EmailJS
+    emailjs.init('UP2ieJaJ0Y8Ag2245');
+
     let orderData=null;
     let orderCounter=0;
 
@@ -319,6 +323,40 @@
       const numericId=orderId.replace(/\D/g,'')||'1';
       const paddedId=numericId.padStart(3,'0');
       return 'MG'+paddedId;
+    }
+
+    // Send customer confirmation email via EmailJS
+    function sendCustomerConfirmationEmail(order){
+      const orderNumber=formatOrderNumber(order.id);
+      const orderDate=new Date(order.timestamp||Date.now()).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+      // Format items as HTML
+      const itemsHtml=order.items.map(item=>`
+        <div class="item">
+          <div class="item-name">${item.quantity}x ${item.name}</div>
+          <div class="item-price">€${item.price.toFixed(2)}</div>
+        </div>
+      `).join('');
+
+      const templateParams={
+        customer_name:order.customer.name,
+        order_number:orderNumber,
+        order_date:orderDate,
+        status:'Confirmed',
+        items:itemsHtml,
+        total_amount:order.total.toFixed(2),
+        to_email:order.customer.email
+      };
+
+      emailjs.send('service_qk4u3en','template_0pru1t9',templateParams)
+        .then((response)=>{
+          console.log('Email sent successfully!',response.status,response.text);
+          showToast('Confirmation email sent');
+        })
+        .catch((error)=>{
+          console.error('Failed to send email:',error);
+          showToast('Failed to send confirmation email',true);
+        });
     }
 
     // Load order data
@@ -394,6 +432,10 @@
           icon='fa-fire';
           text='Order Confirmed & Preparing';
           sub='Your order is being prepared with care';
+          // Send confirmation email when order is confirmed
+          if(orderData&&orderData.status!==status){
+            sendCustomerConfirmationEmail(orderData);
+          }
           break;
         case 'ready':
           icon='fa-utensils';
