@@ -6,6 +6,7 @@
 <title>Order Now | Mughal Indian Restaurant Helsinki</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <style>
 :root{
   --purple:#4c00b0;--purple-dark:#36007d;--purple-deep:#25005a;--purple-mid:#6a1ec8;
@@ -577,11 +578,12 @@ img{display:block;width:100%;object-fit:cover}
   .step-label{font-size:.45rem}
 }
 
-/* Track Order Floating Icon */
-.track-order-icon{position:fixed;bottom:100px;right:20px;width:60px;height:60px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 24px rgba(245,200,66,.4);z-index:999;transition:var(--t)}
-.track-order-icon:hover{transform:scale(1.1)}
-.track-order-icon i{font-size:1.5rem;color:var(--purple-deep)}
-.track-badge{position:absolute;top:-5px;right:-5px;background:#ef4444;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700}
+/* Track Order Button - Left Side */
+.track-order-btn{position:fixed;top:100px;left:20px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);padding:12px 20px;border-radius:30px;display:flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 8px 24px rgba(245,200,66,.4);z-index:999;transition:var(--t);font-weight:700;font-size:.9rem;border:none;font-family:'Poppins',sans-serif}
+.track-order-btn:hover{transform:translateX(-5px);box-shadow:0 12px 32px rgba(245,200,66,.5)}
+.track-order-btn i{font-size:1.1rem}
+.track-badge{position:absolute;top:-8px;right:-8px;background:#ef4444;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700}
+.track-badge.hidden{display:none}
 .track-badge.hidden{display:none}
 
 /* Track Order Panel */
@@ -612,17 +614,18 @@ img{display:block;width:100%;object-fit:cover}
 .track-empty i{font-size:3rem;margin-bottom:12px}
 .track-empty p{font-size:.9rem}
 @media(max-width:768px){
-  .track-order-icon{bottom:80px;width:50px;height:50px}
-  .track-order-icon i{font-size:1.2rem}
+  .track-order-btn{top:70px;left:10px;padding:10px 16px;font-size:.8rem}
+  .track-order-btn i{font-size:1rem}
 }
 </style>
 </head>
 <body>
 
-<!-- Track Order Floating Icon -->
-<div class="track-order-icon" id="trackOrderIcon" onclick="toggleTrackOrderPanel()">
-  <i class="fas fa-store"></i>
-  <span class="track-badge" id="trackBadge">0</span>
+<!-- Track Order Button - Left Side -->
+<div class="track-order-btn" id="trackOrderBtn" onclick="toggleTrackOrderPanel()">
+  <i class="fas fa-box"></i>
+  <span>Track Orders</span>
+  <span class="track-badge hidden" id="trackBadge">0</span>
 </div>
 
 <!-- Track Order Panel -->
@@ -647,7 +650,7 @@ img{display:block;width:100%;object-fit:cover}
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="index.html#menu">Menu</a></li>
-    <li><a href="#" style="color:var(--gold)">Order Now</a></li>
+    <li><a href="food-ordering.html" style="color:var(--gold)">Order Now</a></li>
     <li><a href="index.html#reservation">Reservations</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
@@ -668,7 +671,7 @@ img{display:block;width:100%;object-fit:cover}
   </div>
   <nav class="drawer-nav">
     <a href="index.html"><i class="fas fa-home"></i> Home</a>
-    <a href="#" onclick="toggleDrawer()"><i class="fas fa-utensils"></i> Order Now</a>
+    <a href="food-ordering.html" onclick="toggleDrawer()"><i class="fas fa-utensils"></i> Order Now</a>
     <a href="your-orders.html"><i class="fas fa-history"></i> My Orders</a>
     <a href="index.html#reservation" onclick="toggleDrawer()"><i class="fas fa-calendar-alt"></i> Reservations</a>
     <a href="index.html#contact" onclick="toggleDrawer()"><i class="fas fa-envelope"></i> Contact</a>
@@ -949,6 +952,42 @@ firebase.initializeApp({
   appId:"1:123933913893:web:c1f57caf4dc2a5440ba0cc"
 });
 const db=firebase.database();
+
+// Initialize EmailJS
+emailjs.init('UP2ieJaJ0Y8Ag2245');
+
+// Send restaurant notification email via EmailJS
+function sendRestaurantNotificationEmail(order){
+  const orderNumber='ORD'+(order.id.replace(/\D/g,'')||'1').padStart(4,'0');
+  const orderDate=new Date(order.timestamp||Date.now()).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  // Format items as HTML
+  const itemsHtml=order.items.map(item=>`
+    <div class="item">
+      <div class="item-name">${item.quantity}x ${item.name}</div>
+      <div class="item-price">€${item.price.toFixed(2)}</div>
+    </div>
+  `).join('');
+
+  const templateParams={
+    customer_name:order.customer.name,
+    customer_phone:order.customer.phone,
+    customer_email:order.customer.email,
+    order_number:orderNumber,
+    delivery_type:order.deliveryType==='delivery'?'Delivery':'Pickup',
+    items:itemsHtml,
+    total_amount:order.total.toFixed(2),
+    to_email:'ravintolamughal@gmail.com'
+  };
+
+  emailjs.send('service_qk4u3en','template_753hp9q',templateParams)
+    .then((response)=>{
+      console.log('Restaurant notification email sent successfully!',response.status,response.text);
+    })
+    .catch((error)=>{
+      console.error('Failed to send restaurant notification email:',error);
+    });
+}
 
 // Restaurant location (Aallonhalkoja 3, Helsinki)
 const RESTAURANT_LOCATION = { lat: 60.1867, lng: 24.9551 };
@@ -1915,6 +1954,9 @@ async function submitOrder(e){
   const newOrderRef=db.ref('orders').push();
   const newOrderKey=newOrderRef.key;
   newOrderRef.set(orderData).then(()=>{
+    // Send restaurant notification email
+    sendRestaurantNotificationEmail({...orderData,id:newOrderKey});
+
     // Show success in confirmation modal
     confirmLoading.style.display='none';
     confirmSuccess.style.display='flex';
@@ -2100,36 +2142,65 @@ function loadTrackOrders(){
   db.ref('orders').orderByChild('userId').equalTo(userId).on('value',(snapshot)=>{
     const orders=snapshot.val();
     if(!orders||Object.keys(orders).length===0){
-      content.innerHTML='<div class="track-empty"><i class="fas fa-box-open"></i><p>No active orders</p></div>';
+      content.innerHTML='<div class="track-empty"><i class="fas fa-box-open"></i><p>No orders found</p></div>';
       document.getElementById('trackBadge').classList.add('hidden');
       return;
     }
     
     const activeOrders=Object.entries(orders).filter(([id,order])=>order.status!=='delivered'&&order.status!=='rejected');
+    const historyOrders=Object.entries(orders).filter(([id,order])=>order.status==='delivered'||order.status==='rejected');
+    
     document.getElementById('trackBadge').textContent=activeOrders.length;
     document.getElementById('trackBadge').classList.toggle('hidden',activeOrders.length===0);
     
-    content.innerHTML=activeOrders.map(([id,order])=>{
-      const showTimer=order.status!=='ready'&&order.status!=='delivered'&&order.estimatedTime&&order.estimatedSetAt;
-      const elapsedMs=Date.now()-order.estimatedSetAt;
-      const remainingMs=(order.estimatedTime*60*1000)-elapsedMs;
-      const remainingMinutes=Math.max(0,Math.ceil(remainingMs/60000));
-      
-      return `
-      <div class="track-order-item ${order.status}" data-order-id="${id}">
-        <div class="track-order-header">
-          <span class="track-order-id">#${id.replace('order_','')}</span>
-          <span class="track-order-status ${order.status}">${order.status.charAt(0).toUpperCase()+order.status.slice(1)}</span>
-        </div>
-        <div class="track-order-items">${order.items.map(i=>i.name+' x'+i.quantity).join(', ')}</div>
-        ${showTimer?`
-          <div class="track-order-timer">
-            <i class="fas fa-clock"></i>
-            <span>Est. ${remainingMinutes} min</span>
+    let html='';
+    
+    if(activeOrders.length>0){
+      html+='<h4 style="color:var(--gold);margin:0 0 15px 0;font-size:.9rem;">Active Orders</h4>';
+      html+=activeOrders.map(([id,order])=>{
+        const showTimer=order.status!=='ready'&&order.status!=='delivered'&&order.estimatedTime&&order.estimatedSetAt;
+        const elapsedMs=Date.now()-order.estimatedSetAt;
+        const remainingMs=(order.estimatedTime*60*1000)-elapsedMs;
+        const remainingMinutes=Math.max(0,Math.ceil(remainingMs/60000));
+        
+        return `
+        <div class="track-order-item ${order.status}" data-order-id="${id}">
+          <div class="track-order-header">
+            <span class="track-order-id">#${id.replace('order_','')}</span>
+            <span class="track-order-status ${order.status}">${order.status.charAt(0).toUpperCase()+order.status.slice(1)}</span>
           </div>
-        `:''}
-      </div>`;
-    }).join('');
+          <div class="track-order-items">${order.items.map(i=>i.name+' x'+i.quantity).join(', ')}</div>
+          ${showTimer?`
+            <div class="track-order-timer">
+              <i class="fas fa-clock"></i>
+              <span>Est. ${remainingMinutes} min</span>
+            </div>
+          `:''}
+          <button class="btn btn-sm btn-gold" onclick="viewOrderDetails('${id}')" style="width:100%;margin-top:12px;">
+            <i class="fas fa-eye"></i> View Details
+          </button>
+        </div>`;
+      }).join('');
+    }
+    
+    if(historyOrders.length>0){
+      html+='<h4 style="color:rgba(255,255,255,.7);margin:20px 0 15px 0;font-size:.9rem;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;">Order History</h4>';
+      html+=historyOrders.map(([id,order])=>{
+        return `
+        <div class="track-order-item ${order.status}" style="opacity:0.6">
+          <div class="track-order-header">
+            <span class="track-order-id">#${id.replace('order_','')}</span>
+            <span class="track-order-status ${order.status}">${order.status.charAt(0).toUpperCase()+order.status.slice(1)}</span>
+          </div>
+          <div class="track-order-items">${order.items.map(i=>i.name+' x'+i.quantity).join(', ')}</div>
+          <button class="btn btn-sm btn-outline-white" onclick="viewOrderDetails('${id}')" style="width:100%;margin-top:12px;">
+            <i class="fas fa-eye"></i> View Details
+          </button>
+        </div>`;
+      }).join('');
+    }
+    
+    content.innerHTML=html;
     
     // Update timer every minute
     activeOrders.forEach(([id,order])=>{
@@ -2154,6 +2225,10 @@ function updateOrderTimer(orderId){
     
     timerElement.textContent=`Est. ${remainingMinutes} min`;
   });
+}
+
+function viewOrderDetails(orderId){
+  window.open(`receipt.html?orderId=${orderId}`,'_blank');
 }
 
 // Make track icon draggable
