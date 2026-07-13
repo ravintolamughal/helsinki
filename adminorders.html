@@ -6,6 +6,7 @@
   <title>Admin Orders - Mughal Restaurant</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     :root{
       --purple:#4c00b0;--purple-dark:#36007d;--purple-deep:#25005a;--purple-mid:#6a1ec8;
@@ -472,7 +473,44 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db=firebase.database();
-    
+
+    // Initialize EmailJS
+    emailjs.init('UP2ieJaJ0Y8Ag2245');
+
+    // Send customer confirmation email via EmailJS
+    function sendCustomerConfirmationEmail(order){
+      const orderNumber='ORD'+(order.id.replace(/\D/g,'')||'1').padStart(4,'0');
+      const orderDate=new Date(order.timestamp||Date.now()).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+      // Format items as HTML
+      const itemsHtml=order.items.map(item=>`
+        <div class="item">
+          <div class="item-name">${item.quantity}x ${item.name}</div>
+          <div class="item-price">€${item.price.toFixed(2)}</div>
+        </div>
+      `).join('');
+
+      const templateParams={
+        customer_name:order.customer.name,
+        order_number:orderNumber,
+        order_date:orderDate,
+        status:'Confirmed',
+        items:itemsHtml,
+        total_amount:order.total.toFixed(2),
+        to_email:order.customer.email
+      };
+
+      emailjs.send('service_qk4u3en','template_0pru1t9',templateParams)
+        .then((response)=>{
+          console.log('Customer confirmation email sent successfully!',response.status,response.text);
+          showToast('Confirmation email sent to customer');
+        })
+        .catch((error)=>{
+          console.error('Failed to send confirmation email:',error);
+          showToast('Failed to send confirmation email',true);
+        });
+    }
+
     let currentNewOrderId=null;
     let selectedTime=15;
     let ordersRef=null;
@@ -675,15 +713,15 @@
     function startNotificationSound(){
       stopNotificationSound();
       notificationInterval=setInterval(()=>{
-        const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+        const audio=new Audio('https://www.epidemicsound.com/sound-effects/tracks/b430bc2e-3a02-4632-b994-eddec63fd62d/');
         audio.volume=1.0;
         audio.play().catch(()=>{});
-      },1500);
+      },3000);
     }
 
 // Play single notification sound
     function playNotificationSound(){
-      const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+      const audio=new Audio('https://www.epidemicsound.com/sound-effects/tracks/b430bc2e-3a02-4632-b994-eddec63fd62d/');
       audio.volume=1.0;
       audio.play().catch(()=>{});
     }
@@ -1116,6 +1154,17 @@
     function updateOrderStatus(orderId,status){
       db.ref(`orders/${orderId}`).update({status}).then(()=>{
         showToast(`Order status updated to ${status}`);
+
+        // Send customer confirmation email when order is confirmed
+        if(status==='confirmed'||status==='preparing'){
+          db.ref(`orders/${orderId}`).once('value').then((snapshot)=>{
+            const order=snapshot.val();
+            if(order){
+              sendCustomerConfirmationEmail({...order,id:orderId});
+            }
+          });
+        }
+
         loadOrders();
       }).catch((error)=>{
         showToast('Failed to update status',true);
