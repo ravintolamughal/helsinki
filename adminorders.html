@@ -39,11 +39,13 @@
     .sidebar{width:250px;flex-shrink:0}
     .sidebar-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:20px}
     .sidebar-tabs{display:flex;flex-direction:column;gap:8px}
-    .sidebar-tab{padding:16px 20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:rgba(255,255,255,.7);font-size:.95rem;font-weight:600;cursor:pointer;transition:.3s;text-align:left;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:12px}
-    .sidebar-tab:hover{background:rgba(255,255,255,.1);color:var(--white)}
-    .sidebar-tab.active{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border-color:var(--gold)}
-    .sidebar-tab i{width:20px;text-align:center}
-    .tab-badge{margin-left:auto;background:rgba(0,0,0,.2);padding:2px 8px;border-radius:10px;font-size:.8rem}
+    .sidebar-tab{padding:16px 20px;border-radius:12px;color:rgba(255,255,255,.85);font-size:.95rem;font-weight:600;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}
+    .sidebar-tab:hover{background:rgba(255,255,255,.08);border-color:rgba(245,200,66,.3);color:var(--gold)}
+    .sidebar-tab.active{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);font-weight:700;border:none;box-shadow:0 4px 15px rgba(245,200,66,.3)}
+    .sidebar-tab i{font-size:1.1rem;margin-right:12px}
+    .sidebar-tab-content{display:flex;align-items:center;flex:1}
+    .tab-badge{background:rgba(255,255,255,.2);color:#fff;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:700;min-width:28px;text-align:center}
+    .sidebar-tab.active .tab-badge{background:rgba(37,0,90,.3);color:var(--purple-deep)}
     
     /* Main Content */
     .main-content{flex:1}
@@ -185,10 +187,9 @@
     .header-left{display:flex;flex-direction:column;gap:4px}
     .order-number{font-size:1rem;font-weight:800;color:var(--gold);font-family:'Poppins',sans-serif;letter-spacing:0.5px}
     .order-time{font-size:.75rem;color:var(--gold);font-weight:600}
-    .order-timer{font-size:.7rem;color:rgba(255,255,255,.7);font-weight:500;margin-top:2px}
-    .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+    .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:120px}
+    .order-timer{font-size:.9rem;font-weight:700;color:var(--gold);background:rgba(245,200,66,.2);padding:4px 10px;border-radius:6px;border:1px solid rgba(245,200,66,.4);text-align:center}
     .order-status-badge{padding:5px 10px;border-radius:18px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap}
-    .order-status-badge.pending{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep)}
     .order-status-badge.confirmed{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
     .order-status-badge.preparing{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
     .order-status-badge.ready{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
@@ -338,23 +339,31 @@
       <h2 class="sidebar-title">Orders</h2>
       <div class="sidebar-tabs">
         <div class="sidebar-tab active" onclick="toggleSection('active')" id="tab-active">
-          <i class="fas fa-fire"></i>
-          Active Orders
+          <div class="sidebar-tab-content">
+            <i class="fas fa-fire"></i>
+            Active Orders
+          </div>
           <span class="tab-badge" id="activeBadge">0</span>
         </div>
         <div class="sidebar-tab" onclick="toggleSection('delivered')" id="tab-delivered">
-          <i class="fas fa-check-double"></i>
-          Completed
+          <div class="sidebar-tab-content">
+            <i class="fas fa-check-double"></i>
+            Completed
+          </div>
           <span class="tab-badge" id="deliveredBadge">0</span>
         </div>
         <div class="sidebar-tab" onclick="toggleSection('rejected')" id="tab-rejected">
-          <i class="fas fa-times-circle"></i>
-          Cancelled
+          <div class="sidebar-tab-content">
+            <i class="fas fa-times-circle"></i>
+            Cancelled
+          </div>
           <span class="tab-badge" id="rejectedBadge">0</span>
         </div>
         <div class="sidebar-tab" onclick="toggleDateSelector()" id="tab-date">
-          <i class="fas fa-calendar"></i>
-          Date Filter
+          <div class="sidebar-tab-content">
+            <i class="fas fa-calendar"></i>
+            Date Filter
+          </div>
         </div>
       </div>
       <div id="dateSelectorPanel" style="margin-top:20px;padding:16px;background:rgba(255,255,255,.05);border-radius:12px;display:none">
@@ -491,9 +500,12 @@
               processedOrders.add(id);
               startNotificationSound();
             }
-            // Track first seen time for timer (use order's actual creation time, not current time)
-            if(!orderFirstSeen[id]&&order.status!=='delivered'&&order.status!=='rejected'){
-              orderFirstSeen[id]=order.timestamp||Date.now();
+            // Track timer start when order is accepted (confirmed or preparing)
+            if((order.status==='confirmed'||order.status==='preparing')&&!orderFirstSeen[id]){
+              orderFirstSeen[id]=Date.now();
+            }else if(order.status!=='confirmed'&&order.status!=='preparing'&&orderFirstSeen[id]){
+              // Clear timer if order is no longer in confirmed/preparing status
+              delete orderFirstSeen[id];
             }
           });
           processOrders(data);
@@ -525,10 +537,11 @@
         if(fromDate&&toDate){
           includeOrder=orderDate>=fromDate&&orderDate<=toDate;
         }else{
-          const filterDate=new Date(selectedDate);
-          filterDate.setHours(0,0,0,0);
+          // Default to today's orders only
+          const today=new Date();
+          today.setHours(0,0,0,0);
           orderDate.setHours(0,0,0,0);
-          includeOrder=orderDate.getTime()===filterDate.getTime();
+          includeOrder=orderDate.getTime()===today.getTime();
         }
 
         if(includeOrder){
@@ -832,13 +845,13 @@
         const firstSeen=parseInt(card.dataset.firstSeen);
         const status=card.dataset.status;
         const timerElement=card.querySelector('.order-timer');
-        if(timerElement&&firstSeen&&status!=='delivered'&&status!=='rejected'){
+        if(timerElement&&firstSeen&&(status==='confirmed'||status==='preparing')){
           const now=Date.now();
           const elapsed=now-firstSeen;
           const minutes=Math.floor(elapsed/60000);
           const seconds=Math.floor((elapsed%60000)/1000);
           timerElement.textContent=`${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-        }else if(timerElement&&(status==='delivered'||status==='rejected')){
+        }else if(timerElement&&(status==='delivered'||status==='rejected'||status==='pending')){
           timerElement.textContent='--:--';
         }
       });
@@ -875,7 +888,7 @@
       const numericId=order.id.replace(/\D/g,'')||'1';
       const orderId='ORD'+numericId.padStart(4,'0');
       const orderDate=new Date(order.timestamp||Date.now());
-      const firstSeenTimestamp=orderFirstSeen[order.id]||order.timestamp||Date.now();
+      const firstSeenTimestamp=orderFirstSeen[order.id]||null;
 
       return `
         <div class="order-card ${order.status==='pending'?'new-order':''} ${isPreorder?'preorder':''}" id="card_${order.id}" data-first-seen="${firstSeenTimestamp}" data-status="${order.status}">
@@ -883,10 +896,10 @@
             <div class="header-left">
               <span class="order-number">#${orderId}</span>
               <span class="order-time">${orderDate.toLocaleDateString()} ${orderDate.toLocaleTimeString()}</span>
-              <span class="order-timer" id="timer_${order.id}">00:00</span>
             </div>
             <div class="header-right">
               <span class="order-status-badge ${order.status}">${order.status.charAt(0).toUpperCase()+order.status.slice(1)}</span>
+              <span class="order-timer" id="timer_${order.id}">--:--</span>
             </div>
           </div>
           
