@@ -121,13 +121,13 @@
     }
     
     /* Order Card */
-    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;position:relative;min-width:0;min-height:600px;max-height:600px;animation:slideInLeft 0.5s ease-out;transition:min-height 0.3s ease,max-height 0.3s ease}
+    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;position:relative;min-width:0;min-height:600px;max-height:600px;transition:min-height 0.3s ease,max-height 0.3s ease}
     .order-card.expanded{min-height:auto;max-height:none}
     @keyframes slideInLeft{
       from{transform:translateX(-100%);opacity:0}
       to{transform:translateX(0);opacity:1}
     }
-    .order-card.new-order{border:2px solid var(--gold);background:rgba(245,200,66,.08);box-shadow:0 0 20px rgba(245,200,66,.3);animation:orderPulse 1.5s ease-in-out infinite,slideInLeft 0.5s ease-out}
+    .order-card.new-order{border:2px solid var(--gold);background:rgba(245,200,66,.08);box-shadow:0 0 20px rgba(245,200,66,.3);animation:orderPulse 1.5s ease-in-out infinite}
     @keyframes orderPulse{
       0%,100%{transform:scale(1);box-shadow:0 0 20px rgba(245,200,66,.3)}
       50%{transform:scale(1.02);box-shadow:0 0 30px rgba(245,200,66,.5)}
@@ -732,7 +732,6 @@
     function manualRefresh(){
       currentDate=new Date().toDateString();
       loadOrders();
-      showToast('Orders refreshed');
     }
     
     // Toggle section
@@ -1211,7 +1210,7 @@
     function acceptNewOrder(){
       const modal=document.getElementById('newOrderModal');
       modal.classList.remove('show');
-      // Don't stop sound yet - it will stop when order is actually accepted
+      stopNotificationSound();
 
       db.ref(`orders/${currentNewOrderId}`).once('value').then((snapshot)=>{
         const order=snapshot.val();
@@ -1417,6 +1416,7 @@
     // Cancel order
     function cancelOrder(orderId){
       if(confirm('Are you sure you want to cancel this order?')){
+        stopNotificationSound();
         db.ref(`orders/${orderId}`).update({status:'rejected'}).then(()=>{
           showToast('Order cancelled');
           loadOrders();
@@ -1427,10 +1427,26 @@
       }
     }
     
-    // Play notification sound
+    let notificationAudio=null;
+    
+    // Play notification sound (looping ringtone)
     function playNotificationSound(){
-      const audio=new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
-      audio.play().catch(()=>{});
+      if(notificationAudio){
+        notificationAudio.pause();
+        notificationAudio=null;
+      }
+      notificationAudio=new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+      notificationAudio.loop=true;
+      notificationAudio.play().catch(()=>{});
+    }
+    
+    // Stop notification sound
+    function stopNotificationSound(){
+      if(notificationAudio){
+        notificationAudio.pause();
+        notificationAudio.currentTime=0;
+        notificationAudio=null;
+      }
     }
     
     // Show toast
