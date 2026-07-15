@@ -33,11 +33,18 @@
     .nav-date{font-size:.75rem;color:rgba(255,255,255,.7);font-weight:500}
     .nav-time{font-size:1.1rem;color:var(--gold);font-weight:700;font-family:'Poppins',sans-serif}
     
+    /* Network Status */
+    .network-status{position:fixed;top:16px;left:16px;z-index:1000;display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(37,0,90,.9);backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,.1)}
+    .network-icon{font-size:1rem;transition:.3s}
+    .network-status.connected .network-icon{color:#22c55e}
+    .network-status.disconnected .network-icon{color:#ef4444}
+    .network-text{font-size:.7rem;color:rgba(255,255,255,.8);font-weight:500}
+    
     /* Container */
-    .container{max-width:1600px;margin:0 auto;padding:24px;display:flex;gap:24px}
+    .container{max-width:1600px;margin:0 auto;padding:16px;display:flex;gap:16px;min-width:0}
     
     /* Sidebar */
-    .sidebar{width:250px;flex-shrink:0}
+    .sidebar{width:220px;flex-shrink:0}
     .sidebar-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold);margin-bottom:20px}
     .sidebar-tabs{display:flex;flex-direction:column;gap:8px}
     .sidebar-tab{padding:16px 20px;border-radius:12px;color:rgba(255,255,255,.85);font-size:.95rem;font-weight:600;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03)}
@@ -55,7 +62,7 @@
     .section-subtitle i{color:var(--gold)}
     .section-badge{background:var(--gold);color:var(--purple-deep);padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:700;margin-left:auto}
     .order-section{margin-bottom:40px}
-    .orders-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .orders-grid{display:grid;grid-template-columns:repeat(1,1fr);gap:16px;align-items:stretch}
 
     /* Pagination */
     .pagination{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:32px;padding:16px;background:rgba(255,255,255,.05);border-radius:12px}
@@ -67,22 +74,46 @@
     .pagination-number:hover{background:rgba(245,200,66,.1);border-color:var(--gold);color:var(--gold)}
     .pagination-number.active{background:var(--gold);color:var(--purple-deep);border-color:var(--gold);font-weight:700}
     
-    @media(max-width:1400px){
-      .orders-grid{grid-template-columns:repeat(3,1fr)}
-    }
-    @media(max-width:1100px){
-      .container{flex-direction:column}
-      .sidebar{width:100%;flex-direction:row;overflow-x:auto;padding-bottom:10px}
-      .sidebar-tabs{flex-direction:row;flex-wrap:nowrap}
-      .sidebar-tab{flex-shrink:0}
+    @media(max-width:1200px){
       .orders-grid{grid-template-columns:repeat(2,1fr)}
     }
+    @media(max-width:1100px){
+      .container{flex-direction:column;align-items:stretch}
+      .sidebar{width:100%;flex-direction:row;overflow-x:auto;padding-bottom:10px}
+      .sidebar-tabs{flex-direction:row;flex-wrap:nowrap;gap:8px}
+      .sidebar-tab{flex-shrink:0;white-space:nowrap}
+    }
     @media(max-width:768px){
-      .orders-grid{grid-template-columns:1fr}
+      .container{padding:12px}
+      .navbar{padding:10px 12px;flex-wrap:wrap;gap:8px}
+      .nav-links{gap:6px;flex-wrap:wrap}
+      .nav-links a{font-size:.75rem;padding:6px 10px}
+      .nav-time-info{align-items:flex-start;margin-left:auto}
+      .orders-grid{grid-template-columns:1fr;gap:12px}
+    }
+    @media(max-width:480px){
+      .nav-logo{font-size:1.1rem}
+      .nav-time{font-size:.85rem}
+      .nav-refresh-btn{padding:6px 10px;font-size:.7rem}
+      .order-card{min-height:380px;max-height:380px;padding:10px}
+      .card-body{padding:10px;gap:8px}
+      .card-footer{padding:10px}
+      .order-number{font-size:.85rem !important}
+      .order-time{font-size:.65rem !important}
+      .order-status-badge{font-size:.55rem !important;padding:3px 7px !important}
+      .order-timer{font-size:.75rem !important;padding:3px 7px !important}
+      .customer-name{font-size:.8rem !important}
+      .customer-contact{font-size:.65rem !important}
+      .item-name{font-size:.72rem !important}
+      .item-price{font-size:.72rem !important}
+      .total-amount{font-size:1rem !important}
+      .action-btn{font-size:.6rem !important;padding:7px 2px !important;gap:2px !important}
+      .action-btn i{display:none}
     }
     
     /* Order Card */
-    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;position:relative;word-break:break-word;animation:slideInLeft 0.5s ease-out}
+    .order-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;position:relative;min-width:0;min-height:600px;max-height:600px;animation:slideInLeft 0.5s ease-out;transition:min-height 0.3s ease,max-height 0.3s ease}
+    .order-card.expanded{min-height:auto;max-height:none}
     @keyframes slideInLeft{
       from{transform:translateX(-100%);opacity:0}
       to{transform:translateX(0);opacity:1}
@@ -184,13 +215,15 @@
     .fv-actions{display:flex;gap:6px}
 
     /* Order Card Header */
-    .card-header{background:rgba(0,0,0,.2);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.1)}
-    .header-left{display:flex;flex-direction:column;gap:4px}
-    .order-number{font-size:1rem;font-weight:800;color:var(--gold);font-family:'Poppins',sans-serif;letter-spacing:0.5px}
-    .order-time{font-size:.75rem;color:var(--gold);font-weight:600}
-    .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:120px}
-    .order-timer{font-size:.9rem;font-weight:700;color:var(--gold);background:rgba(245,200,66,.2);padding:4px 10px;border-radius:6px;border:1px solid rgba(245,200,66,.4);text-align:center}
-    .order-status-badge{padding:5px 10px;border-radius:18px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap}
+    .card-header{background:rgba(0,0,0,.2);padding:10px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.1);gap:8px}
+    .header-left{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+    .order-number{font-size:.9rem;font-weight:800;color:var(--gold);font-family:'Poppins',sans-serif;letter-spacing:0.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .order-time{font-size:.72rem;color:var(--gold);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;min-width:fit-content}
+    .header-print-btn{background:rgba(255,255,255,.1);color:var(--white);border:none;border-radius:6px;padding:6px 10px;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+    .header-print-btn:hover{background:rgba(255,255,255,.2);transform:scale(1.05)}
+    .order-timer{font-size:.85rem;font-weight:700;color:var(--gold);background:rgba(245,200,66,.2);padding:4px 10px;border-radius:6px;border:1px solid rgba(245,200,66,.4);text-align:center;white-space:nowrap}
+    .order-status-badge{padding:4px 8px;border-radius:18px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap}
     .order-status-badge.confirmed{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
     .order-status-badge.preparing{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
     .order-status-badge.ready{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
@@ -198,56 +231,66 @@
     .order-status-badge.rejected{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
 
     /* Order Card Body */
-    .card-body{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px}
+    .card-body{flex:1;padding:12px;display:flex;flex-direction:column;gap:10px;min-height:0;overflow:hidden}
 
     /* Customer Info */
-    .customer-info{background:rgba(255,255,255,.03);border-radius:10px;padding:10px}
-    .customer-name{font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:4px}
-    .customer-contact{font-size:.75rem;color:rgba(255,255,255,.5);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+    .customer-info{background:rgba(255,255,255,.03);border-radius:10px;padding:10px;min-width:0}
+    .customer-name{font-size:.85rem;font-weight:600;color:var(--white);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .customer-contact{font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:2px;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .customer-contact i{color:var(--gold);width:12px}
+    .customer-print-btn{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border:none;border-radius:6px;padding:6px 12px;margin-top:8px;font-size:.7rem;font-weight:600;cursor:pointer;transition:.3s;display:flex;align-items:center;gap:4px;width:fit-content}
+    .customer-print-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(245,200,66,.3)}
     
     /* Preorder Badge */
-    .preorder-badge{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;padding:4px 10px;border-radius:6px;font-size:.7rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;margin-bottom:8px}
-    .preorder-badge i{font-size:.8rem}
-    .preorder-time{font-size:.75rem;color:#3b82f6;font-weight:600;margin-top:2px}
+    .preorder-badge{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;padding:3px 8px;border-radius:6px;font-size:.65rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;margin-bottom:6px;white-space:nowrap}
+    .preorder-badge i{font-size:.7rem}
+    .preorder-time{font-size:.7rem;color:#3b82f6;font-weight:600;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     
     /* Order Items */
-    .order-items{flex:1;background:rgba(255,255,255,.02);border-radius:10px;padding:10px}
-    .order-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+    .order-items{flex:1;background:rgba(255,255,255,.02);border-radius:10px;padding:10px;min-height:0}
+    .order-item{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)}
     .order-item:last-child{border-bottom:none}
-    .item-qty{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0}
-    .item-name{flex:1;font-size:.8rem;color:var(--white);font-weight:500}
-    .item-price{font-size:.8rem;color:var(--gold);font-weight:600}
+    .item-qty{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.7rem;flex-shrink:0}
+    .item-name{flex:1;font-size:.76rem;color:var(--white);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+    .item-price{font-size:.76rem;color:var(--gold);font-weight:600;white-space:nowrap;flex-shrink:0}
 
     /* Card Footer */
-    .card-footer{background:rgba(0,0,0,.3);padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:12px}
+    .card-footer{background:rgba(0,0,0,.3);padding:12px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:10px;margin-top:auto}
     .order-total{display:flex;justify-content:space-between;align-items:center}
-    .total-label{font-size:.85rem;color:rgba(255,255,255,.7);font-weight:500}
-    .total-amount{font-size:1.3rem;color:var(--gold);font-weight:800;font-family:'Poppins',sans-serif}
-    .order-actions{display:flex;gap:6px}
-    .action-btn{flex:1;padding:8px;border-radius:8px;font-size:.7rem;font-weight:600;cursor:pointer;transition:.3s;border:none;display:flex;align-items:center;justify-content:center;gap:4px;font-family:'Poppins',sans-serif}
+    .total-label{font-size:.8rem;color:rgba(255,255,255,.7);font-weight:500}
+    .total-amount{font-size:1.15rem;color:var(--gold);font-weight:800;font-family:'Poppins',sans-serif;white-space:nowrap}
+    .order-actions{display:flex;gap:6px;align-items:center}
+    .action-btn{flex:1;min-width:0;padding:8px 4px;border-radius:8px;font-size:.68rem;font-weight:600;cursor:pointer;transition:.3s;border:none;display:flex;align-items:center;justify-content:center;gap:4px;font-family:'Poppins',sans-serif;white-space:nowrap}
     
     /* View More */
-    .view-more{color:var(--gold);font-size:.85rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;margin-top:8px;transition:.3s}
+    .view-more{color:var(--gold);font-size:.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;margin-top:8px;transition:.3s;white-space:nowrap}
     .view-more:hover{color:var(--gold-dark)}
     .view-more i{transition:.3s}
     .view-more.expanded i{transform:rotate(180deg)}
     
     /* Order Notes */
-    .order-notes{background:rgba(255,255,255,.05);border-radius:8px;padding:12px;margin-top:12px;display:none}
+    .order-notes{background:rgba(255,255,255,.05);border-radius:8px;padding:10px;margin-top:10px;display:none;max-height:100px;overflow-y:auto}
     .order-notes.show{display:block}
-    .note-item{font-size:.8rem;color:rgba(255,255,255,.7);margin-bottom:4px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.05)}
+    .note-item{font-size:.72rem;color:rgba(255,255,255,.7);margin-bottom:4px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.05);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .note-item:last-child{border-bottom:none}
     .note-item strong{color:var(--gold)}
     
+    /* Order Price Section */
+    .order-price-section{background:rgba(255,255,255,.05);border-radius:10px;padding:16px;margin-top:12px;border:1px solid rgba(255,255,255,.1)}
+    .price-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.85rem;color:var(--white)}
+    .price-row.discount{color:#22c55e}
+    .price-row.total{border-top:2px solid rgba(255,255,255,.2);padding-top:10px;margin-top:6px;font-size:1rem;font-weight:700;color:var(--gold)}
+    .price-label{font-weight:500}
+    .price-value{font-weight:600}
+    
     /* Order Total */
-    .order-total{display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);font-weight:600;color:var(--white)}
-    .total-label{font-size:.9rem}
-    .total-amount{font-size:1.1rem;color:var(--gold)}
+    .order-total{display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(255,255,255,.1);font-weight:600;color:var(--white)}
+    .total-label{font-size:.8rem}
+    .total-amount{font-size:1.1rem;color:var(--gold);white-space:nowrap}
     
     /* Order Actions */
-    .order-actions{display:flex;gap:6px;margin-top:12px}
-    .action-btn{flex:1;padding:10px;border-radius:8px;font-size:.75rem;font-weight:600;cursor:pointer;transition:.3s;border:none;display:flex;align-items:center;justify-content:center;gap:4px;font-family:'Poppins',sans-serif}
+    .order-actions{display:flex;gap:6px;margin-top:0}
+    .action-btn{flex:1;min-width:0;padding:8px 4px;border-radius:8px;font-size:.68rem;font-weight:600;cursor:pointer;transition:.3s;border:none;display:flex;align-items:center;justify-content:center;gap:4px;font-family:'Poppins',sans-serif;white-space:nowrap}
     .btn-accept{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
     .btn-accept:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(34,197,94,.3)}
     .btn-ready{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
@@ -256,6 +299,8 @@
     .btn-complete:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(245,158,11,.3)}
     .btn-cancel{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
     .btn-cancel:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(239,68,68,.3)}
+    .btn-print{background:rgba(255,255,255,.1);color:var(--white);max-width:50px;flex:0 0 auto}
+    .btn-print:hover{background:rgba(255,255,255,.2)}
     .btn-view{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
     .btn-view:hover{background:rgba(255,255,255,.15);border-color:var(--gold)}
     
@@ -332,6 +377,12 @@
       <div class="nav-time" id="finlandTime"></div>
     </div>
   </nav>
+  
+  <!-- Network Status -->
+  <div class="network-status connected" id="networkStatus">
+    <i class="fas fa-wifi network-icon" id="networkIcon"></i>
+    <span class="network-text" id="networkText">Connected</span>
+  </div>
   
   <!-- Container -->
   <div class="container">
@@ -528,7 +579,6 @@
     
     // Listen for orders
     document.addEventListener('DOMContentLoaded',()=>{
-      loadOrders();
       ordersRef=db.ref('orders').on('value',(snapshot)=>{
         const data=snapshot.val();
         if(data){
@@ -538,11 +588,12 @@
               processedOrders.add(id);
               startNotificationSound();
             }
-            // Track timer start when order is accepted (confirmed or preparing)
-            if((order.status==='confirmed'||order.status==='preparing')&&!orderFirstSeen[id]){
-              orderFirstSeen[id]=Date.now();
-            }else if(order.status!=='confirmed'&&order.status!=='preparing'&&orderFirstSeen[id]){
-              // Clear timer if order is no longer in confirmed/preparing status
+            // Track timer start when order is accepted (confirmed/preparing/ready)
+            // Keep timer running until completed (delivered) or rejected
+            if((order.status==='confirmed'||order.status==='preparing'||order.status==='ready')&&!orderFirstSeen[id]){
+              orderFirstSeen[id]=order.acceptedAt||order.estimatedSetAt||Date.now();
+            }else if((order.status==='delivered'||order.status==='rejected')&&orderFirstSeen[id]){
+              // Keep timer visible at final time when completed; do not delete so it keeps showing
               delete orderFirstSeen[id];
             }
           });
@@ -552,7 +603,7 @@
           updateBadges({});
         }
       });
-      
+
       // Check for date change every minute
       setInterval(checkDateChange,60000);
     });
@@ -569,7 +620,7 @@
       };
 
       Object.entries(data).forEach(([id,order])=>{
-        const orderDate=new Date(order.timestamp||Date.now());
+        const orderDate=new Date(order.timestamp||order.createdAt||Date.now());
         let includeOrder=false;
 
         if(fromDate&&toDate){
@@ -588,6 +639,8 @@
           }
         }
       });
+
+      console.log('OrdersByStatus after filtering:', Object.entries(ordersByStatus).map(([k,v])=>`${k}:${v.length}`).join(', '));
 
       Object.keys(ordersByStatus).forEach(status=>{
         ordersByStatus[status].sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
@@ -614,9 +667,11 @@
       const today=new Date().toDateString();
       if(today!==currentDate){
         currentDate=today;
-        if(selectedDate.toDateString()===today){
-          loadOrders();
-        }
+        fromDate=null;
+        toDate=null;
+        selectedDate=new Date();
+        loadOrders();
+        showToast('Date updated - showing today\'s orders');
       }
     }
 
@@ -712,18 +767,23 @@
     // Start repeating notification sound
     function startNotificationSound(){
       stopNotificationSound();
+      playNotificationSound();
       notificationInterval=setInterval(()=>{
-        const audio=new Audio('https://www.epidemicsound.com/sound-effects/tracks/b430bc2e-3a02-4632-b994-eddec63fd62d/');
-        audio.volume=1.0;
-        audio.play().catch(()=>{});
+        playNotificationSound();
       },3000);
     }
 
 // Play single notification sound
     function playNotificationSound(){
-      const audio=new Audio('https://www.epidemicsound.com/sound-effects/tracks/b430bc2e-3a02-4632-b994-eddec63fd62d/');
-      audio.volume=1.0;
-      audio.play().catch(()=>{});
+      try{
+        const audio=new Audio('https://www.epidemicsound.com/sound-effects/tracks/b430bc2e-3a02-4632-b994-eddec63fd62d/');
+        audio.volume=1.0;
+        audio.play().catch((error)=>{
+          console.log('Audio play failed:', error);
+        });
+      }catch(error){
+        console.log('Audio error:', error);
+      }
     }
     
     // Stop notification sound
@@ -798,22 +858,32 @@
       });
     }
     
-    // Update badges
+    // Update badges with Firebase query
     function updateBadges(ordersByStatus){
+      // Use the filtered ordersByStatus for badges (today's orders only)
       const activeCount=(ordersByStatus.pending?.length||0)+(ordersByStatus.confirmed?.length||0)+(ordersByStatus.preparing?.length||0)+(ordersByStatus.ready?.length||0);
-      document.getElementById('activeBadge').textContent=activeCount;
-      document.getElementById('deliveredBadge').textContent=ordersByStatus.delivered?.length||0;
-      document.getElementById('rejectedBadge').textContent=ordersByStatus.rejected?.length||0;
+      const activeBadge=document.getElementById('activeBadge');
+      if(activeBadge) activeBadge.textContent=activeCount;
+      
+      const deliveredBadge=document.getElementById('deliveredBadge');
+      if(deliveredBadge) deliveredBadge.textContent=ordersByStatus.delivered?.length||0;
+      
+      const rejectedBadge=document.getElementById('rejectedBadge');
+      if(rejectedBadge) rejectedBadge.textContent=ordersByStatus.rejected?.length||0;
 
       // Update navbar notification badge for new orders
       const newOrdersCount=ordersByStatus.pending?.length||0;
       const navBadge=document.getElementById('navNewOrdersBadge');
-      if(newOrdersCount>0){
-        navBadge.textContent=newOrdersCount;
-        navBadge.style.display='flex';
-      }else{
-        navBadge.style.display='none';
+      if(navBadge){
+        if(newOrdersCount>0){
+          navBadge.textContent=newOrdersCount;
+          navBadge.style.display='flex';
+        }else{
+          navBadge.style.display='none';
+        }
       }
+      
+      console.log('Badge counts - Active:',activeCount,'Delivered:',ordersByStatus.delivered?.length||0,'Rejected:',ordersByStatus.rejected?.length||0);
     }
 
     // Render orders
@@ -883,7 +953,7 @@
         const firstSeen=parseInt(card.dataset.firstSeen);
         const status=card.dataset.status;
         const timerElement=card.querySelector('.order-timer');
-        if(timerElement&&firstSeen&&(status==='confirmed'||status==='preparing')){
+        if(timerElement&&firstSeen&&(status==='confirmed'||status==='preparing'||status==='ready')){
           const now=Date.now();
           const elapsed=now-firstSeen;
           const minutes=Math.floor(elapsed/60000);
@@ -912,6 +982,29 @@
     setInterval(updateFinlandTime,1000);
     updateFinlandTime();
     
+    // Network status monitoring
+    function updateNetworkStatus(){
+      const networkStatus=document.getElementById('networkStatus');
+      const networkIcon=document.getElementById('networkIcon');
+      const networkText=document.getElementById('networkText');
+      
+      if(navigator.onLine){
+        networkStatus.classList.remove('disconnected');
+        networkStatus.classList.add('connected');
+        networkIcon.className='fas fa-wifi network-icon';
+        networkText.textContent='Connected';
+      }else{
+        networkStatus.classList.remove('connected');
+        networkStatus.classList.add('disconnected');
+        networkIcon.className='fas fa-wifi-slash network-icon';
+        networkText.textContent='Disconnected';
+      }
+    }
+    
+    window.addEventListener('online',updateNetworkStatus);
+    window.addEventListener('offline',updateNetworkStatus);
+    updateNetworkStatus();
+    
     // Create order card
     function createOrderCard(order){
       console.log('Creating card for order:', order);
@@ -920,20 +1013,20 @@
         return '';
       }
 
-      const itemsToShow=order.items.slice(0,2);
-      const hasMoreItems=order.items.length>2;
+      const itemsToShow=order.items.slice(0,5);
+      const hasMoreItems=order.items.length>5;
       const isPreorder=order.preorder;
       const numericId=order.id.replace(/\D/g,'')||'1';
       const orderId='ORD'+numericId.padStart(4,'0');
-      const orderDate=new Date(order.timestamp||Date.now());
-      const firstSeenTimestamp=orderFirstSeen[order.id]||null;
+      const orderDate=new Date(order.createdAt||order.timestamp||Date.now());
+      const firstSeenTimestamp=orderFirstSeen[order.id]||order.acceptedAt||order.estimatedSetAt||null;
 
       return `
         <div class="order-card ${order.status==='pending'?'new-order':''} ${isPreorder?'preorder':''}" id="card_${order.id}" data-first-seen="${firstSeenTimestamp}" data-status="${order.status}">
           <div class="card-header">
             <div class="header-left">
               <span class="order-number">#${orderId}</span>
-              <span class="order-time">${orderDate.toLocaleDateString()} ${orderDate.toLocaleTimeString()}</span>
+              <span class="order-time">${orderDate.toLocaleDateString()} ${orderDate.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
             </div>
             <div class="header-right">
               <span class="order-status-badge ${order.status}">${order.status.charAt(0).toUpperCase()+order.status.slice(1)}</span>
@@ -953,6 +1046,11 @@
               <p class="customer-name">${order.customer.name}</p>
               <p class="customer-contact"><i class="fas fa-phone"></i> ${order.customer.phone}</p>
               <p class="customer-contact"><i class="fas fa-envelope"></i> ${order.customer.email}</p>
+              ${order.couponCode?`<p class="customer-contact" style="color:var(--gold)"><i class="fas fa-tag"></i> Coupon: ${order.couponCode}</p>`:''}
+              ${order.discount?`<p class="customer-contact" style="color:#22c55e"><i class="fas fa-percent"></i> Discount: €${order.discount.toFixed(2)}</p>`:''}
+              <button class="customer-print-btn" onclick="printOrder('${order.id}')">
+                <i class="fas fa-print"></i> Print Receipt
+              </button>
             </div>
             
             <div class="order-items" id="items_${order.id}">
@@ -967,7 +1065,7 @@
             
             ${hasMoreItems?`
               <div class="view-more" onclick="toggleViewMore('${order.id}',${order.items.length})">
-                <span id="viewMoreText_${order.id}">View ${order.items.length-2} more items</span>
+                <span id="viewMoreText_${order.id}">View ${order.items.length-5} more items</span>
                 <i class="fas fa-chevron-down" id="viewMoreIcon_${order.id}"></i>
               </div>
             `:''}
@@ -977,13 +1075,26 @@
                 ${item.note?`<div class="note-item"><strong>${item.name}:</strong> ${item.note}</div>`:''}
               `).join('')}
             </div>
+            
+            <div class="order-price-section">
+              <div class="price-row">
+                <span class="price-label">Subtotal</span>
+                <span class="price-value">€${order.subtotal?order.subtotal.toFixed(2):order.total.toFixed(2)}</span>
+              </div>
+              ${order.discount?`
+              <div class="price-row discount">
+                <span class="price-label">Discount</span>
+                <span class="price-value">-€${order.discount.toFixed(2)}</span>
+              </div>
+              `:''}
+              <div class="price-row total">
+                <span class="price-label">Total</span>
+                <span class="price-value">€${order.total.toFixed(2)}</span>
+              </div>
+            </div>
           </div>
           
           <div class="card-footer">
-            <div class="order-total">
-              <span class="total-label">Total</span>
-              <span class="total-amount">€${order.total.toFixed(2)}</span>
-            </div>
             <div class="order-actions">
               ${order.status==='pending'?`
                 <button class="action-btn btn-accept" onclick="${isPreorder?`acceptOrderDirect('${order.id}')`:`openTimeModal('${order.id}')`}">
@@ -1012,25 +1123,18 @@
       `;
     }
     
-    // Toggle view more
+    // Toggle view more with card expansion
     function toggleViewMore(orderId,totalItems){
       const itemsDiv=document.getElementById(`items_${orderId}`);
       const notesDiv=document.getElementById(`notes_${orderId}`);
       const viewMoreText=document.getElementById(`viewMoreText_${orderId}`);
       const viewMoreIcon=document.getElementById(`viewMoreIcon_${orderId}`);
       const card=document.getElementById(`card_${orderId}`);
-      const cardBody=card.querySelector('.card-body');
 
-      if(card.classList.contains('collapsed')){
-        card.classList.remove('collapsed');
-        cardBody.style.display='flex';
-        viewMoreText.textContent=`View ${totalItems-2} more items`;
-        viewMoreIcon.classList.remove('expanded');
-        card.classList.remove('expanded');
-      }else if(itemsDiv.classList.contains('expanded')){
-        card.classList.add('collapsed');
-        cardBody.style.display='none';
-        viewMoreText.textContent='View details';
+      if(itemsDiv.classList.contains('expanded')){
+        itemsDiv.classList.remove('expanded');
+        notesDiv.classList.remove('show');
+        viewMoreText.textContent=`View ${totalItems-5} more items`;
         viewMoreIcon.classList.remove('expanded');
         card.classList.remove('expanded');
       }else{
@@ -1079,7 +1183,7 @@
     function acceptNewOrder(){
       const modal=document.getElementById('newOrderModal');
       modal.classList.remove('show');
-      stopNotificationSound();
+      // Don't stop sound yet - it will stop when order is actually accepted
 
       db.ref(`orders/${currentNewOrderId}`).once('value').then((snapshot)=>{
         const order=snapshot.val();
@@ -1094,6 +1198,11 @@
     // Accept order directly (for preorders)
     function acceptOrderDirect(orderId){
       updateOrderStatus(orderId,'confirmed');
+    }
+    
+    // Print order receipt
+    function printOrder(orderId){
+      window.open(`receipt.html?orderId=${orderId}`,'_blank');
     }
     
     // Open time modal
@@ -1138,9 +1247,11 @@
       
       db.ref(`orders/${currentNewOrderId}`).update({
         status:'confirmed',
+        acceptedAt:Date.now(),
         estimatedTime:selectedTime,
         estimatedSetAt:Date.now()
       }).then(()=>{
+        stopNotificationSound();
         closeTimeModal();
         showToast(`Order accepted! Estimated time: ${selectedTime} minutes`);
         loadOrders();
@@ -1152,8 +1263,17 @@
     
     // Update order status
     function updateOrderStatus(orderId,status){
-      db.ref(`orders/${orderId}`).update({status}).then(()=>{
+      const updateData={status};
+      if(status==='confirmed'){
+        updateData.acceptedAt=Date.now();
+      }
+      db.ref(`orders/${orderId}`).update(updateData).then(()=>{
         showToast(`Order status updated to ${status}`);
+        
+        // Stop notification sound when order is accepted
+        if(status==='confirmed'||status==='preparing'){
+          stopNotificationSound();
+        }
 
         // Send customer confirmation email when order is confirmed
         if(status==='confirmed'||status==='preparing'){
