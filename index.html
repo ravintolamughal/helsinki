@@ -102,9 +102,9 @@ img{display:block;width:100%;object-fit:cover}
 .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease-in-out;background-size:cover;background-position:center;background-repeat:no-repeat;transform:scale(1);z-index:1}
 .hero-slide.active{opacity:1;z-index:2;animation:slideZoomIn 10s ease-in-out forwards}
 @keyframes slideZoomIn{0%{transform:scale(1)}100%{transform:scale(1.12)}}
-.hero-slide:nth-child(1){background-image:url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1800&q=85')}
-.hero-slide:nth-child(2){background-image:url('https://images.unsplash.com/photo-1567337710282-00832b415979?w=1800&q=85')}
-.hero-slide:nth-child(3){background-image:url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1800&q=85')}
+.hero-slide:nth-child(1){background-image:url('https://ravintolamughal.fi/ACDD87CA-28C8-45C6-8974-C0C62D50CD5A.png')}
+.hero-slide:nth-child(2){background-image:url('https://ravintolamughal.fi/DBC3A501-D178-42D8-8013-4D166ADE59C6.png')}
+.hero-slide:nth-child(3){background-image:url('https://ravintolamughal.fi/E82B7FBA-A277-4D26-B869-2409CC5C3009.png')}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.4) 100%);z-index:1}
 .hero-content{position:relative;z-index:2;text-align:center;padding:0 20px;max-width:900px;animation:heroIn 1s ease both}
 @keyframes heroIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
@@ -134,32 +134,43 @@ img{display:block;width:100%;object-fit:cover}
 .ticker-coupon i{color:var(--gold);flex-shrink:0}
 @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-/* ── LUNCH BUFFET ── */
-.buffet{background:linear-gradient(135deg,#1a0040 0%,#36007d 45%,#4c00b0 100%);padding:88px 0;position:relative;overflow:hidden;}
-.buffet::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f5c842' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
-.buffet-glow{position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,.13) 0%,transparent 70%);top:-120px;right:-120px;pointer-events:none;}
-.buffet-glow2{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,.09) 0%,transparent 70%);bottom:-100px;left:-80px;pointer-events:none;}
-.buffet-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:64px;align-items:center;}
-.buffet-lbl{display:inline-flex;align-items:center;gap:8px;background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.35);border-radius:50px;padding:6px 18px;font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
-.buffet-h{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.4rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:16px;}
-.buffet-h em{color:var(--gold);font-style:normal;}
-.buffet-desc{font-size:.97rem;color:rgba(255,255,255,.72);line-height:1.85;max-width:530px;margin-bottom:28px;}
-.buffet-meta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;}
-.buffet-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:50px;padding:9px 20px;font-size:.84rem;font-weight:600;color:#fff;backdrop-filter:blur(6px);}
-.buffet-chip i{color:var(--gold);}
-.buffet-dishes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;}
-.buffet-dish{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:5px 14px;font-size:.8rem;color:rgba(255,255,255,.72);font-weight:500;}
-.buffet-cta{display:flex;gap:12px;flex-wrap:wrap;}
-.buffet-price-card{background:rgba(255,255,255,.06);border:2px solid rgba(245,200,66,.28);border-radius:28px;padding:48px 44px;text-align:center;backdrop-filter:blur(14px);flex-shrink:0;min-width:248px;box-shadow:0 0 60px rgba(245,200,66,.1);}
-.buffet-price-label{font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,.75);margin-bottom:12px;}
-.buffet-price-amt{font-family:'Playfair Display',serif;font-size:4.4rem;font-weight:900;color:var(--gold);line-height:1;}
-.buffet-price-amt sup{font-size:1.6rem;vertical-align:super;font-weight:700;}
-.buffet-price-amt small{font-size:2.2rem;}
-.buffet-price-sub{font-size:.8rem;color:rgba(255,255,255,.4);margin-top:8px;margin-bottom:24px;}
-.buffet-price-badge{background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);border-radius:14px;padding:14px 18px;font-size:.82rem;color:rgba(255,255,255,.72);line-height:1.7;}
-.buffet-price-badge strong{display:block;color:var(--gold);font-size:.88rem;margin-bottom:2px;}
-@media(max-width:900px){.buffet-inner{grid-template-columns:1fr;gap:44px;}.buffet-price-card{min-width:unset;width:100%;max-width:360px;margin:0 auto;padding:36px 28px;}}
-@media(max-width:600px){.buffet-h{font-size:1.85rem;}.buffet-price-amt{font-size:3.2rem;}.buffet-price-amt small{font-size:1.8rem;}.buffet{padding:64px 0;}}
+/* ── WEEKEND BUFFET ── */
+.buffet{background:linear-gradient(135deg,#160035 0%,#36007d 48%,#4c00b0 100%);padding:96px 0;position:relative;overflow:hidden}
+.buffet::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f5c842' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.buffet-glow{position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,.13) 0%,transparent 70%);top:-120px;right:-120px;pointer-events:none}
+.buffet-glow2{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,.09) 0%,transparent 70%);bottom:-100px;left:-80px;pointer-events:none}
+.buffet-layout{position:relative;z-index:1;display:grid;grid-template-columns:1.04fr .96fr;gap:56px;align-items:center}
+.buffet-media{position:relative}
+.buffet-photo{position:relative;border-radius:28px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 80px rgba(0,0,0,.35);aspect-ratio:4/3;background:#12002e}
+.buffet-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.buffet-photo-tag{position:absolute;left:18px;bottom:18px;display:inline-flex;align-items:center;gap:8px;background:rgba(10,0,30,.78);border:1px solid rgba(245,200,66,.35);border-radius:50px;padding:8px 16px;font-size:.78rem;font-weight:700;color:var(--gold);backdrop-filter:blur(8px)}
+.buffet-photo-tag i{color:var(--gold)}
+.buffet-content{max-width:640px}
+.buffet-lbl{display:inline-flex;align-items:center;gap:8px;background:rgba(245,200,66,.15);border:1px solid rgba(245,200,66,.35);border-radius:50px;padding:6px 18px;font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.buffet-h{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.4rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:16px}
+.buffet-h em{color:var(--gold);font-style:normal}
+.buffet-desc{font-size:.97rem;color:rgba(255,255,255,.72);line-height:1.85;max-width:560px;margin-bottom:26px}
+.buffet-info{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+.buffet-info-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:18px;padding:16px;backdrop-filter:blur(8px)}
+.buffet-info-card>i{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(245,200,66,.14);color:var(--gold);margin-bottom:10px;font-size:.95rem}
+.buffet-info-label{display:block;font-size:.64rem;letter-spacing:1.6px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:5px}
+.buffet-info-card strong{display:block;font-size:.85rem;color:#fff;line-height:1.5;font-weight:600}
+.buffet-menu{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:22px;backdrop-filter:blur(10px)}
+.buffet-menu-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.buffet-menu-head h3{font-family:'Playfair Display',serif;font-size:1.28rem;color:#fff;margin:0}
+.buffet-menu-head span{font-size:.7rem;color:var(--gold);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;white-space:nowrap}
+.buffet-menu-list{display:flex;flex-direction:column}
+.buffet-menu-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.buffet-menu-item:last-child{border-bottom:none}
+.buffet-item-num{width:30px;height:30px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(245,200,66,.14);color:var(--gold);font-size:.72rem;font-weight:800}
+.buffet-item-name{flex:1;min-width:0;font-size:.92rem;color:#fff;font-weight:600;line-height:1.35}
+.buffet-item-note{display:block;font-size:.72rem;color:rgba(255,255,255,.45);font-weight:400;margin-top:2px}
+.buffet-item-price{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--gold);font-weight:800;white-space:nowrap}
+.buffet-menu-foot{display:flex;align-items:flex-start;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);font-size:.76rem;color:rgba(255,255,255,.55);line-height:1.6}
+.buffet-menu-foot i{color:var(--gold);margin-top:2px}
+.buffet-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+@media(max-width:980px){.buffet-layout{grid-template-columns:1fr;gap:42px}.buffet-media{max-width:700px;width:100%;margin:0 auto}}
+@media(max-width:640px){.buffet{padding:68px 0}.buffet-h{font-size:1.85rem}.buffet-info{grid-template-columns:1fr}.buffet-menu{padding:18px}.buffet-menu-item{align-items:flex-start}.buffet-item-num{margin-top:2px}.buffet-item-price{font-size:.85rem}.buffet-photo-tag{left:12px;bottom:12px;padding:7px 13px;font-size:.72rem}}
 
 /* ── ABOUT ── */
 .about{background:var(--cream);padding:80px 0}
@@ -228,6 +239,17 @@ img{display:block;width:100%;object-fit:cover}
 .lightbox.open{display:flex}
 .lightbox img{max-width:90vw;max-height:88vh;border-radius:14px;object-fit:contain;animation:lbIn .3s ease}
 @keyframes lbIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.pdf-modal{display:none;position:fixed;inset:0;z-index:10001;background:rgba(10,0,30,.92);flex-direction:column}
+.pdf-modal.open{display:flex}
+.pdf-modal-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--purple-deep);color:#fff}
+.pdf-modal-bar h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);margin:0}
+.pdf-modal-actions{display:flex;align-items:center;gap:10px}
+.pdf-modal-actions a{color:#fff;font-size:.82rem;opacity:.85}
+.pdf-modal-actions a:hover{opacity:1}
+.pdf-modal-close{width:42px;height:42px;border-radius:50%;border:none;background:var(--gold);color:var(--purple-deep);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pdf-modal-close:hover{filter:brightness(1.1)}
+.pdf-modal-body{position:relative;flex:1;width:100%;min-height:0;overflow:hidden;-webkit-overflow-scrolling:touch;background:#525659}
+.pdf-modal-body iframe{position:absolute;inset:0;display:block;width:100%;height:100%;border:0}
 .lb-close{position:absolute;top:20px;right:24px;color:#fff;font-size:1.8rem;cursor:pointer;background:rgba(255,255,255,.1);width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--t);border:none}
 .lb-close:hover{background:var(--gold);color:var(--purple-deep)}
 
@@ -522,6 +544,9 @@ img{display:block;width:100%;object-fit:cover}
   .nl-inner{flex-direction:column;text-align:center}
   .nl-form{max-width:100%;width:100%}
   .map-wrap{height:260px}
+  .pdf-modal-bar{padding:8px 12px;flex-wrap:wrap;gap:8px}
+  .pdf-modal-actions a{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.12)}
+  .pdf-modal-actions a span{display:none}
   .auth-modal-box{padding:24px 16px}
   .res-confirm-box  {padding:30px 18px}
   .contact-top-grid{grid-template-columns:1fr;gap:24px}
@@ -601,9 +626,8 @@ img{display:block;width:100%;object-fit:cover}
   </a>
   <ul class="nav-links">
     <li><a href="#home" class="nav-btn" onclick="scrollToSection(event,'#home')" data-en="Home" data-fi="Etusivu">Home</a></li>
-    <li><a href="#menu" onclick="closeDrawer();scrollToSection(event,'#menu')" data-en="View Menu" data-fi="Ruokalista">View Menu</a></li>
+    <li><a href="https://ravintolamughal.fi/menu.pdf" onclick="openMenuPdf(event)" data-en="View Menu" data-fi="Ruokalista">View Menu</a></li>
     <li><a href="#about" onclick="scrollToSection(event,'#about')" data-en="About" data-fi="Tietoa">About</a></li>
-    <li><a href="#menu" onclick="scrollToSection(event,'#menu')" data-en="Menu" data-fi="Ruokalista">Menu</a></li>
     <li><a href="#gallery" onclick="scrollToSection(event,'#gallery')" data-en="Gallery" data-fi="Galleria">Gallery</a></li>
     <li><a href="#contact" class="nav-btn" onclick="scrollToSection(event,'#contact')" data-en="Contact Us" data-fi="Yhteystiedot">Contact Us</a></li>
   </ul>
@@ -630,11 +654,9 @@ img{display:block;width:100%;object-fit:cover}
   </div>
   <div class="drawer-nav">
     <a href="#home" onclick="scrollToSection(event,'#home')"><i class="fas fa-home"></i><span data-en="Home" data-fi="Etusivu">Home</span></a>
-    <a href="#menu" onclick="closeDrawer();scrollToSection(event,'#menu')"><i class="fas fa-book-open"></i><span data-en="View Menu" data-fi="Ruokalista">View Menu</span></a>
+    <a href="https://ravintolamughal.fi/menu.pdf" onclick="closeDrawer();openMenuPdf(event)"><i class="fas fa-book-open"></i><span data-en="View Menu" data-fi="Ruokalista">View Menu</span></a>
     <a href="#about" onclick="scrollToSection(event,'#about')"><i class="fas fa-info-circle"></i><span data-en="About" data-fi="Tietoa">About</span></a>
-    <a href="#menu" onclick="scrollToSection(event,'#menu')"><i class="fas fa-utensils"></i><span data-en="Menu" data-fi="Ruokalista">Menu</span></a>
     <a href="#gallery" onclick="scrollToSection(event,'#gallery')"><i class="fas fa-images"></i><span data-en="Gallery" data-fi="Galleria">Gallery</span></a>
-    <a href="#reservation" onclick="scrollToSection(event,'#reservation')"><i class="fas fa-calendar-alt"></i><span data-en="Reservations" data-fi="Varaukset">Reservations</span></a>
     <a href="#contact" onclick="scrollToSection(event,'#contact')"><i class="fas fa-map-marker-alt"></i><span data-en="Contact" data-fi="Yhteystiedot">Contact</span></a>
   </div>
   <div class="drawer-bottom">
@@ -652,7 +674,6 @@ img{display:block;width:100%;object-fit:cover}
     </div>
     <div class="drawer-cta-btns">
       <a href="food-ordering.html" class="btn btn-gold" onclick="closeDrawer()"><i class="fas fa-motorcycle"></i> <span data-en="Order Now" data-fi="Tilaa nyt">Order Now</span></a>
-      <a href="#reservation" class="btn btn-outline-white" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-calendar-alt"></i> <span data-en="Table Reservation" data-fi="Pöytävaraus">Table Reservation</span></a>
     </div>
   </div>
 </div>
@@ -673,7 +694,7 @@ img{display:block;width:100%;object-fit:cover}
     <p class="hero-sub" data-en="Experience the grandeur of Mughal-era cooking — hand-crafted with centuries-old recipes, premium spices &amp; passionate artistry in Helsinki." data-fi="Koe Mughal-aikakauden ruoanlaiton loisto — käsityönä valmistettu satoja vuosia vanhoilla resepteillä Helsingissä.">Experience the grandeur of Mughal-era cooking — hand-crafted with centuries-old recipes, premium spices &amp; passionate artistry in Helsinki.</p>
     <div class="hero-btns">
       <a href="food-ordering.html" class="btn btn-gold"><i class="fas fa-motorcycle"></i> <span data-en="Order Now" data-fi="Tilaa nyt">Order Now</span></a>
-      <a href="#reservation" class="btn btn-outline-white" onclick="event.preventDefault();showToast('🚧 Coming Soon! Restaurant opening date will be announced.',true)"><i class="fas fa-calendar-alt"></i> <span data-en="Table Reservation" data-fi="Pöytävaraus">Table Reservation</span></a>
+      <a href="https://ravintolamughal.fi/menu.pdf" class="btn btn-outline-white" onclick="openMenuPdf(event)"><i class="fas fa-book-open"></i> <span data-en="View Full Menu" data-fi="Näytä koko ruokalista">View Full Menu</span></a>
     </div>
   </div>
   <button class="hero-arrow right" onclick="changeSlide(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
@@ -681,6 +702,83 @@ img{display:block;width:100%;object-fit:cover}
     <button class="hero-dot active" onclick="goToSlide(0)"></button>
     <button class="hero-dot" onclick="goToSlide(1)"></button>
     <button class="hero-dot" onclick="goToSlide(2)"></button>
+  </div>
+</section>
+
+<!-- ═══════════════════ WEEKEND BUFFET ═══════════════════ -->
+<section class="buffet" id="buffet">
+  <div class="buffet-glow"></div>
+  <div class="buffet-glow2"></div>
+  <div class="container buffet-layout">
+    <div class="buffet-media reveal left">
+      <div class="buffet-photo">
+        <img src="https://ravintolamughal.fi/WhatsApp%20Image%202026-11-17%20at%2001.17.08.jpeg" alt="Weekend buffet" loading="lazy"/>
+        <div class="buffet-photo-tag"><i class="fas fa-utensils"></i> <span data-en="Weekend Buffet" data-fi="Viikonlopun buffet">Weekend Buffet</span></div>
+      </div>
+    </div>
+    <div class="buffet-content reveal right">
+      <span class="buffet-lbl"><i class="fas fa-star"></i> <span data-en="Weekend Special" data-fi="Viikonlopun erikoisuus">Weekend Special</span></span>
+      <h2 class="buffet-h"><span data-en="Royal " data-fi="Kuninkaallinen ">Royal </span><em data-en="Buffet" data-fi="buffet">Buffet</em><span data-en=" Experience" data-fi="-kokemus"> Experience</span></h2>
+      <p class="buffet-desc" data-en="Enjoy a royal weekend buffet filled with handcrafted Mughal favourites, served Saturdays and Sundays from 11:00 to 17:00." data-fi="Nauti kuninkaallisesta viikonlopun buffetista, jossa on käsintehtyjä Mughal-lempiruokia. Tarjolla lauantaisin ja sunnuntaisin klo 11–17.">Enjoy a royal weekend buffet filled with handcrafted Mughal favourites, served Saturdays and Sundays from 11:00 to 17:00.</p>
+      <div class="buffet-info">
+        <div class="buffet-info-card">
+          <i class="fas fa-calendar-week"></i>
+          <span class="buffet-info-label" data-en="Timings" data-fi="Ajat">Timings</span>
+          <strong><span data-en="Saturday &amp; Sunday" data-fi="Lauantai ja sunnuntai">Saturday &amp; Sunday</span><br/>11:00 – 17:00</strong>
+        </div>
+        <div class="buffet-info-card">
+          <i class="fas fa-tag"></i>
+          <span class="buffet-info-label" data-en="Price" data-fi="Hinta">Price</span>
+          <strong><span data-en="€11.90 per person" data-fi="11,90 € per hlö">€11.90 per person</span></strong>
+        </div>
+        <div class="buffet-info-card">
+          <i class="fas fa-map-marker-alt"></i>
+          <span class="buffet-info-label" data-en="Address" data-fi="Osoite">Address</span>
+          <strong><span data-en="Aallonhalkoja 3," data-fi="Aallonhalkoja 3,">Aallonhalkoja 3,</span><br/><span data-en="00540 Helsinki" data-fi="00540 Helsinki">00540 Helsinki</span></strong>
+        </div>
+      </div>
+      <div class="buffet-menu">
+        <div class="buffet-menu-head">
+          <h3 data-en="Menu Highlights" data-fi="Ruokalistan kohokohdat">Menu Highlights</h3>
+          <span data-en="5 dishes included" data-fi="5 ruokalajia mukana">5 dishes included</span>
+        </div>
+        <div class="buffet-menu-list">
+          <div class="buffet-menu-item">
+            <span class="buffet-item-num">01</span>
+            <span class="buffet-item-name">Chicken Tikka<span class="buffet-item-note">Tandoor grilled &amp; spiced</span></span>
+            <span class="buffet-item-price" data-en="Included" data-fi="Sisältyy">Included</span>
+          </div>
+          <div class="buffet-menu-item">
+            <span class="buffet-item-num">02</span>
+            <span class="buffet-item-name">Lamb Rogan Josh<span class="buffet-item-note">Slow-cooked Mughal curry</span></span>
+            <span class="buffet-item-price" data-en="Included" data-fi="Sisältyy">Included</span>
+          </div>
+          <div class="buffet-menu-item">
+            <span class="buffet-item-num">03</span>
+            <span class="buffet-item-name">Paneer Tikka Masala<span class="buffet-item-note">Creamy cottage-cheese curry</span></span>
+            <span class="buffet-item-price" data-en="Included" data-fi="Sisältyy">Included</span>
+          </div>
+          <div class="buffet-menu-item">
+            <span class="buffet-item-num">04</span>
+            <span class="buffet-item-name">Garlic Naan<span class="buffet-item-note">Buttered garlic bread</span></span>
+            <span class="buffet-item-price" data-en="Included" data-fi="Sisältyy">Included</span>
+          </div>
+          <div class="buffet-menu-item">
+            <span class="buffet-item-num">05</span>
+            <span class="buffet-item-name">Gulab Jamun<span class="buffet-item-note">Warm syrup dessert</span></span>
+            <span class="buffet-item-price" data-en="Included" data-fi="Sisältyy">Included</span>
+          </div>
+        </div>
+        <div class="buffet-menu-foot">
+          <i class="fas fa-info-circle"></i>
+          <span data-en="Important: buffet is served only on Saturdays &amp; Sundays, 11:00–17:00. All dishes above are included in the €11.90 per person price." data-fi="Tärkeää: buffet on vain lauantaisin ja sunnuntaisin klo 11–17. Kaikki yllä olevat ruokalajit sisältyvät 11,90 € per hlö hintaan.">Important: buffet is served only on Saturdays &amp; Sundays, 11:00–17:00. All dishes above are included in the €11.90 per person price.</span>
+        </div>
+      </div>
+      <div class="buffet-cta">
+        <a href="food-ordering.html" class="btn btn-gold"><i class="fas fa-motorcycle"></i> <span data-en="Order Now" data-fi="Tilaa nyt">Order Now</span></a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Aallonhalkoja+3,+00540+Helsinki,+Finland" target="_blank" rel="noopener" class="btn btn-outline-white"><i class="fas fa-directions"></i> <span data-en="Get Directions" data-fi="Reittiohjeet">Get Directions</span></a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -695,7 +793,6 @@ img{display:block;width:100%;object-fit:cover}
     <span class="ticker-item"><i class="fas fa-star"></i><span data-en="Rated 4.9/5 on Google" data-fi="Arvosana 4.9/5 Googlessa">Rated 4.9/5 on Google</span></span><span class="ticker-dot">✦</span>
     <span class="ticker-item"><i class="fas fa-fire"></i><span data-en="Fresh Cooked to Order" data-fi="Valmistettu tilauksesta">Fresh Cooked to Order</span></span><span class="ticker-dot">✦</span>
     <span class="ticker-item ticker-coupon"><i class="fas fa-tag"></i><span data-en="🎉 1st Order? Use code MUGHAL20 for 20% OFF!" data-fi="🎉 1. tilaus? Käytä koodia MUGHAL20 ja saat 20% alennuksen!">🎉 1st Order? Use code MUGHAL20 for 20% OFF!</span></span><span class="ticker-dot">✦</span>
-    <span class="ticker-item"><i class="fas fa-calendar-check"></i><span data-en="Easy Table Reservations" data-fi="Helppo pöytävaraus">Easy Table Reservations</span></span><span class="ticker-dot">✦</span>
     <span class="ticker-item"><i class="fas fa-leaf"></i><span data-en="Vegan &amp; Vegetarian Options" data-fi="Vegaani- ja kasvisvaihtoehtoja">Vegan &amp; Vegetarian Options</span></span><span class="ticker-dot">✦</span>
     <!-- duplicate for seamless loop -->
     <span class="ticker-item"><i class="fas fa-award"></i><span data-en="Award-Winning Cuisine" data-fi="Palkittu keittiö">Award-Winning Cuisine</span></span><span class="ticker-dot">✦</span>
@@ -706,7 +803,6 @@ img{display:block;width:100%;object-fit:cover}
     <span class="ticker-item"><i class="fas fa-star"></i><span data-en="Rated 4.9/5 on Google" data-fi="Arvosana 4.9/5 Googlessa">Rated 4.9/5 on Google</span></span><span class="ticker-dot">✦</span>
     <span class="ticker-item"><i class="fas fa-fire"></i><span data-en="Fresh Cooked to Order" data-fi="Valmistettu tilauksesta">Fresh Cooked to Order</span></span><span class="ticker-dot">✦</span>
     <span class="ticker-item ticker-coupon"><i class="fas fa-tag"></i><span data-en="🎉 1st Order? Use code MUGHAL20 for 20% OFF!" data-fi="🎉 1. tilaus? Käytä koodia MUGHAL20 ja saat 20% alennuksen!">🎉 1st Order? Use code MUGHAL20 for 20% OFF!</span></span><span class="ticker-dot">✦</span>
-    <span class="ticker-item"><i class="fas fa-calendar-check"></i><span data-en="Easy Table Reservations" data-fi="Helppo pöytävaraus">Easy Table Reservations</span></span><span class="ticker-dot">✦</span>
     <span class="ticker-item"><i class="fas fa-leaf"></i><span data-en="Vegan &amp; Vegetarian Options" data-fi="Vegaani- ja kasvisvaihtoehtoja">Vegan &amp; Vegetarian Options</span></span><span class="ticker-dot">✦</span>
   </div>
 </div>
@@ -755,59 +851,6 @@ img{display:block;width:100%;object-fit:cover}
   </div>
 </section>
 
-<!-- ═══════════════════ MENU ═══════════════════ -->
-<section id="menu" class="menu section">
-  <div class="container">
-    <div class="tc reveal">
-      <span class="sec-label" data-en="Taste the Royalty" data-fi="Maista kuninkaallista">Taste the Royalty</span>
-      <h2 class="sec-title" data-en="Our Signature Menu" data-fi="Allekirjoitusruokalistamme">Our Signature Menu</h2>
-      <p class="sec-sub" style="color:rgba(255,255,255,.55)" data-en="Hand-crafted dishes inspired by Mughal culinary heritage — every bite tells a story." data-fi="Käsityönä valmistettuja ruokia Mughal-perinnön inspiroimana.">Hand-crafted dishes inspired by Mughal culinary heritage — every bite tells a story.</p>
-      <a href="menu.html" class="btn btn-gold" style="margin-top:25px;margin-bottom:10px;display:inline-flex;align-items:center;gap:8px;border-radius:25px;padding:12px 28px"><i class="fas fa-book-open"></i> <span data-en="View Full Menu" data-fi="Näytä koko ruokalista">View Full Menu</span></a>
-    </div>
-    <div class="menu-tabs">
-      <button class="tab-btn active" data-tab="starters">Starters</button>
-      <button class="tab-btn" data-tab="mains">Mains</button>
-      <button class="tab-btn" data-tab="breads">Breads &amp; Rice</button>
-      <button class="tab-btn" data-tab="desserts">Desserts</button>
-      <button class="tab-btn" data-tab="drinks">Drinks</button>
-    </div>
-    <div class="menu-grid active" id="starters">
-      <div class="m-card reveal scale"><div class="m-img"><img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80" alt="Samosa" loading="lazy"/><span class="m-spice">🌶 Mild</span></div><div class="m-body"><div class="m-head"><h3>Vegetable Samosa</h3><span class="m-price">€5.95</span></div><p>Crispy pastry filled with spiced potatoes &amp; peas, served with tamarind &amp; mint chutney.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.08s"><div class="m-img"><img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80" alt="Chicken Tikka" loading="lazy"/><span class="m-spice">🌶🌶 Medium</span></div><div class="m-body"><div class="m-head"><h3>Chicken Tikka</h3><span class="m-price">€8.95</span></div><p>Tender chicken marinated in yoghurt &amp; spices, char-grilled in our clay tandoor oven.</p><span class="m-badge nonveg">● Non-Veg</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.16s"><div class="m-img"><img src="https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=500&q=80" alt="Onion Bhaji" loading="lazy"/><span class="m-spice">🌶 Mild</span></div><div class="m-body"><div class="m-head"><h3>Onion Bhaji</h3><span class="m-price">€4.95</span></div><p>Golden-fried onion fritters seasoned with cumin, coriander &amp; fresh green chilli.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.24s"><div class="m-img"><img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80" alt="Seekh Kebab" loading="lazy"/><span class="m-spice">🌶🌶 Medium</span></div><div class="m-body"><div class="m-head"><h3>Seekh Kebab</h3><span class="m-price">€9.50</span></div><p>Minced lamb blended with herbs &amp; spices, skewered and grilled to smoky perfection.</p><span class="m-badge nonveg">● Non-Veg</span></div></div>
-    </div>
-    <div class="menu-grid" id="mains">
-      <div class="m-card reveal scale"><div class="m-img"><img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80" alt="Butter Chicken" loading="lazy"/><span class="m-spice">🌶 Mild</span></div><div class="m-body"><div class="m-head"><h3>Butter Chicken</h3><span class="m-price">€14.95</span></div><p>Succulent chicken in a rich, creamy tomato-butter sauce infused with aromatic spices.</p><span class="m-badge nonveg">● Non-Veg</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.08s"><div class="m-img"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80" alt="Rogan Josh" loading="lazy"/><span class="m-spice">🌶🌶🌶 Hot</span></div><div class="m-body"><div class="m-head"><h3>Lamb Rogan Josh</h3><span class="m-price">€16.50</span></div><p>Slow-cooked tender lamb in a bold Kashmiri-spiced sauce. A true restaurant classic.</p><span class="m-badge nonveg">● Non-Veg</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.16s"><div class="m-img"><img src="https://images.unsplash.com/photo-1645177628172-a94c1f96e6db?w=500&q=80" alt="Paneer Tikka" loading="lazy"/><span class="m-spice">🌶🌶 Medium</span></div><div class="m-body"><div class="m-head"><h3>Paneer Tikka Masala</h3><span class="m-price">€13.50</span></div><p>Grilled Indian cottage cheese in a vibrant smoky masala gravy with bell peppers.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.24s"><div class="m-img"><img src="https://images.unsplash.com/photo-1631292784640-2b24be784d5d?w=500&q=80" alt="King Prawn" loading="lazy"/><span class="m-spice">🌶🌶 Medium</span></div><div class="m-body"><div class="m-head"><h3>King Prawn Masala</h3><span class="m-price">€18.95</span></div><p>Jumbo prawns cooked in a fragrant onion-tomato spice base with coastal aromatics.</p><span class="m-badge nonveg">● Non-Veg</span></div></div>
-    </div>
-    <div class="menu-grid" id="breads">
-      <div class="m-card reveal scale"><div class="m-img"><img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&q=80" alt="Garlic Naan" loading="lazy"/><span class="m-spice">No Spice</span></div><div class="m-body"><div class="m-head"><h3>Garlic Naan</h3><span class="m-price">€3.50</span></div><p>Soft leavened bread brushed with garlic butter, baked fresh in our clay tandoor.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.08s"><div class="m-img"><img src="https://images.unsplash.com/photo-1536304993881-ff86e0c9c3b8?w=500&q=80" alt="Lamb Biryani" loading="lazy"/><span class="m-spice">🌶🌶 Medium</span></div><div class="m-body"><div class="m-head"><h3>Lamb Biryani</h3><span class="m-price">€17.95</span></div><p>Fragrant basmati rice slow-cooked with tender lamb, saffron &amp; caramelised onions.</p><span class="m-badge nonveg">● Non-Veg</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.16s"><div class="m-img"><img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=80" alt="Aloo Paratha" loading="lazy"/><span class="m-spice">🌶 Mild</span></div><div class="m-body"><div class="m-head"><h3>Aloo Paratha</h3><span class="m-price">€4.50</span></div><p>Whole wheat flatbread stuffed with spiced potato, served with yoghurt &amp; mango pickle.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.24s"><div class="m-img"><img src="https://images.unsplash.com/photo-1516684732162-798a0062be99?w=500&q=80" alt="Jeera Rice" loading="lazy"/><span class="m-spice">No Spice</span></div><div class="m-body"><div class="m-head"><h3>Jeera Rice</h3><span class="m-price">€4.95</span></div><p>Basmati rice tempered with cumin seeds, ghee and garnished with fresh coriander.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-    </div>
-    <div class="menu-grid" id="desserts">
-      <div class="m-card reveal scale"><div class="m-img"><img src="https://images.unsplash.com/photo-1571167530149-c1105da4b40a?w=500&q=80" alt="Gulab Jamun" loading="lazy"/><span class="m-spice">Sweet</span></div><div class="m-body"><div class="m-head"><h3>Gulab Jamun</h3><span class="m-price">€5.50</span></div><p>Soft milk-solid dumplings soaked in rose-flavoured sugar syrup, served warm.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.08s"><div class="m-img"><img src="https://images.unsplash.com/photo-1604152135912-04a022e23696?w=500&q=80" alt="Mango Kulfi" loading="lazy"/><span class="m-spice">Sweet</span></div><div class="m-body"><div class="m-head"><h3>Mango Kulfi</h3><span class="m-price">€5.95</span></div><p>Traditional Indian ice cream made with condensed milk &amp; Alphonso mango pulp.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.16s"><div class="m-img"><img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=500&q=80" alt="Gajar Halwa" loading="lazy"/><span class="m-spice">Sweet</span></div><div class="m-body"><div class="m-head"><h3>Gajar Ka Halwa</h3><span class="m-price">€5.95</span></div><p>Slow-cooked carrot pudding with ghee, milk, sugar &amp; garnished with pistachios.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.24s"><div class="m-img"><img src="https://images.unsplash.com/photo-1567337710282-00832b415979?w=500&q=80" alt="Rasmalai" loading="lazy"/><span class="m-spice">Sweet</span></div><div class="m-body"><div class="m-head"><h3>Rasmalai</h3><span class="m-price">€6.50</span></div><p>Delicate cheese patties in saffron-infused sweet cream milk with cardamom.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-    </div>
-    <div class="menu-grid" id="drinks">
-      <div class="m-card reveal scale"><div class="m-img"><img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80" alt="Mango Lassi" loading="lazy"/><span class="m-spice">Sweet</span></div><div class="m-body"><div class="m-head"><h3>Mango Lassi</h3><span class="m-price">€4.50</span></div><p>Thick chilled yoghurt drink blended with sweet Alphonso mango. Perfectly refreshing.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.08s"><div class="m-img"><img src="https://images.unsplash.com/photo-1571167366136-b57e43b12c15?w=500&q=80" alt="Masala Chai" loading="lazy"/><span class="m-spice">Spiced</span></div><div class="m-body"><div class="m-head"><h3>Masala Chai</h3><span class="m-price">€3.00</span></div><p>Freshly brewed spiced tea with cardamom, ginger, cinnamon &amp; whole milk.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.16s"><div class="m-img"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&q=80" alt="Rose Sharbat" loading="lazy"/><span class="m-spice">Sweet</span></div><div class="m-body"><div class="m-head"><h3>Rose Sharbat</h3><span class="m-price">€3.50</span></div><p>Refreshing chilled drink made with rose syrup, basil seeds &amp; cold milk.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-      <div class="m-card reveal scale" style="transition-delay:.24s"><div class="m-img"><img src="https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?w=500&q=80" alt="Nimbu Pani" loading="lazy"/><span class="m-spice">Tangy</span></div><div class="m-body"><div class="m-head"><h3>Nimbu Pani</h3><span class="m-price">€3.00</span></div><p>Classic Indian lemonade with fresh lime, rock salt, cumin &amp; mint leaves.</p><span class="m-badge veg">● Vegetarian</span></div></div>
-    </div>
-    <div class="menu-cta reveal">
-      <a href="food-ordering.html" class="btn btn-gold" style="font-size:1rem;padding:15px 36px"><i class="fas fa-utensils"></i> Order Online / Full Menu</a>
-    </div>
-  </div>
-</section>
-
-
 <!-- ═══════════════════ GALLERY ═══════════════════ -->
 <section id="gallery" class="gallery section">
   <div class="container">
@@ -818,121 +861,29 @@ img{display:block;width:100%;object-fit:cover}
     </div>
     <div class="gallery-grid">
       <div class="g-item g1 reveal left" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=700&q=85" alt="Royal Feast" loading="lazy"/><div class="g-overlay"><span>Royal Feast</span></div></div>
-      <div class="g-item g2 reveal" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Interior" loading="lazy"/><div class="g-overlay"><span>Our Interior</span></div></div>
+      <div class="g-item g2 reveal" onclick="openLightbox(this)"><img src="https://ravintolamughal.fi/FBCF3F40-1309-4701-96EE-0BD5A82A99C9.png" alt="Interior" loading="lazy"/><div class="g-overlay"><span>Our Interior</span></div></div>
       <div class="g-item g3 reveal" style="transition-delay:.1s" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=80" alt="Butter Chicken" loading="lazy"/><div class="g-overlay"><span>Butter Chicken</span></div></div>
       <div class="g-item g4 reveal right" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=700&q=85" alt="Chef" loading="lazy"/><div class="g-overlay"><span>Our Master Chef</span></div></div>
       <div class="g-item g5 reveal" style="transition-delay:.15s" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80" alt="Samosa" loading="lazy"/><div class="g-overlay"><span>Crispy Samosa</span></div></div>
       <div class="g-item g6 reveal" style="transition-delay:.2s" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80" alt="Rogan Josh" loading="lazy"/><div class="g-overlay"><span>Lamb Rogan Josh</span></div></div>
-      <div class="g-item g7 reveal" style="transition-delay:.1s" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1536304993881-ff86e0c9c3b8?w=800&q=85" alt="Biryani" loading="lazy"/><div class="g-overlay"><span>Royal Biryani</span></div></div>
-      <div class="g-item g8 reveal" style="transition-delay:.2s" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=800&q=85" alt="Mango Lassi" loading="lazy"/><div class="g-overlay"><span>Mango Lassi</span></div></div>
+      <div class="g-item g7 reveal" style="transition-delay:.1s" onclick="openLightbox(this)"><img src="https://ravintolamughal.fi/WhatsApp%20Image%202026-11-17%20at%2000.51.38.jpeg" alt="Royal Biryani" loading="lazy"/><div class="g-overlay"><span>Royal Biryani</span></div></div>
+      <div class="g-item g8 reveal" style="transition-delay:.2s" onclick="openLightbox(this)"><img src="https://ravintolamughal.fi/WhatsApp%20Image%202026-11-17%20at%2000.55.24.jpeg" alt="Mango Lassi" loading="lazy"/><div class="g-overlay"><span>Mango Lassi</span></div></div>
     </div>
   </div>
 </section>
+<div class="pdf-modal" id="menuPdfModal" role="dialog" aria-modal="true" aria-label="Full Menu">
+  <div class="pdf-modal-bar">
+    <h3 data-en="Full Menu" data-fi="Koko ruokalista">Full Menu</h3>
+    <div class="pdf-modal-actions">
+      <a href="https://ravintolamughal.fi/menu.pdf" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> <span data-en="Open PDF" data-fi="Avaa PDF">Open PDF</span></a>
+      <button class="pdf-modal-close" onclick="closeMenuPdf()" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+  <div class="pdf-modal-body"><iframe id="menuPdfFrame" title="Full Menu PDF"></iframe></div>
+</div>
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
   <img id="lbImg" src="" alt="Gallery"/>
-</div>
-
-<!-- ═══════════════════ ORDER ONLINE ═══════════════════ -->
-<section id="order" class="order-sec section">
-  <div class="container">
-    <div class="tc reveal">
-      <span class="sec-label">Delivered to Your Door</span>
-      <h2 class="sec-title">Order Online</h2>
-      <p class="sec-sub" style="color:rgba(255,255,255,.6)">Choose how you'd like your Mughal experience — delivered hot or collected fresh.</p>
-    </div>
-    <div class="order-cards">
-      <div class="o-card reveal left">
-        <div class="o-icon"><i class="fas fa-motorcycle"></i></div>
-        <h3>Home Delivery</h3>
-        <p>Get your favourite dishes delivered hot and fresh to your door within 35–45 minutes, 7 days a week.</p>
-        <a href="food-ordering.html" class="btn btn-outline-white"><i class="fas fa-motorcycle"></i> Order Delivery</a>
-      </div>
-      <div class="o-card popular reveal scale">
-        <div class="o-pop">⭐ Most Popular</div>
-        <div class="o-icon"><i class="fas fa-store"></i></div>
-        <h3>Click &amp; Collect</h3>
-        <p>Order online and collect your meal ready and piping hot at the restaurant — skip the queue completely.</p>
-        <a href="food-ordering.html" class="btn btn-gold"><i class="fas fa-store"></i> Order &amp; Collect</a>
-      </div>
-      <div class="o-card reveal right">
-        <div class="o-icon"><i class="fas fa-concierge-bell"></i></div>
-        <h3>Dine In Pre-Order</h3>
-        <p>Reserve your table and pre-order your meal for a seamless, no-wait royal dining experience.</p>
-        <a href="#reservation" class="btn btn-outline-white" onclick="event.preventDefault();showToast('🚧 Table reservations coming soon!',true)"><i class="fas fa-calendar-alt"></i> Reserve &amp; Pre-Order</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════ RESERVATION ═══════════════════ -->
-<section id="reservation" class="reservation section">
-  <div class="container res-grid">
-    <div class="res-info reveal left">
-      <span class="sec-label purple">Book Your Seat</span>
-      <h2 class="sec-title dark">Table Reservation</h2>
-      <p>Join us for an unforgettable royal dining experience. Reserve your table and we'll prepare the perfect evening for you.</p>
-      <div class="res-details">
-        <div class="rd"><div class="rd-icon"><i class="fas fa-map-marker-alt"></i></div><div class="rd-text"><strong>Address</strong><span>Aallonhalkoja 3, 00540<br/>Helsinki, Finland</span></div></div>
-        <div class="rd"><div class="rd-icon"><i class="fas fa-clock"></i></div><div class="rd-text"><strong>Opening Hours</strong><span>Mon-Fri: 11:00–22:00<br/>Sat: 11:00–22:00<br/>Sun: 12:00–22:00</span></div></div>
-        <div class="rd"><div class="rd-icon"><i class="fas fa-phone"></i></div><div class="rd-text"><strong>Phone</strong><span>+358458527515</span></div></div>
-        <div class="rd"><div class="rd-icon"><i class="fas fa-envelope"></i></div><div class="rd-text"><strong>Email</strong><span>ravintolamughal@gmail.com</span></div></div>
-      </div>
-      <div class="map-btns">
-        <a href="https://www.google.com/maps/search/?api=1&query=Aallonhalkoja+3,+00540+Helsinki,+Finland" target="_blank" class="btn btn-map-google btn-sm"><i class="fab fa-google"></i> Google Maps</a>
-        <a href="https://maps.apple.com/?q=Aallonhalkoja+3,+00540+Helsinki+Finland" target="_blank" class="btn btn-map-apple btn-sm"><i class="fab fa-apple"></i> Apple Maps</a>
-      </div>
-    </div>
-    <div class="res-form-card reveal right">
-      <h3>Book a Table</h3>
-      <p class="f-sub">We'll confirm your reservation within 30 minutes.</p>
-      <form id="reservationForm" onsubmit="submitReservation(event)">
-        <div class="form-row">
-          <div class="fg"><label>Full Name *</label><input type="text" id="resName" placeholder="Matti Virtanen" required/></div>
-          <div class="fg"><label>Phone Number *</label><input type="tel" id="resPhone" placeholder="+358458527515" required/></div>
-        </div>
-        <div class="form-row">
-          <div class="fg"><label>Date *</label><input type="date" id="resDate" required/></div>
-          <div class="fg">
-            <label>Time *</label>
-            <div class="time-picker-wrap">
-              <div class="time-display" id="timeDisplay" tabindex="0" onclick="toggleTimePicker()">
-                <span id="timeDisplayText">Select time</span>
-                <i class="fas fa-chevron-down" id="timeArrow" style="color:var(--purple);font-size:.85rem;flex-shrink:0;transition:transform .3s"></i>
-              </div>
-              <div class="time-picker-backdrop" id="timeBackdrop" onclick="closeTimePicker()"></div>
-              <div class="time-dropdown" id="timeDropdown">
-                <div class="time-cols">
-                  <div><div class="time-col-label">Hour</div><div class="time-scroll" id="hourScroll"></div></div>
-                  <div><div class="time-col-label">Min</div><div class="time-scroll" id="minScroll"></div></div>
-                  <div><div class="time-col-label">AM/PM</div><div class="time-scroll" id="ampmScroll"></div></div>
-                </div>
-                <button type="button" class="time-confirm" onclick="confirmTime()">Confirm Time</button>
-              </div>
-            </div>
-            <input type="hidden" id="resTime"/>
-          </div>
-        </div>
-        <div class="fg"><label>Number of Guests *</label><input type="number" id="resGuests" min="1" max="50" placeholder="e.g. 4" required/></div>
-        <div class="fg"><label>Special Requests</label><textarea id="resNote" placeholder="Dietary requirements, allergies, birthday celebrations..."></textarea></div>
-        <button type="submit" class="f-submit"><i class="fas fa-calendar-check"></i> Confirm Reservation</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════ RESERVATION CONFIRM POPUP ═══════════════════ -->
-<div class="res-confirm-modal" id="resConfirmModal">
-  <div class="res-confirm-box">
-    <div class="rc-icon"><i class="fas fa-check"></i></div>
-    <h2 class="rc-title">Reservation Confirmed! 🎉</h2>
-    <p class="rc-msg">Your table has been successfully reserved. You will receive an email confirmation shortly. We look forward to welcoming you to Mughal!</p>
-    <div class="rc-notice">
-      <p><i class="fas fa-clock"></i><span><strong>Please be on time.</strong> Arriving late may affect your seating arrangement. We hold tables for 15 minutes after your booking time.</span></p>
-      <p><i class="fas fa-phone-alt"></i><span><strong>Need to cancel or change?</strong> Please contact us as soon as possible by phone call, email, or send us a message through the website. We appreciate early notice.</span></p>
-    </div>
-    <button class="rc-close" onclick="closeResConfirm()">Got it, Thank you! 👍</button>
-  </div>
 </div>
 
 <!-- ═══════════════════ ORDER HISTORY MODAL ═══════════════════ -->
@@ -1071,9 +1022,8 @@ img{display:block;width:100%;object-fit:cover}
       <ul>
         <li><a href="#home"><i class="fas fa-chevron-right"></i>Home</a></li>
         <li><a href="#about"><i class="fas fa-chevron-right"></i>About Us</a></li>
-        <li><a href="#menu"><i class="fas fa-chevron-right"></i>Our Menu</a></li>
+        <li><a href="https://ravintolamughal.fi/menu.pdf" onclick="openMenuPdf(event)"><i class="fas fa-chevron-right"></i>Our Menu</a></li>
         <li><a href="#gallery"><i class="fas fa-chevron-right"></i>Gallery</a></li>
-        <li><a href="#reservation"><i class="fas fa-chevron-right"></i>Reservations</a></li>
         <li><a href="#contact"><i class="fas fa-chevron-right"></i>Contact</a></li>
       </ul>
     </div>
@@ -1095,7 +1045,6 @@ img{display:block;width:100%;object-fit:cover}
       </div>
       <div class="f-ctas">
         <a href="food-ordering.html" class="btn btn-gold btn-sm"><i class="fas fa-motorcycle"></i> Order Now</a>
-        <a href="#reservation" class="btn btn-outline-white btn-sm" style="border-color:rgba(255,255,255,.3)" onclick="scrollToSection(event,'#reservation')"><i class="fas fa-calendar-alt"></i> Reserve a Table</a>
       </div>
     </div>
   </div>
@@ -1163,8 +1112,6 @@ img{display:block;width:100%;object-fit:cover}
   </div>
 </div>
 
-<!-- TIME PICKER BACKDROP (desktop fallback) -->
-<div class="time-picker-backdrop" id="timeBackdropGlobal" onclick="closeTimePicker()" style="display:none"></div>
 <!-- TOAST -->
 <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg">Success!</span><button class="toast-close" onclick="closeToast()"><i class="fas fa-times"></i></button></div>
 <!-- BACK TO TOP -->
@@ -1205,13 +1152,6 @@ function loadDynamicContent(){
       if(data.hero?.labelFi) document.querySelector('.hero-restaurant-label[data-fi]').setAttribute('data-fi',data.hero.labelFi);
       if(data.hero?.welcomeEn) document.querySelector('.hero-sub[data-en]').setAttribute('data-en',data.hero.welcomeEn);
       if(data.hero?.welcomeFi) document.querySelector('.hero-sub[data-fi]').setAttribute('data-fi',data.hero.welcomeFi);
-      if(data.hero?.images && data.hero.images.length>0){
-        const slides=document.querySelectorAll('.hero-slide');
-        slides.forEach((slide,i)=>{
-          if(data.hero.images[i]) slide.style.backgroundImage=`url(${data.hero.images[i]})`;
-        });
-      }
-
       // About Section
       if(data.about?.labelEn) document.querySelector('#about .sec-label[data-en]').setAttribute('data-en',data.about.labelEn);
       if(data.about?.labelFi) document.querySelector('#about .sec-label[data-fi]').setAttribute('data-fi',data.about.labelFi);
@@ -1232,53 +1172,29 @@ function loadDynamicContent(){
       if(data.specials?.titleEn) document.querySelector('.specials .sec-title[data-en]').setAttribute('data-en',data.specials.titleEn);
       if(data.specials?.titleFi) document.querySelector('.specials .sec-title[data-fi]').setAttribute('data-fi',data.specials.titleFi);
 
-      // Menu Section
-      if(data.menu?.labelEn) document.querySelector('#menu .sec-label[data-en]').setAttribute('data-en',data.menu.labelEn);
-      if(data.menu?.labelFi) document.querySelector('#menu .sec-label[data-fi]').setAttribute('data-fi',data.menu.labelFi);
-      if(data.menu?.titleEn) document.querySelector('#menu .sec-title[data-en]').setAttribute('data-en',data.menu.titleEn);
-      if(data.menu?.titleFi) document.querySelector('#menu .sec-title[data-fi]').setAttribute('data-fi',data.menu.titleFi);
-
       // Gallery Section
       if(data.gallery?.labelEn) document.querySelector('#gallery .sec-label[data-en]').setAttribute('data-en',data.gallery.labelEn);
       if(data.gallery?.labelFi) document.querySelector('#gallery .sec-label[data-fi]').setAttribute('data-fi',data.gallery.labelFi);
       if(data.gallery?.titleEn) document.querySelector('#gallery .sec-title[data-en]').setAttribute('data-en',data.gallery.titleEn);
       if(data.gallery?.titleFi) document.querySelector('#gallery .sec-title[data-fi]').setAttribute('data-fi',data.gallery.titleFi);
-      if(data.gallery?.images && data.gallery.images.length>0){
-        const galleryImages=document.querySelectorAll('.g1 img, .g2 img, .g3 img, .g4 img, .g5 img, .g6 img, .g7 img, .g8 img');
-        galleryImages.forEach((img,i)=>{
-          if(data.gallery.images[i]) img.src=data.gallery.images[i];
-        });
-      }
-
-      // Reservation Section
-      if(data.reservation?.labelEn) document.querySelector('#reservation .sec-label[data-en]').setAttribute('data-en',data.reservation.labelEn);
-      if(data.reservation?.labelFi) document.querySelector('#reservation .sec-label[data-fi]').setAttribute('data-fi',data.reservation.labelFi);
-      if(data.reservation?.titleEn) document.querySelector('#reservation .sec-title[data-en]').setAttribute('data-en',data.reservation.titleEn);
-      if(data.reservation?.titleFi) document.querySelector('#reservation .sec-title[data-fi]').setAttribute('data-fi',data.reservation.titleFi);
-      if(data.reservation?.subEn) document.querySelector('#reservation .sec-sub[data-en]').setAttribute('data-en',data.reservation.subEn);
-      if(data.reservation?.subFi) document.querySelector('#reservation .sec-sub[data-fi]').setAttribute('data-fi',data.reservation.subFi);
-
       // Contact Section
       if(data.contact?.labelEn) document.querySelector('#contact .sec-label[data-en]').setAttribute('data-en',data.contact.labelEn);
       if(data.contact?.labelFi) document.querySelector('#contact .sec-label[data-fi]').setAttribute('data-fi',data.contact.labelFi);
       if(data.contact?.titleEn) document.querySelector('#contact .sec-title[data-en]').setAttribute('data-en',data.contact.titleEn);
       if(data.contact?.titleFi) document.querySelector('#contact .sec-title[data-fi]').setAttribute('data-fi',data.contact.titleFi);
-      if(data.contact?.addressEn) document.querySelector('#contact .contact-address[data-en]').setAttribute('data-en',data.contact.addressEn);
-      if(data.contact?.addressFi) document.querySelector('#contact .contact-address[data-fi]').setAttribute('data-fi',data.contact.addressFi);
+      if(data.contact?.addressEn) document.querySelector('#contact .contact-address[data-en]')?.setAttribute('data-en',data.contact.addressEn);
+      if(data.contact?.addressFi) document.querySelector('#contact .contact-address[data-fi]')?.setAttribute('data-fi',data.contact.addressFi);
       if(data.contact?.phone){const el=document.querySelector('#contact .contact-phone');if(el)el.textContent=data.contact.phone;}
       if(data.contact?.email){const el=document.querySelector('#contact .contact-email');if(el)el.textContent=data.contact.email;}
-      if(data.contact?.addressEn){const el=document.querySelector('#reservation .rd-text span');if(el)el.innerHTML=data.contact.addressEn;}
-      if(data.contact?.phone){const el=document.querySelector('#reservation .rd-text:nth-child(3) span');if(el)el.textContent=data.contact.phone;}
       if(data.contact?.mapsUrl){document.querySelectorAll('a[href*="google.com/maps"]').forEach(a=>a.href=data.contact.mapsUrl);}
-      if(data.hours){const el=document.querySelector('#reservation .rd:nth-child(2) .rd-text span');if(el){const entries=Object.entries(data.hours);el.innerHTML=entries.map(([d,t])=>`${d}: ${t}`).join('<br>');}}
       if(data.contact?.hoursEn) document.querySelector('#contact .contact-hours[data-en]')?.setAttribute('data-en',data.contact.hoursEn);
-      if(data.contact?.hoursFi) document.querySelector('#contact .contact-hours[data-fi]').setAttribute('data-fi',data.contact.hoursFi);
+      if(data.contact?.hoursFi) document.querySelector('#contact .contact-hours[data-fi]')?.setAttribute('data-fi',data.contact.hoursFi);
 
       // Footer Section
-      if(data.footer?.copyrightEn) document.querySelector('.footer-copyright[data-en]').setAttribute('data-en',data.footer.copyrightEn);
-      if(data.footer?.copyrightFi) document.querySelector('.footer-copyright[data-fi]').setAttribute('data-fi',data.footer.copyrightFi);
-      if(data.footer?.facebook) document.querySelector('.footer-social a[href*="facebook"]').href=data.footer.facebook;
-      if(data.footer?.instagram) document.querySelector('.footer-social a[href*="instagram"]').href=data.footer.instagram;
+      if(data.footer?.copyrightEn) document.querySelector('.footer-copyright[data-en]')?.setAttribute('data-en',data.footer.copyrightEn);
+      if(data.footer?.copyrightFi) document.querySelector('.footer-copyright[data-fi]')?.setAttribute('data-fi',data.footer.copyrightFi);
+      if(data.footer?.facebook){const el=document.querySelector('.footer-social a[href*="facebook"]');if(el)el.href=data.footer.facebook;}
+      if(data.footer?.instagram){const el=document.querySelector('.footer-social a[href*="instagram"]');if(el)el.href=data.footer.instagram;}
 
       // Ticker messages
       if(data.ticker&&data.ticker.length){
@@ -1327,9 +1243,6 @@ function setLang(lang){
     if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){el.placeholder=val;}
     else{el.textContent=val;}
   });
-  const td=document.getElementById('timeDisplayText');
-  if(td&&!document.getElementById('resTime').value)
-    td.textContent=lang==='fi'?'Valitse aika':'Select time';
 }
 
 /* ── NAVBAR SCROLL ── */
@@ -1364,23 +1277,6 @@ function scrollToSection(e,selector){
     }
   },300);
 }
-
-/* ── ALL reservation links ── */
-document.addEventListener('click',function(e){
-  const a=e.target.closest('a[href="#reservation"]');
-  if(a&&!a.hasAttribute('data-no-scroll')){
-    e.preventDefault();
-    closeDrawer();
-    setTimeout(()=>{
-      const el=document.getElementById('reservation');
-      const formEl=document.querySelector('.res-form-card');
-      if(formEl){
-        const offset=formEl.getBoundingClientRect().top+window.scrollY-80;
-        window.scrollTo({top:offset,behavior:'smooth'});
-      }
-    },300);
-  }
-});
 
 /* ── HERO SLIDER ── */
 let currentSlide=0;
@@ -1420,23 +1316,6 @@ function changeSlide(dir){
   startSlideCycle();
 }
 
-/* ── MENU TABS ── */
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.menu-grid').forEach(g=>g.classList.remove('active'));
-    btn.classList.add('active');
-    const t=document.getElementById(btn.dataset.tab);
-    if(t){
-      t.classList.add('active');
-      t.querySelectorAll('.reveal').forEach(el=>{
-        el.classList.remove('visible');
-        setTimeout(()=>el.classList.add('visible'),60);
-      });
-    }
-  });
-});
-
 /* ── SCROLL REVEAL ── */
 const ro=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
@@ -1455,124 +1334,6 @@ function closeLightbox(){
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow='';
 }
-
-/* ── TIME PICKER ── */
-let selHour='12',selMin='00',selAmPm='PM';
-(function buildTimePicker(){
-  const hs=document.getElementById('hourScroll');
-  const ms=document.getElementById('minScroll');
-  const as=document.getElementById('ampmScroll');
-  if(!hs)return;
-  [11,12,1,2,3,4,5,6,7,8,9].forEach(h=>{
-    const d=document.createElement('div');
-    d.className='time-opt'+(h===12?' selected':'');
-    d.textContent=String(h).padStart(2,'0');
-    d.onclick=function(){
-      hs.querySelectorAll('.time-opt').forEach(x=>x.classList.remove('selected'));
-      this.classList.add('selected');selHour=this.textContent;
-    };
-    hs.appendChild(d);
-  });
-  ['00','15','30','45'].forEach(m=>{
-    const d=document.createElement('div');
-    d.className='time-opt'+(m==='00'?' selected':'');
-    d.textContent=m;
-    d.onclick=function(){
-      ms.querySelectorAll('.time-opt').forEach(x=>x.classList.remove('selected'));
-      this.classList.add('selected');selMin=this.textContent;
-    };
-    ms.appendChild(d);
-  });
-  ['AM','PM'].forEach(p=>{
-    const d=document.createElement('div');
-    d.className='time-opt'+(p==='PM'?' selected':'');
-    d.textContent=p;
-    d.onclick=function(){
-      as.querySelectorAll('.time-opt').forEach(x=>x.classList.remove('selected'));
-      this.classList.add('selected');selAmPm=this.textContent;
-    };
-    as.appendChild(d);
-  });
-})();
-
-function toggleTimePicker(){
-  const dd=document.getElementById('timeDropdown');
-  const disp=document.getElementById('timeDisplay');
-  const arrow=document.getElementById('timeArrow');
-  const bd=document.getElementById('timeBackdrop');
-  const isOpen=dd.classList.contains('open');
-  if(isOpen){closeTimePicker();}
-  else{
-    dd.classList.add('open');disp.classList.add('open');
-    if(arrow)arrow.style.transform='rotate(180deg)';
-    if(bd)bd.classList.add('open');
-  }
-}
-function closeTimePicker(){
-  const dd=document.getElementById('timeDropdown');
-  const disp=document.getElementById('timeDisplay');
-  const arrow=document.getElementById('timeArrow');
-  const bd=document.getElementById('timeBackdrop');
-  if(dd)dd.classList.remove('open');
-  if(disp)disp.classList.remove('open');
-  if(arrow)arrow.style.transform='rotate(0deg)';
-  if(bd)bd.classList.remove('open');
-}
-function confirmTime(){
-  const val=selHour+':'+selMin+' '+selAmPm;
-  document.getElementById('timeDisplayText').textContent=val;
-  document.getElementById('resTime').value=val;
-  closeTimePicker();
-}
-document.addEventListener('click',function(e){
-  const wrap=document.querySelector('.time-picker-wrap');
-  const dd=document.getElementById('timeDropdown');
-  if(wrap&&dd&&dd.classList.contains('open')&&!wrap.contains(e.target)){
-    closeTimePicker();
-  }
-});
-
-/* ── SET MIN DATE ── */
-(function(){
-  const di=document.getElementById('resDate');
-  if(!di)return;
-  const t=new Date();
-  di.min=t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');
-})();
-
-/* ── RESERVATION → FIREBASE + POPUP ── */
-function submitReservation(e){
-  e.preventDefault();
-  const time=document.getElementById('resTime').value;
-  if(!time){showToast('❌ Please select a time.',true);return;}
-  const guests=document.getElementById('resGuests').value;
-  if(!guests||isNaN(guests)||Number(guests)<1){showToast('❌ Please enter a valid number of people.',true);return;}
-  db.ref('reservations').push({
-    name:document.getElementById('resName').value.trim(),
-    phone:document.getElementById('resPhone').value.trim(),
-    date:document.getElementById('resDate').value,
-    time:time,
-    guests:guests,
-    note:document.getElementById('resNote').value.trim(),
-    timestamp:Date.now()
-  }).then(()=>{
-    e.target.reset();
-    document.getElementById('timeDisplayText').textContent='Select time';
-    document.getElementById('resTime').value='';
-    openResConfirm();
-  }).catch(err=>showToast('❌ '+err.message,true));
-}
-function openResConfirm(){
-  document.getElementById('resConfirmModal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeResConfirm(){
-  document.getElementById('resConfirmModal').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.getElementById('resConfirmModal').addEventListener('click',function(e){
-  if(e.target===this)closeResConfirm();
-});
 
 /* ── NEWSLETTER ── */
 function subscribeNewsletter(e){
@@ -1864,14 +1625,33 @@ function closeToast(){
   clearTimeout(toastTimer);
 }
 
+/* ── MENU PDF POPUP ── */
+const MENU_PDF_URL='https://ravintolamughal.fi/menu.pdf';
+function openMenuPdf(e){
+  if(e)e.preventDefault();
+  const frame=document.getElementById('menuPdfFrame');
+  if(!frame.src){
+    const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    frame.src=isMobile?'https://docs.google.com/viewer?embedded=true&url='+encodeURIComponent(MENU_PDF_URL):MENU_PDF_URL+'#toolbar=0&navpanes=0&scrollbar=1&view=FitH';
+  }
+  document.getElementById('menuPdfModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeMenuPdf(){
+  const modal=document.getElementById('menuPdfModal');
+  if(!modal.classList.contains('open'))return;
+  modal.classList.remove('open');
+  document.body.style.overflow='';
+}
+
 /* ── ESCAPE KEY ── */
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     closeDrawer();
     closeLightbox();
     closeAuthModal();
-    closeResConfirm();
     closeOrderHistory();
+    closeMenuPdf();
   }
 });
 </script>
