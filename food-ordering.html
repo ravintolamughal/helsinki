@@ -94,13 +94,36 @@ img{display:block;width:100%;object-fit:cover}
 .section-label{display:block;font-size:.72rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
 .section-title{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,4vw,2.5rem);color:#fff;line-height:1.2;margin-bottom:16px}
 
-/* ── CATEGORY TABS ── */
-.menu-tabs-wrapper{margin-bottom:30px;position:relative;z-index:1}
-.menu-tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.tab-btn{padding:10px 24px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:2px solid rgba(255,255,255,.15);border-radius:50px;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t);white-space:nowrap;font-family:'Poppins',sans-serif}
-.tab-btn:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff}
-.tab-btn.active{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--purple-deep);border-color:var(--gold);font-weight:700}
-@media(max-width:768px){.menu-tabs{overflow-x:auto;scroll-behavior:smooth;flex-wrap:nowrap;scrollbar-width:none;-ms-overflow-style:none}.menu-tabs::-webkit-scrollbar{display:none}.tab-btn{flex-shrink:0}}
+/* ── MENU CONTROLS ── */
+.menu-controls{max-width:720px;margin:0 auto 26px;position:relative;z-index:1}
+.menu-search-wrap{position:relative;display:flex;align-items:center}
+.menu-search-wrap>i{position:absolute;left:18px;color:rgba(255,255,255,.45);font-size:.95rem;pointer-events:none}
+.menu-search-wrap input{width:100%;padding:15px 48px 15px 48px;border-radius:50px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:.95rem;font-family:'Poppins',sans-serif;backdrop-filter:blur(8px);transition:var(--t)}
+.menu-search-wrap input::placeholder{color:rgba(255,255,255,.42)}
+.menu-search-wrap input:focus{outline:none;border-color:rgba(245,200,66,.65);background:rgba(255,255,255,.12);box-shadow:0 0 0 4px rgba(245,200,66,.12)}
+.menu-search-wrap input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.menu-search-clear{position:absolute;right:8px;width:36px;height:36px;border:none;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;display:none;align-items:center;justify-content:center;transition:var(--t);font-size:.85rem}
+.menu-search-clear.show{display:flex}
+.menu-search-clear:hover{background:var(--gold);color:var(--purple-deep)}
+.menu-view-bar{display:none;align-items:center;justify-content:space-between;gap:14px;max-width:1400px;margin:0 auto 20px;position:relative;z-index:1;flex-wrap:wrap}
+.menu-view-bar.show{display:flex}
+.menu-back-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:50px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff;font-size:.85rem;font-weight:600;cursor:pointer;transition:var(--t);font-family:'Poppins',sans-serif}
+.menu-back-btn:hover{background:rgba(245,200,66,.16);border-color:rgba(245,200,66,.5);color:var(--gold)}
+.menu-view-title{color:#fff;font-family:'Playfair Display',serif;font-size:1.25rem;line-height:1.2}
+.menu-view-title small{display:block;font-family:'Poppins',sans-serif;font-size:.72rem;color:rgba(255,255,255,.55);letter-spacing:.5px;margin-top:2px}
+/* ── CATEGORY CARDS ── */
+.cat-card{position:relative;border-radius:20px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,.1);min-height:190px;display:flex;align-items:flex-end;background:#1b0b3a;transition:var(--t);text-align:left;font-family:'Poppins',sans-serif;padding:0}
+.cat-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;transition:transform .6s ease}
+.cat-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,0,50,.05) 0%,rgba(20,0,50,.86) 100%)}
+.cat-card:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(0,0,0,.35);border-color:rgba(245,200,66,.35)}
+.cat-card:hover img{transform:scale(1.08)}
+.cat-card-content{position:relative;z-index:1;padding:18px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;color:#fff}
+.cat-card-icon{width:48px;height:48px;border-radius:15px;background:rgba(245,200,66,.16);border:1px solid rgba(245,200,66,.35);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.15rem;flex-shrink:0}
+.cat-card h3{font-size:1.08rem;margin-bottom:4px}
+.cat-card small{display:block;font-size:.75rem;color:rgba(255,255,255,.68)}
+.cat-card-arrow{color:var(--gold);font-size:.95rem;flex-shrink:0}
+.menu-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:rgba(255,255,255,.65)}
+.menu-empty i{font-size:3rem;color:var(--gold);margin-bottom:16px;display:block}
 
 /* ── MENU GRID ── */
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;position:relative;z-index:1;max-width:1400px;margin:0 auto}
@@ -534,8 +557,6 @@ img{display:block;width:100%;object-fit:cover}
   .hero{padding:40px 0 30px}
   .hero h1{font-size:1.8rem}
   .hero p{font-size:.85rem}
-  .menu-tabs-wrapper{margin-bottom:20px}
-  .tab-btn{padding:8px 16px;font-size:.8rem}
   .cart-item img{width:44px;height:44px}
   .cart-item-name{font-size:.78rem}
   .cart-item-price{font-size:.78rem}
@@ -564,13 +585,17 @@ img{display:block;width:100%;object-fit:cover}
 }
 @media(max-width:480px){
   .menu-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .cat-card{min-height:150px}
+  .cat-card-content{padding:14px;gap:10px}
+  .cat-card-icon{width:40px;height:40px;font-size:1rem}
+  .cat-card h3{font-size:.9rem}
+  .cat-card small{font-size:.68rem}
   .m-img{height:110px}
   .m-body{padding:8px}
   .m-head h3{font-size:.76rem}
   .m-price{font-size:.82rem}
   .m-add-btn{padding:7px;font-size:.74rem}
   .hero h1{font-size:1.5rem}
-  .tab-btn{padding:7px 12px;font-size:.76rem}
   .cart-item img{width:40px;height:40px}
   .cart-item-name{font-size:.72rem}
   .checkout-progress{padding:10px 12px}
@@ -712,14 +737,21 @@ img{display:block;width:100%;object-fit:cover}
       <h2 class="section-title">Choose Your Favourites</h2>
     </div>
 
-    <div class="menu-tabs-wrapper fade-in-up" style="animation-delay:.1s">
-      <div class="menu-tabs" id="menuTabs">
-        <!-- Categories will be loaded dynamically from Firebase -->
+    <div class="menu-controls fade-in-up" style="animation-delay:.1s">
+      <div class="menu-search-wrap">
+        <i class="fas fa-search"></i>
+        <input id="menuSearch" type="search" placeholder="Search dishes, categories or ingredients..." oninput="onMenuSearch(this.value)" autocomplete="off"/>
+        <button class="menu-search-clear" id="menuSearchClear" onclick="clearMenuSearch()" aria-label="Clear search"><i class="fas fa-times"></i></button>
       </div>
     </div>
 
+    <div class="menu-view-bar fade-in-up" id="menuViewBar" style="animation-delay:.15s">
+      <button class="menu-back-btn" onclick="showCategories()"><i class="fas fa-arrow-left"></i> <span>Categories</span></button>
+      <div class="menu-view-title" id="menuViewTitle"></div>
+    </div>
+
     <div class="menu-grid" id="menuGrid">
-      <!-- Items will be dynamically added -->
+      <!-- Categories or items will be dynamically added -->
     </div>
   </div>
 </section>
@@ -995,7 +1027,7 @@ const MAX_DELIVERY_DISTANCE = 10; // km
 
 let menuItems=[];
 let categories=['all','starters','mains','biryani','breads','drinks','desserts'];
-let cart=[],currentCategory='all',deliveryType='pickup',calculatedDeliveryFee=0,customerDistance=0;
+let cart=[],currentCategory='all',menuView='categories',searchQuery='',viewBeforeSearch='categories',deliveryType='pickup',calculatedDeliveryFee=0,customerDistance=0;
 let currentLat=null,currentLng=null,appliedCoupons=[];
 let currentStep=1;
 let userId=localStorage.getItem('mughalUserId')||'user_'+Date.now()+'_'+Math.random().toString(36).substr(2,9);
@@ -1047,7 +1079,6 @@ function loadMenuFromFirebase(){
         categories=['all',...data.categories];
       }
       renderMenu();
-      renderCategoryTabs();
     }else{
       // Show empty message if Firebase has no items
       document.getElementById('menuGrid').innerHTML='<div class="empty-state" style="text-align:center;padding:60px 20px;color:var(--text-muted)"><i class="fas fa-utensils" style="font-size:3rem;margin-bottom:16px;opacity:0.5"></i><p>No menu items available. Please add items in Menu Setup.</p></div>';
@@ -1148,7 +1179,6 @@ function loadDefaultMenu(){
     {id:12,name:'Gulab Jamun',description:'Sweet milk dumplings in syrup',price:5.00,category:'desserts',image:'https://images.unsplash.com/photo-1666190098808-9b0269b8d0a9?w=500&q=80',rating:4.7,popular:true,spice:'None',type:'veg'}
   ];
   renderMenu();
-  renderCategoryTabs();
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -1159,16 +1189,115 @@ document.addEventListener('DOMContentLoaded',()=>{
   makeDraggable();
 });
 
-function renderCategoryTabs(){
-  const tabsEl=document.getElementById('menuTabs');
-  tabsEl.innerHTML=categories.map(cat=>`
-    <button class="tab-btn ${cat===currentCategory?'active':''}" onclick="filterCategory('${cat}')">${cat.charAt(0).toUpperCase()+cat.slice(1)}</button>
-  `).join('');
+function renderMenu(){
+  renderMenuView();
 }
 
-function renderMenu(){
-  const items=currentCategory==='all'?menuItems:menuItems.filter(i=>i.category===currentCategory);
-  document.getElementById('menuGrid').innerHTML=items.map((item,index)=>`
+function renderMenuView(){
+  const grid=document.getElementById('menuGrid');
+  const bar=document.getElementById('menuViewBar');
+  const title=document.getElementById('menuViewTitle');
+  const query=searchQuery.trim();
+  if(query)menuView='search';
+
+  if(menuView==='categories'){
+    if(bar)bar.classList.remove('show');
+    grid.innerHTML=renderCategoryCards();
+    return;
+  }
+
+  if(bar)bar.classList.add('show');
+
+  if(menuView==='search'){
+    const q=query.toLowerCase();
+    const items=menuItems.filter(item=>searchableText(item).includes(q));
+    title.innerHTML=`Search results<small>${items.length} item${items.length===1?'':'s'} for “${escapeHtml(query)}”</small>`;
+    grid.innerHTML=renderItemCards(items,'No dishes found for your search.');
+    return;
+  }
+
+  const cat=currentCategory||'all';
+  const items=getCategoryItems(cat);
+  title.innerHTML=`${escapeHtml(formatCategoryName(cat))}<small>${items.length} item${items.length===1?'':'s'}</small>`;
+  grid.innerHTML=renderItemCards(items,`No items available in ${formatCategoryName(cat)}.`);
+}
+
+function getVisibleCategories(){
+  const list=[];
+  const add=cat=>{
+    cat=String(cat||'').trim().toLowerCase();
+    if(cat&&!list.includes(cat))list.push(cat);
+  };
+  add('all');
+  (categories||[]).forEach(add);
+  menuItems.forEach(item=>add(item.category));
+  return list;
+}
+
+function getCategoryItems(cat){
+  const key=String(cat||'all').toLowerCase();
+  if(key==='all')return menuItems;
+  return menuItems.filter(item=>String(item.category||'').toLowerCase()===key);
+}
+
+function formatCategoryName(cat){
+  const key=String(cat||'all').toLowerCase();
+  if(key==='all')return 'All Items';
+  return key.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+}
+
+function categoryIcon(cat){
+  const icons={
+    all:'fa-th-large',
+    starters:'fa-bowl-food',
+    mains:'fa-drumstick-bite',
+    biryani:'fa-rice',
+    breads:'fa-bread-slice',
+    drinks:'fa-mug-saucer',
+    desserts:'fa-ice-cream'
+  };
+  return icons[String(cat||'').toLowerCase()]||'fa-utensils';
+}
+
+function searchableText(item){
+  return [item.name,item.description,item.category,item.spice,item.type,item.allergies]
+    .flat()
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+}
+
+function escapeHtml(str){
+  return String(str||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderCategoryCards(){
+  const cats=getVisibleCategories();
+  if(!cats.length)return '<div class="menu-empty"><i class="fas fa-utensils"></i><p>No categories available.</p></div>';
+  return cats.map((cat,index)=>{
+    const items=getCategoryItems(cat);
+    const firstItem=items.find(item=>item.image);
+    const name=formatCategoryName(cat);
+    return `
+      <button class="cat-card fade-in-up" style="animation-delay:${index*0.05}s" data-category="${escapeHtml(cat)}" onclick="openCategory(this.dataset.category)">
+        ${firstItem?`<img src="${escapeHtml(firstItem.image)}" alt="${escapeHtml(name)}" loading="lazy"/>`:''}
+        <div class="cat-card-content">
+          <div style="display:flex;align-items:center;gap:12px;min-width:0">
+            <div class="cat-card-icon"><i class="fas ${categoryIcon(cat)}"></i></div>
+            <div style="min-width:0">
+              <h3>${escapeHtml(name)}</h3>
+              <small>${items.length} item${items.length===1?'':'s'}</small>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right cat-card-arrow"></i>
+        </div>
+      </button>`;
+  }).join('');
+}
+
+function renderItemCards(items,emptyMessage='No items available.'){
+  if(!items.length)return `<div class="menu-empty"><i class="fas fa-utensils"></i><p>${escapeHtml(emptyMessage)}</p></div>`;
+  return items.map((item,index)=>`
     <div class="m-card fade-in-up" style="animation-delay:${index*0.05}s">
       <div class="m-img">
         <img src="${item.image}" alt="${item.name}" loading="lazy"/>
@@ -1215,11 +1344,48 @@ function getAllergyTags(item){
   return tags.join('');
 }
 
-function filterCategory(category){
+function openCategory(category){
   currentCategory=category;
-  document.querySelectorAll('.tab-btn').forEach(btn=>btn.classList.remove('active'));
-  event.target.classList.add('active');
-  renderMenu();
+  menuView='category';
+  searchQuery='';
+  const input=document.getElementById('menuSearch');
+  if(input)input.value='';
+  const clear=document.getElementById('menuSearchClear');
+  if(clear)clear.classList.remove('show');
+  renderMenuView();
+}
+
+function showCategories(){
+  menuView='categories';
+  currentCategory='all';
+  searchQuery='';
+  const input=document.getElementById('menuSearch');
+  if(input)input.value='';
+  const clear=document.getElementById('menuSearchClear');
+  if(clear)clear.classList.remove('show');
+  renderMenuView();
+}
+
+function onMenuSearch(value){
+  searchQuery=value||'';
+  const clear=document.getElementById('menuSearchClear');
+  const hasQuery=searchQuery.trim().length>0;
+  if(hasQuery){
+    if(menuView!=='search')viewBeforeSearch=menuView;
+    menuView='search';
+    if(clear)clear.classList.add('show');
+  }else{
+    if(clear)clear.classList.remove('show');
+    if(menuView==='search')menuView=viewBeforeSearch||'categories';
+  }
+  renderMenuView();
+}
+
+function clearMenuSearch(){
+  const input=document.getElementById('menuSearch');
+  if(input)input.value='';
+  onMenuSearch('');
+  if(input)input.focus();
 }
 
 function addToCart(itemId){
